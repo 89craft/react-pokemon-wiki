@@ -3,7 +3,7 @@ import React from 'react'
 export default function Pagination({ gotoNextPage, gotoPrevPage }) {
   return (
     <div 
-      className="w-100 d-flex mb-3"
+      className="w-100 d-flex"
     >
       <button 
         type="button" 

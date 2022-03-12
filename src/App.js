@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Replaced HashRouter
 import NavBar from './components/layout/NavBar';
 import Dashboard from './components/layout/Dashboard';
 //import SearchBar from './components/search/SearchBar';
@@ -15,7 +15,7 @@ export default function App() {
         <NavBar />
         <div className="container">
           <Routes>
-            <Route path="/pokemon/:pokemonIndex" caseSensitive={false} component={<Pokemon />} />
+            <Route path="/pokemon/:pokemonIndex" caseSensitive={false} element={<Pokemon />} />
             <Route path="/" caseSensitive={false} element={<Dashboard />} />
           </Routes>
         </div>

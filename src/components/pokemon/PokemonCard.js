@@ -118,7 +118,7 @@ export default function PokemonCard({ name, url }) {
   }
 
   return (
-    <div className="col-xl-2 col-lg-3 col-md-4 col-6 mb-5">
+    <div className="col-xl-2 col-lg-3 col-md-4 col-6 my-4">
       <StyledLink to={`pokemon/${pokemonIndex}`}>
         <Card className="card">
           <h5 className="card-header">
@@ -131,12 +131,14 @@ export default function PokemonCard({ name, url }) {
           {imageLoading ? (
             <img
               src={spinner}
+              alt="loading"
               style={{ width: '9em', height: '9em' }}
               className="card-img-top rounded mx-auto d-block mt-2"
             />
           ) : null}
           <Sprite
             src={imageUrl}
+            alt={name}
             onLoad={handleImageLoaded}
             onError={() => setToManyRequests(true)}
             className="card-img-top rounded mx-auto mt-2"

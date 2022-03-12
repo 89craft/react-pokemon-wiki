@@ -69,6 +69,11 @@ export default function PokemonList() {
           ))}
         </div>
       )}
+      
+      <Pagination
+        gotoNextPage={nextPageUrl ? gotoNextPage : null}
+        gotoPrevPage={prevPageUrl ? gotoPrevPage : null}
+      />
     </React.Fragment>
   )
 }

@@ -50,7 +50,7 @@ export default function NavBar() {
       }
     >
       <Branding
-        href="#"
+        href="/"
         className="navbar-brand col-sm-3 col-md-2 mr-0 align-items-center"
       >
         <Logo src="./logo.svg" />
