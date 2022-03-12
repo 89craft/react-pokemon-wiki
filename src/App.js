@@ -15,8 +15,17 @@ export default function App() {
         <NavBar />
         <div className="container">
           <Routes>
-            <Route path="/pokemon/:pokemonIndex" caseSensitive={false} element={<Pokemon />} />
-            <Route path="/" caseSensitive={false} element={<Dashboard />} />
+            { !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? ( // process.env.NODE_ENV !== 'production'
+              <React.Fragment>
+                <Route path="/pokemon/:pokemonIndex" caseSensitive={false} element={<Pokemon />} />
+                <Route path="/" caseSensitive={false} element={<Dashboard />} />
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Route path="/react-pokemon-wiki/pokemon/:pokemonIndex" caseSensitive={false} element={<Pokemon />} />
+                <Route path="/react-pokemon-wiki/" caseSensitive={false} element={<Dashboard />} />
+              </React.Fragment>
+            )}
           </Routes>
         </div>
       </div>

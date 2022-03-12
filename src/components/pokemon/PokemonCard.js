@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-//import FastAverageColor from 'fast-average-color'
 import spinner from '../layout/spinner.gif'
-//import { getAverageColor } from 'fast-average-color-node';
 
 const Sprite = styled.img`
   width: 9em;
@@ -82,39 +80,12 @@ export default function PokemonCard({ name, url }) {
   const pokemonIndex = url.split('/')[url.split('/').length - 2];
   const imageUrl = `https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${pokemonIndex}.png?raw=true`;
 
-  //const fac = new FastAverageColor()
-  /* fac.getColorAsync(imageUrl, {
-    ignoredColor: [
-      // [red (0-255), green (0-255), blue (0-255), alpha (0-255), treshold (0-255)]
-      [255, 255, 255, 0, 0]
-    ],
-  })
-  .then(color => {
-    //container.style.backgroundColor = color.rgba;
-    //container.style.color = color.isDark ? '#fff' : '#000';
-    console.log('Average color', color);
-  })
-  .catch(e => {
-    console.log(e);
-  }); */
-
-  /* async function printAverageColor() {
-    const color = await getAverageColor(imageUrl);
-    console.log(color);
-  };
-  printAverageColor(); */
-
   function handleImageLoaded(element) {
     setImageLoading(false)
 
     /* const { R, G, B } = getAverageColor(element.target, 4)
     //document.body.style.background = `rgb(${R}, ${G}, ${B})`
     console.log(`rgb(${R}, ${G}, ${B})`) */
-
-    /* const color = fac.getColor(element.target);
-    //container.style.backgroundColor = color.rgba;
-    //container.style.color = color.isDark ? '#fff' : '#000';
-    console.log(color); */
   }
 
   return (

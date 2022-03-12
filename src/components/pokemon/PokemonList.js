@@ -37,7 +37,6 @@ export default function PokemonList() {
 
   function handlePageLimit(event) {
     event.preventDefault()
-    //console.log(event.target[0].value)
     setCurrentPageUrl(`https://pokeapi.co/api/v2/pokemon?limit=${event.target[0].value}`)
   }
 
