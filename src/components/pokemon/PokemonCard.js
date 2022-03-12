@@ -38,7 +38,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-function getAverageColor(imageElement, ratio) {
+/* function getAverageColor(imageElement, ratio) {
   const canvas = document.createElement("canvas")
 
   let height = canvas.height = imageElement.naturalHeight
@@ -73,7 +73,7 @@ function getAverageColor(imageElement, ratio) {
   B = ~~(B / count)
 
   return { R, G, B }
-}
+} */
 
 export default function PokemonCard({ name, url }) {
   const [imageLoading, setImageLoading] = useState(true)
@@ -83,7 +83,7 @@ export default function PokemonCard({ name, url }) {
   const imageUrl = `https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${pokemonIndex}.png?raw=true`;
 
   //const fac = new FastAverageColor()
-  /*fac.getColorAsync(imageUrl, {
+  /* fac.getColorAsync(imageUrl, {
     ignoredColor: [
       // [red (0-255), green (0-255), blue (0-255), alpha (0-255), treshold (0-255)]
       [255, 255, 255, 0, 0]
@@ -96,24 +96,25 @@ export default function PokemonCard({ name, url }) {
   })
   .catch(e => {
     console.log(e);
-  });*/
-  /*async function printAverageColor() {
+  }); */
+
+  /* async function printAverageColor() {
     const color = await getAverageColor(imageUrl);
     console.log(color);
   };
-  printAverageColor();*/
+  printAverageColor(); */
 
   function handleImageLoaded(element) {
     setImageLoading(false)
 
-    const { R, G, B } = getAverageColor(element.target, 4)
+    /* const { R, G, B } = getAverageColor(element.target, 4)
     //document.body.style.background = `rgb(${R}, ${G}, ${B})`
-    console.log(`rgb(${R}, ${G}, ${B})`)
+    console.log(`rgb(${R}, ${G}, ${B})`) */
 
-    //const color = fac.getColor(element.target);
-    ////container.style.backgroundColor = color.rgba;
-    ////container.style.color = color.isDark ? '#fff' : '#000';
-    //console.log(color);
+    /* const color = fac.getColor(element.target);
+    //container.style.backgroundColor = color.rgba;
+    //container.style.color = color.isDark ? '#fff' : '#000';
+    console.log(color); */
   }
 
   return (
@@ -154,7 +155,7 @@ export default function PokemonCard({ name, url }) {
               </span>
             </h6>
           ) : null}
-          {/*<div className="card-body mx-auto">
+          {/* <div className="card-body mx-auto">
             <h6 className="card-title">
               {name
                 .toLowerCase()
@@ -162,7 +163,7 @@ export default function PokemonCard({ name, url }) {
                 .map(s => s.charAt(0).toUpperCase() + s.substring(1))
                 .join(' ')}
             </h6>
-              </div>*/}
+          </div> */}
         </Card>
       </StyledLink>
     </div>
