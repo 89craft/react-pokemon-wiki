@@ -51,7 +51,6 @@ export default function NavBar() {
     >
       <Branding
         href={ !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "/" : "/react-pokemon-wiki/"}
-        target="_blank"
         className="navbar-brand col-sm-3 col-md-2 mr-0 align-items-center"
       >
         <Logo src="./logo.svg" />
