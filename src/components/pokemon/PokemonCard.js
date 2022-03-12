@@ -6,8 +6,8 @@ import spinner from '../layout/spinner.gif'
 //import { getAverageColor } from 'fast-average-color-node';
 
 const Sprite = styled.img`
-  width: 8em;
-  height: 8em;
+  width: 9em;
+  height: 9em;
   display: none;
 `;
 
@@ -131,7 +131,7 @@ export default function PokemonCard({ name, url }) {
           {imageLoading ? (
             <img
               src={spinner}
-              style={{ width: '8em', height: '8em' }}
+              style={{ width: '9em', height: '9em' }}
               className="card-img-top rounded mx-auto d-block mt-2"
             />
           ) : null}

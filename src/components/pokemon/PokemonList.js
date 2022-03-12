@@ -5,11 +5,11 @@ import Pagination from '../layout/Pagination'
 
 export default function PokemonList() {
   const [pokemon, setPokemon] = useState([])
-  const [currentPageUrl, setCurrentPageUrl] = useState(`https://pokeapi.co/api/v2/pokemon`)
+  const [pageLimit, setPageLimit] = useState(60)
+  const [currentPageUrl, setCurrentPageUrl] = useState(`https://pokeapi.co/api/v2/pokemon?limit=${pageLimit}`)
   const [nextPageUrl, setNextPageUrl] = useState()
   const [prevPageUrl, setPrevPageUrl] = useState()
   const [loading, setLoading] = useState(true)
-  const [pageLimit, setPageLimit] = useState(24)
 
   useEffect(() => {
     setLoading(true)
@@ -35,22 +35,20 @@ export default function PokemonList() {
     setCurrentPageUrl(prevPageUrl)
   }
 
-  function changePageLimit(event) {
-    setPageLimit(event.target.value)
-  }
   function handlePageLimit(event) {
     event.preventDefault()
-    setCurrentPageUrl(`https://pokeapi.co/api/v2/pokemon?limit=${event.target.value}`)
+    //console.log(event.target[0].value)
+    setCurrentPageUrl(`https://pokeapi.co/api/v2/pokemon?limit=${event.target[0].value}`)
   }
 
   return (
     <React.Fragment>
-      <form className="mb-4" onSubmit={handlePageLimit}>
+      <form className="mb-4 mx-sm-5 mx-3" onSubmit={handlePageLimit}>
         <div className="input-group mb-3">
           <div className="input-group-prepend">
             <span className="input-group-text">Page Limit:</span>
           </div>
-          <input type="number" value={pageLimit} step="12" min="12" className="form-control" onChange={changePageLimit} />
+          <input type="number" value={pageLimit} step="12" min="12" className="form-control" onChange={event => setPageLimit(event.target.value)} />
           <input type="submit" value="Update" className="btn btn-success" />
         </div>
       </form>
