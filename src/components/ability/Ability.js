@@ -6,27 +6,34 @@ import PokemonList from '../pokemon/PokemonList'
 export default function Ability() {
 	let { index } = useParams()
 
+	const [notFound, setNotFound] = useState(false)
+
 	const [name, setName] = useState('')
 	const [pokemon, setPokemon] = useState([])
 
 	useEffect(() => {
 		const abilityUrl = `https://pokeapi.co/api/v2/ability/${index}/`
 
-		Axios.get(abilityUrl).then((abilityRes) => {
-			const name = abilityRes.data.name
-			const pokemon = abilityRes.data.pokemon.map((pokemon) => {
-				const name = pokemon.pokemon.name
-				const url = pokemon.pokemon.url
-				return { name, url }
-			})
+		Axios.get(abilityUrl)
+			.then((abilityRes) => {
+				const name = abilityRes.data.name
+				const pokemon = abilityRes.data.pokemon.map((pokemon) => {
+					const name = pokemon.pokemon.name
+					const url = pokemon.pokemon.url
+					return { name, url }
+				})
 
-			setName(name)
-			setPokemon(pokemon)
-		})
+				setName(name)
+				setPokemon(pokemon)
+			})
+			.catch((err) => {
+				setNotFound(true)
+			})
 	}, [])
 
 	return (
 		<div className="col">
+			{notFound && <NotFound />}
 			<div className="card">
 				<div className="card-header">
 					<div className="row">

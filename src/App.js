@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom' // Replaced HashRouter
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom' // Replaced HashRouter
 import NavBar from './components/layout/NavBar'
 import Dashboard from './components/layout/Dashboard'
 //import SearchBar from './components/search/SearchBar';
@@ -9,6 +9,7 @@ import Type from './components/type/Type'
 import backgroundImage from './pattern.png'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
+import NotFound from './NotFound'
 
 export default function App() {
 	return (
@@ -35,6 +36,7 @@ export default function App() {
 									element={<Type />}
 								/>
 								<Route path="/" caseSensitive={false} element={<Dashboard />} />
+								<Route element={<NotFound />} />
 							</React.Fragment>
 						) : (
 							<React.Fragment>
@@ -58,6 +60,7 @@ export default function App() {
 									caseSensitive={false}
 									element={<Dashboard />}
 								/>
+								<Route element={<NotFound />} />
 							</React.Fragment>
 						)}
 					</Routes>
