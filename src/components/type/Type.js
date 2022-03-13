@@ -14,17 +14,14 @@ export default function Type() {
 
 		Axios.get(typeUrl).then((typeRes) => {
 			const name = typeRes.data.name
-			const pokemonArr = []
-
-			typeRes.data.pokemon.map((pokemon) => {
+			const pokemon = typeRes.data.pokemon.map((pokemon) => {
 				const name = pokemon.pokemon.name
 				const url = pokemon.pokemon.url
-
-				pokemonArr.push({ name, url })
+				return { name, url }
 			})
 
 			setName(name)
-			setPokemon(pokemonArr)
+			setPokemon(pokemon)
 		})
 	}, [])
 

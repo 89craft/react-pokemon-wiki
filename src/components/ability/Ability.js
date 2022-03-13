@@ -14,17 +14,14 @@ export default function Ability() {
 
 		Axios.get(abilityUrl).then((abilityRes) => {
 			const name = abilityRes.data.name
-			const pokemonArr = []
-
-			abilityRes.data.pokemon.map((pokemon) => {
+			const pokemon = abilityRes.data.pokemon.map((pokemon) => {
 				const name = pokemon.pokemon.name
 				const url = pokemon.pokemon.url
-
-				pokemonArr.push({ name, url })
+				return { name, url }
 			})
 
 			setName(name)
-			setPokemon(pokemonArr)
+			setPokemon(pokemon)
 		})
 	}, [])
 

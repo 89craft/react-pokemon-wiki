@@ -1,7 +1,7 @@
-import React, { useState /* , useEffect */ } from 'react'
+import React, { useState } from 'react'
 import SearchBar from '../search/SearchBar'
-//import PokemonList from '../pokemon/PokemonList';
 import PaginatedList from '../search/PaginatedList'
+import SearchList from '../search/SearchList'
 
 export default function Dashboard() {
 	const [category, setCategory] = useState('pokemon')
@@ -9,12 +9,9 @@ export default function Dashboard() {
 	const [pageLimit, setPageLimit] = useState(60)
 	const [listPageLimit, setListPageLimit] = useState(pageLimit)
 
-	/* useEffect(() => {}, [category, search]) */
-
 	function handlePageLimit(event) {
 		event.preventDefault()
 		setListPageLimit(event.target[0].value)
-		//setCurrentPageUrl(`https://pokeapi.co/api/v2/${category}?limit=${event.target[0].value}`)
 	}
 
 	return (
@@ -43,11 +40,20 @@ export default function Dashboard() {
 			</form>
 			<div className="row">
 				<div className="col">
-					<PaginatedList
-						key={`${category} ${listPageLimit}`}
-						category={category}
-						pageLimit={listPageLimit}
-					/>
+					{search ? (
+						<SearchList
+							key={`${category} ${listPageLimit} ${search}`}
+							category={category}
+							pageLimit={listPageLimit}
+							search={search}
+						/>
+					) : (
+						<PaginatedList
+							key={`${category} ${listPageLimit}`}
+							category={category}
+							pageLimit={listPageLimit}
+						/>
+					)}
 				</div>
 			</div>
 		</>
