@@ -1,7 +1,5 @@
-import React from 'react';
+import React from 'react'
 
 export default function Loading() {
-  return (
-    <h5>Getting Pokemon...</h5>
-  );
+	return <h5>Getting Pokemon...</h5>
 }
