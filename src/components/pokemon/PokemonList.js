@@ -41,9 +41,9 @@ export default function PokemonList() {
   }
 
   return (
-    <React.Fragment>
-      <form className="mb-4 mx-sm-5 mx-3" onSubmit={handlePageLimit}>
-        <div className="input-group mb-3">
+    <>
+      <form className="my-4 mx-sm-5 mx-3" onSubmit={handlePageLimit}>
+        <div className="input-group my-3">
           <div className="input-group-prepend">
             <span className="input-group-text">Page Limit:</span>
           </div>
@@ -55,6 +55,16 @@ export default function PokemonList() {
         gotoNextPage={nextPageUrl ? gotoNextPage : null}
         gotoPrevPage={prevPageUrl ? gotoPrevPage : null}
       />
+        {/* <form className="mx-sm-5 mx-3" onSubmit={handlePageLimit}>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text">Page Limit:</span>
+            </div>
+            <input type="number" value={pageLimit} step="12" min="12" className="form-control" onChange={event => setPageLimit(event.target.value)} />
+            <input type="submit" value="Update" className="btn btn-success" />
+          </div>
+        </form>
+      </Pagination> */}
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -68,11 +78,10 @@ export default function PokemonList() {
           ))}
         </div>
       )}
-      
       <Pagination
         gotoNextPage={nextPageUrl ? gotoNextPage : null}
         gotoPrevPage={prevPageUrl ? gotoPrevPage : null}
       />
-    </React.Fragment>
+    </>
   )
 }

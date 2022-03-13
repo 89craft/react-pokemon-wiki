@@ -24,15 +24,15 @@ const TYPE_COLORS = {
 };
 
 export default function Pokemon() {
-  let { pokemonIndex } = useParams()
+  let { index } = useParams()
+  //const profileTitleWidth = 5
+  const profileDataWidth = 7
 
   const [name, setName] = useState('')
   //const [pokemonIndex, setPokemonIndex] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [types, setTypes] = useState([])
   const [description, setDescription] = useState('')
-  const [statTitleWidth, setStatTitleWidth] = useState(3)
-  const [statBarWidth, setStatBarWidth] = useState(9)
   const [stats, setStats] = useState({
     hp: '',
     attack: '',
@@ -56,8 +56,8 @@ export default function Pokemon() {
     //setPokemonIndex(this.props.match.params)
 
     // Urls for pokemon information
-    const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonIndex}/`;
-    const pokemonSpeciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${pokemonIndex}/`;
+    const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${index}/`;
+    const pokemonSpeciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${index}/`;
 
     // Get Pokemon Information
     //const pokemonRes = Axios.get(pokemonUrl);
@@ -189,10 +189,16 @@ export default function Pokemon() {
       <div className="card">
         <div className="card-header">
           <div className="row">
-            <div className="col-5">
-              <h5>{pokemonIndex}</h5>
+            <div className="col-6">
+              <h5>
+                {index} {/* name
+                  .toLowerCase()
+                  .split(' ')
+                  .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+                  .join(' ') */}
+              </h5>
             </div>
-            <div className="col-7">
+            <div className="col-6">
               <div className="float-end">
                 {types.map(type => (
                   <span
@@ -216,14 +222,15 @@ export default function Pokemon() {
         </div>
         <div className="card-body">
           <div className="row align-items-center">
-            <div className=" col-md-3 ">
+            <div className="col-md-3 col-sm-5">
               <img
                 src={imageUrl}
                 alt={name}
                 className="card-img-top rounded mx-auto mt-2"
+                style={{maxHeight: '256px', maxWidth: '256px'}}
               />
             </div>
-            <div className="col-md-9">
+            <div className="col-md-9 col-sm-7">
               <h4 className="mx-auto">
                 {name
                   .toLowerCase()
@@ -231,138 +238,12 @@ export default function Pokemon() {
                   .map(s => s.charAt(0).toUpperCase() + s.substring(1))
                   .join(' ')}
               </h4>
-              <div className="row align-items-center">
-                <div className={`col-12 col-md-${statTitleWidth}`}>
-                  HP
-                </div>
-                <div className={`col-12 col-md-${statBarWidth}`}>
-                  <div className="progress">
-                    <div
-                      className="progress-bar "
-                      role="progressbar"
-                      style={{
-                        width: `${stats.hp}%`,
-                        backgroundColor: `#${themeColor}`
-                      }}
-                      aria-valuenow="25"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <small>{stats.hp}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row align-items-center">
-                <div className={`col-12 col-md-${statTitleWidth}`}>
-                  Attack
-                </div>
-                <div className={`col-12 col-md-${statBarWidth}`}>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      role="progressbar"
-                      style={{
-                        width: `${stats.attack}%`,
-                        backgroundColor: `#${themeColor}`
-                      }}
-                      aria-valuenow="25"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <small>{stats.attack}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row align-items-center">
-                <div className={`col-12 col-md-${statTitleWidth}`}>
-                  Defense
-                </div>
-                <div className={`col-12 col-md-${statBarWidth}`}>
-                  <div className="progress">
-                    <div
-                      className="progress-bar "
-                      role="progressbar"
-                      style={{
-                        width: `${stats.defense}%`,
-                        backgroundColor: `#${themeColor}`
-                      }}
-                      aria-valuenow="25"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <small>{stats.defense}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row align-items-center">
-                <div className={`col-12 col-md-${statTitleWidth}`}>
-                  Speed
-                </div>
-                <div className={`col-12 col-md-${statBarWidth}`}>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      role="progressbar"
-                      style={{
-                        width: `${stats.speed}%`,
-                        backgroundColor: `#${themeColor}`
-                      }}
-                      aria-valuenow="25"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <small>{stats.speed}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row align-items-center">
-                <div className={`col-12 col-md-${statTitleWidth}`}>
-                  Sp Atk
-                </div>
-                <div className={`col-12 col-md-${statBarWidth}`}>
-                  <div className="progress">
-                    <div
-                      className="progress-bar "
-                      role="progressbar"
-                      style={{
-                        width: `${stats.specialAttack}%`,
-                        backgroundColor: `#${themeColor}`
-                      }}
-                      aria-valuenow={stats.specialAttack}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <small>{stats.specialAttack}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row align-items-center">
-                <div className={`col-12 col-md-${statTitleWidth}`}>
-                  Sp Def
-                </div>
-                <div className={`col-12 col-md-${statBarWidth}`}>
-                  <div className="progress">
-                    <div
-                      className="progress-bar "
-                      role="progressbar"
-                      style={{
-                        width: `${stats.specialDefense}%`,
-                        backgroundColor: `#${themeColor}`
-                      }}
-                      aria-valuenow={stats.specialDefense}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <small>{stats.specialDefense}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Stat title="HP" width={stats.hp} color={themeColor} />
+              <Stat title="Attack" width={stats.attack} color={themeColor} />
+              <Stat title="Defence" width={stats.defense} color={themeColor} />
+              <Stat title="Speed" width={stats.speed} color={themeColor} />
+              <Stat title="Sp Atk" width={stats.specialAttack} color={themeColor} />
+              <Stat title="Sp Def" width={stats.specialDefense} color={themeColor} />
             </div>
           </div>
           <div className="row mt-1">
@@ -375,30 +256,13 @@ export default function Pokemon() {
         <div className="card-body">
           <h5 className="card-title text-center">Profile</h5>
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-sm-6">
               <div className="row">
-                <div className="col-6">
-                  <h6 className="float-end">Height:</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-start">{height} ft.</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-end">Weight:</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-start">{weight} lbs</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-end">Catch Rate:</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-start">{catchRate}%</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-end">Gender Ratio:</h6>
-                </div>
-                <div className="col-6">
+                <Profile title="Height" data={`${height} ft.`} />
+                <Profile title="Weight" data={`${weight} lbs`} />
+                <Profile title="Catch Rate" data={`${catchRate}%`} />
+                <ProfileTitle title="Gender Ratio" />
+                <div className={`col-${profileDataWidth}`}>
                   <div className="progress">
                     <div
                       className="progress-bar"
@@ -430,32 +294,12 @@ export default function Pokemon() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6">
+            <div className="col-sm-6">
               <div className="row">
-                <div className="col-6">
-                  <h6 className="float-end">Egg Groups:</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-start">{eggGroups} </h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-end">Hatch Steps:</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-start">{hatchSteps}</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-end">Abilities:</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-start">{abilities}</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-end">EVs:</h6>
-                </div>
-                <div className="col-6">
-                  <h6 className="float-start">{evs}</h6>
-                </div>
+                <Profile title="Egg Groups" data={eggGroups} />
+                <Profile title="Hatch Steps" data={hatchSteps} />
+                <Profile title="Abilities" data={abilities} />
+                <Profile title="EVs" data={evs} />
               </div>
             </div>
           </div>
@@ -472,6 +316,66 @@ export default function Pokemon() {
           </a>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Stat({ title, width, color }) {
+  return (
+    <div className="row align-items-center">
+      <StatTitle title={title} />
+      <StatBar width={width} color={color} />
+    </div>
+  );
+}
+function StatTitle({ title }) {
+  return (
+    <div className="col-md-3">
+      {title}
+    </div>
+  );
+}
+function StatBar({ width, color }) {
+  return (
+    <div className="col-md-9">
+      <div className="progress">
+        <div
+          className="progress-bar "
+          role="progressbar"
+          style={{
+            width: `${width}%`,
+            backgroundColor: `#${color}`
+          }}
+          aria-valuenow="25"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <small>{width}</small>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Profile({ title, data }) {
+  return (
+    <>
+      <ProfileTitle title={title} />
+      <ProfileData data={data} />
+    </>
+  );
+}
+function ProfileTitle({ title }) {
+  return (
+    <div className="col-5">
+      <h6 className="float-end text-end">{title}:</h6>
+    </div>
+  );
+}
+function ProfileData({ data }) {
+  return (
+    <div className="col-7">
+      <h6 className="float-start">{data}</h6>
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Pagination({ gotoNextPage, gotoPrevPage }) {
+export default function Pagination({ children, gotoNextPage, gotoPrevPage }) {
   return (
     <div 
-      className="w-100 d-flex"
+      className="w-100 d-flex mb-4"
     >
       <button 
         type="button" 
@@ -13,6 +13,7 @@ export default function Pagination({ gotoNextPage, gotoPrevPage }) {
       >
         Previous
       </button>
+      {children}
       <button 
         type="button" 
         className="btn btn-light ms-auto me-sm-5 me-3" 
