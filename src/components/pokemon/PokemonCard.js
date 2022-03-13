@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { buildPathName } from '../../helpers'
 import spinner from '../layout/spinner.gif'
 
 const Sprite = styled.img`
@@ -90,7 +91,9 @@ export default function PokemonCard({ name, url }) {
 
 	return (
 		<div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-8 mx-sm-0 mx-auto mb-4">
-			<StyledLink to={`../pokemon/${pokemonIndex}`}>
+			<StyledLink
+				to={buildPathName(`/pokemon/${pokemonIndex}`)}
+			>
 				<Card className="card">
 					<h5 className="card-header">
 						{pokemonIndex}{' '}

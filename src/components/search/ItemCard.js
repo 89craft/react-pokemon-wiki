@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { buildPathName, isProduction } from '../../helpers'
 
 const Card = styled.div`
 	opacity: 0.95;
@@ -33,7 +34,9 @@ export default function ItemCard({ category, name, url }) {
 	const itemIndex = url.split('/')[url.split('/').length - 2]
 	return (
 		<div className="col-xl-2 col-lg-3 col-md-4 col-6 mb-3">
-			<StyledLink to={`../${category}/${itemIndex}`}>
+			<StyledLink
+				to={buildPathName(`/${category}/${itemIndex}`)}
+			>
 				<Card className="card">
 					<h5 className="card-header">
 						{itemIndex}{' '}

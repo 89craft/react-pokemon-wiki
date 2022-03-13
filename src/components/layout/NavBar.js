@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { buildPathName } from '../../helpers'
 
 const Branding = styled.a`
 	-moz-user-select: none;
@@ -49,15 +50,11 @@ export default function NavBar() {
 			}
 		>
 			<Branding
-				href={
-					!process.env.NODE_ENV || process.env.NODE_ENV === 'development'
-						? '/'
-						: '/react-pokemon-wiki/'
-				}
+				href={buildPathName('/')}
 				className="navbar-brand col-sm-3 col-md-2 mr-0 align-items-center"
 			>
 				<Logo src="./logo.svg" />
-				React Pokemon Wiki
+				{process.env.REACT_APP_WEBSITE_NAME}
 			</Branding>
 		</nav>
 	)
