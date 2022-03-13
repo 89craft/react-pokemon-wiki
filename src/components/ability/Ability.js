@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Axios from 'axios'
 import PokemonList from '../pokemon/PokemonList'
+import NotFound from '../../NotFound'
 
 export default function Ability() {
 	let { index } = useParams()
