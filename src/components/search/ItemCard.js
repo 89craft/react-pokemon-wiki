@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { buildPathName } from '../../helpers'
+import { buildPathName, cleanAndCapName } from '../../helpers'
 import { TYPE_COLORS } from '../type/Type'
 
 const Card = styled.div`
@@ -53,23 +53,13 @@ export default function ItemCard({
 						}
 					>
 						<h5 className="card-header">
-							{itemIndex}{' '}
-							{name
-								.toLowerCase()
-								.split(' ')
-								.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-								.join(' ')}
+							{itemIndex} {cleanAndCapName(name)}
 						</h5>
 					</Card>
 				) : (
 					<Card className="card">
 						<h5 className="card-header">
-							{itemIndex}{' '}
-							{name
-								.toLowerCase()
-								.split(' ')
-								.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-								.join(' ')}
+							{itemIndex} {cleanAndCapName(name)}
 						</h5>
 					</Card>
 				)}

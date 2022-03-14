@@ -4,24 +4,51 @@ export function isProduction() {
 }
 
 export function buildPathName(path) {
-	let newPath = path ? path : ''
+	path = path ? path : ''
 
 	if (isProduction()) {
-		/* while (newPath.startsWith('.')) newPath.substr(1, newPath.length)
+		/* while (path.startsWith('.')) path.substr(1, path.length)
+		if (!path.startsWith('/${process.env.REACT_APP_NAME}'))
+			path = `/${process.env.REACT_APP_NAME}${path}`
+		if (!path.startsWith('..')) path = `..${path}` */
 
-		if (!newPath.startsWith('/${process.env.REACT_APP_NAME}'))
-			newPath = `/${process.env.REACT_APP_NAME}${newPath}`
-
-		if (!newPath.startsWith('..')) newPath = `..${newPath}` */
-
-		return `../${process.env.REACT_APP_NAME}${newPath}`
+		return `../${process.env.REACT_APP_NAME}${path}`
 	} else {
-		/* if (!newPath.startsWith('..')) newPath = `..${newPath}` */
+		/* if (!path.startsWith('..')) path = `..${path}` */
 
-		return `../${newPath}`
+		return `../${path}`
 	}
 }
 export function homePathName() {
 	if (isProduction()) return `/${process.env.REACT_APP_NAME}/`
 	else return `/`
+}
+
+// convert 'water-absorb' to 'water absorb'
+export function cleanName(text) {
+	text = text ? text : ''
+	return text.toLowerCase().split('-').join(' ')
+}
+// convert 'water absorb' to 'Water Absorb'
+export function capName(text) {
+	text = text ? text : ''
+	return text
+		.toLowerCase()
+		.split(' ')
+		.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+		.join(' ')
+}
+// convert 'water-absorb' or 'water absorb' to 'Water Absorb'
+export function cleanAndCapName(text) {
+	text = text ? text : ''
+	const dashSplit = text.toLowerCase().split('-')
+	if (dashSplit.length > 1) {
+		return dashSplit.map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')
+	} else {
+		return text
+			.toLowerCase()
+			.split(' ')
+			.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+			.join(' ')
+	}
 }

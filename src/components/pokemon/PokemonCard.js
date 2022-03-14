@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { buildPathName } from '../../helpers'
+import { buildPathName, capName } from '../../helpers'
 import spinner from '../layout/spinner.gif'
 
 const Sprite = styled.img`
@@ -94,12 +94,7 @@ export default function PokemonCard({ name = '', url = '' }) {
 			<StyledLink to={buildPathName(`/pokemon/${pokemonIndex}`)}>
 				<Card className="card">
 					<h5 className="card-header">
-						{pokemonIndex}{' '}
-						{name
-							.toLowerCase()
-							.split(' ')
-							.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-							.join(' ')}
+						{pokemonIndex} {capName(name)}
 					</h5>
 					{imageLoading && (
 						<img
@@ -130,11 +125,7 @@ export default function PokemonCard({ name = '', url = '' }) {
 					)}
 					{/* <div className="card-body mx-auto">
             <h6 className="card-title">
-              {name
-                .toLowerCase()
-                .split(' ')
-                .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-                .join(' ')}
+              {capName(name)}
             </h6>
           </div> */}
 				</Card>

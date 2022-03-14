@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Axios from 'axios'
-import { buildPathName } from '../../helpers'
+import {
+	buildPathName,
+	cleanName,
+	capName,
+	cleanAndCapName,
+} from '../../helpers'
 import NotFound from '../../NotFound'
 import { TYPE_COLORS } from '../type/Type'
 
@@ -91,15 +96,8 @@ export default function Pokemon() {
 				const themeColor = `${TYPE_COLORS[types[types.length - 1]]}`
 
 				const abilities = pokemonRes.data.abilities.map((ability) => {
-					return (
-						ability.ability.name
-							.toLowerCase()
-							.split('-')
-							/* .map((s) => s.charAt(0).toUpperCase() + s.substring(1)) */
-							.join(' ')
-					)
+					return cleanName(ability.ability.name)
 				})
-				/* .join(', ') */
 
 				const evs = pokemonRes.data.stats
 					.filter((stat) => {
@@ -109,40 +107,34 @@ export default function Pokemon() {
 						return false
 					})
 					.map((stat) => {
-						return `${stat.effort} ${stat.stat.name
-							.toLowerCase()
-							.split('-')
-							.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-							.join(' ')}`
+						return `${stat.effort} ${cleanAndCapName(stat.stat.name)}`
 					})
 					.join(', ')
 
 				// Get Pokemon Description .... Is from a different end point uggh
-				Axios.get(pokemonSpeciesUrl).then((res) => {
+				Axios.get(pokemonSpeciesUrl).then((speciesRes) => {
 					let description = ''
-					res.data.flavor_text_entries.some((flavor) => {
-						if (flavor.language.name === userLanguage) {
-							description = flavor.flavor_text
-							return
+					speciesRes.data.flavor_text_entries.some(
+						(flavor) => {
+							if (flavor.language.name === userLanguage) {
+								description = flavor.flavor_text
+								return
+							}
 						}
-					})
-					const femaleRate = res.data['gender_rate']
+					)
+					const femaleRate = speciesRes.data['gender_rate']
 					const genderRatioFemale = 12.5 * femaleRate
 					const genderRatioMale = 12.5 * (8 - femaleRate)
 
-					const catchRate = Math.round((100 / 255) * res.data['capture_rate'])
+					const catchRate = Math.round((100 / 255) * speciesRes.data['capture_rate'])
 
-					const eggGroups = res.data['egg_groups']
+					const eggGroups = speciesRes.data['egg_groups']
 						.map((group) => {
-							return group.name
-								.toLowerCase()
-								.split(' ')
-								.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-								.join(' ')
+							return cleanAndCapName(group.name)
 						})
 						.join(', ')
 
-					const hatchSteps = 255 * (res.data['hatch_counter'] + 1)
+					const hatchSteps = 255 * (speciesRes.data['hatch_counter'] + 1)
 
 					setDescription(description)
 					setGenderRatioFemale(genderRatioFemale)
@@ -183,12 +175,7 @@ export default function Pokemon() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{id}{' '}
-								{/* name
-                  .toLowerCase()
-                  .split(' ')
-                  .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-                  .join(' ') */}
+								{id} {/* capName(name) */}
 							</h5>
 						</div>
 						<div className="col-6">
@@ -206,10 +193,7 @@ export default function Pokemon() {
 													: null
 											}
 										>
-											{type
-												.split(' ')
-												.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-												.join(' ')}
+											{capName(type)}
 										</span>
 									</Link>
 								))}
@@ -227,12 +211,7 @@ export default function Pokemon() {
 							/>
 						</div>
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">
-								{name
-									.split(' ')
-									.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-									.join(' ')}
-							</h4>
+							<h4 className="mx-auto">{capName(name)}</h4>
 							<Stat title="HP" width={stats.hp} color={themeColor} />
 							<Stat title="Attack" width={stats.attack} color={themeColor} />
 							<Stat title="Defence" width={stats.defense} color={themeColor} />
@@ -306,12 +285,7 @@ export default function Pokemon() {
 									{abilities
 										.map((ability) => (
 											<Link to={buildPathName(`/ability/${ability}`)}>
-												{ability
-													.split(' ')
-													.map(
-														(s) => s.charAt(0).toUpperCase() + s.substring(1)
-													)
-													.join(' ')}
+												{capName(ability)}
 											</Link>
 										))
 										.reduce((prev, curr) => [prev, ', ', curr])}

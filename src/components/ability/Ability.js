@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Axios from 'axios'
+import { cleanAndCapName } from '../../helpers'
 import PokemonList from '../pokemon/PokemonList'
 import NotFound from '../../NotFound'
 
@@ -12,6 +13,7 @@ export default function Ability() {
 
 	const [id, setId] = useState('')
 	const [name, setName] = useState('')
+	const [description, setDescription] = useState('')
 	const [pokemon, setPokemon] = useState([])
 
 	useEffect(() => {
@@ -20,7 +22,15 @@ export default function Ability() {
 		Axios.get(abilityUrl)
 			.then((abilityRes) => {
 				const id = abilityRes.data.id
-				const name = abilityRes.data.name
+				const name = abilityRes.data.name.toLowerCase()
+
+				let description = ''
+				abilityRes.data.flavor_text_entries.some((flavor) => {
+					if (flavor.language.name === userLanguage) {
+						description = flavor.flavor_text
+						return
+					}
+				})
 
 				const pokemon = abilityRes.data.pokemon.map((pokemon) => {
 					const name = pokemon.pokemon.name
@@ -30,6 +40,7 @@ export default function Ability() {
 
 				setId(id)
 				setName(name)
+				setDescription(description)
 				setPokemon(pokemon)
 			})
 			.catch((err) => {
@@ -45,12 +56,7 @@ export default function Ability() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{id}{' '}
-								{/* name
-                  .toLowerCase()
-                  .split(' ')
-                  .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-                  .join(' ') */}
+								{id} {/* {cleanAndCapName(name)} */}
 							</h5>
 						</div>
 					</div>
@@ -58,20 +64,14 @@ export default function Ability() {
 				<div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">
-								{name
-									.toLowerCase()
-									.split(' ')
-									.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-									.join(' ')}
-							</h4>
+							<h4 className="mx-auto">{cleanAndCapName(name)}</h4>
 						</div>
 					</div>
-					{/* <div className="row mt-1">
-            <div className="col">
-              <p className="">{description}</p>
-            </div>
-          </div> */}
+					<div className="row mt-1">
+						<div className="col">
+							<p className="">{description}</p>
+						</div>
+					</div>
 				</div>
 				<div className="card-footer text-muted">
 					Data From{' '}

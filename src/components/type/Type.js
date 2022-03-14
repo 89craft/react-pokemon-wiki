@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Axios from 'axios'
+import { capName } from '../../helpers'
 import PokemonList from '../pokemon/PokemonList'
 import NotFound from '../../NotFound'
 
@@ -59,7 +60,7 @@ export default function Type() {
 		Axios.get(typeUrl)
 			.then((typeRes) => {
 				const id = typeRes.data.id
-				const name = typeRes.data.name
+				const name = typeRes.data.name.toLowerCase()
 
 				const pokemon = typeRes.data.pokemon.map((pokemon) => {
 					const name = pokemon.pokemon.name
@@ -90,12 +91,7 @@ export default function Type() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{id}{' '}
-								{/* name
-                  .toLowerCase()
-                  .split(' ')
-                  .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-                  .join(' ') */}
+								{id} {/* capName(name) */}
 							</h5>
 						</div>
 					</div>
@@ -103,13 +99,7 @@ export default function Type() {
 				<div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">
-								{name
-									.toLowerCase()
-									.split(' ')
-									.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-									.join(' ')}
-							</h4>
+							<h4 className="mx-auto">{capName(name)}</h4>
 						</div>
 					</div>
 					{/* <div className="row mt-1">
