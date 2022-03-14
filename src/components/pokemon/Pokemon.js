@@ -1,38 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Axios from 'axios'
+import { buildPathName } from '../../helpers'
 import NotFound from '../../NotFound'
+import { TYPE_COLORS } from '../type/Type'
 
 // const REACT_APP_POKE_API = process.env.REACT_APP_POKE_API
 
-const TYPE_COLORS = {
-	bug: 'B1C12E',
-	dark: '4F3A2D',
-	dragon: '755EDF',
-	electric: 'FCBC17',
-	fairy: 'F4B1F4',
-	fighting: '823551D',
-	fire: 'E73B0C',
-	flying: 'A3B3F7',
-	ghost: '6060B2',
-	grass: '74C236',
-	ground: 'D3B357',
-	ice: 'A3E7FD',
-	normal: 'C8C4BC',
-	poison: '934594',
-	psychic: 'ED4882',
-	rock: 'B9A156',
-	steel: 'B5B5C3',
-	water: '3295F6',
-}
-
 export default function Pokemon() {
 	let { index } = useParams()
+	let userLanguage = 'en'
+
 	//const profileTitleWidth = 5
 	const profileDataWidth = 7
 
 	const [notFound, setNotFound] = useState(false)
 
+	const [id, setId] = useState('')
 	const [name, setName] = useState('')
 	const [imageUrl, setImageUrl] = useState('')
 	const [types, setTypes] = useState([])
@@ -49,7 +33,7 @@ export default function Pokemon() {
 	const [weight, setWeight] = useState('')
 	const [eggGroups, setEggGroups] = useState('')
 	const [catchRate, setCatchRate] = useState('')
-	const [abilities, setAbilities] = useState('')
+	const [abilities, setAbilities] = useState(['none'])
 	const [genderRatioMale, setGenderRatioMale] = useState('')
 	const [genderRatioFemale, setGenderRatioFemale] = useState('')
 	const [evs, setEvs] = useState('')
@@ -62,7 +46,8 @@ export default function Pokemon() {
 
 		Axios.get(pokemonUrl)
 			.then((pokemonRes) => {
-				const name = pokemonRes.data.name
+				const id = pokemonRes.data.id
+				const name = pokemonRes.data.name.toLowerCase()
 				const imageUrl = pokemonRes.data.sprites.front_default
 
 				let { hp, attack, defense, speed, specialAttack, specialDefense } = ''
@@ -99,19 +84,22 @@ export default function Pokemon() {
 				const weight =
 					Math.round((pokemonRes.data.weight * 0.220462 + 0.00001) * 100) / 100
 
-				const types = pokemonRes.data.types.map((type) => type.type.name)
+				const types = pokemonRes.data.types.map((type) =>
+					type.type.name.toLowerCase()
+				)
 
 				const themeColor = `${TYPE_COLORS[types[types.length - 1]]}`
 
-				const abilities = pokemonRes.data.abilities
-					.map((ability) => {
-						return ability.ability.name
+				const abilities = pokemonRes.data.abilities.map((ability) => {
+					return (
+						ability.ability.name
 							.toLowerCase()
 							.split('-')
-							.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+							/* .map((s) => s.charAt(0).toUpperCase() + s.substring(1)) */
 							.join(' ')
-					})
-					.join(', ')
+					)
+				})
+				/* .join(', ') */
 
 				const evs = pokemonRes.data.stats
 					.filter((stat) => {
@@ -133,7 +121,7 @@ export default function Pokemon() {
 				Axios.get(pokemonSpeciesUrl).then((res) => {
 					let description = ''
 					res.data.flavor_text_entries.some((flavor) => {
-						if (flavor.language.name === 'en') {
+						if (flavor.language.name === userLanguage) {
 							description = flavor.flavor_text
 							return
 						}
@@ -164,9 +152,9 @@ export default function Pokemon() {
 					setHatchSteps(hatchSteps)
 				})
 
-				setImageUrl(imageUrl)
-				//setPokemonIndex(pokemonIndex)
+				setId(id)
 				setName(name)
+				setImageUrl(imageUrl)
 				setTypes(types)
 				setStats({
 					hp,
@@ -195,7 +183,7 @@ export default function Pokemon() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{index}{' '}
+								{id}{' '}
 								{/* name
                   .toLowerCase()
                   .split(' ')
@@ -206,20 +194,24 @@ export default function Pokemon() {
 						<div className="col-6">
 							<div className="float-end">
 								{types.map((type) => (
-									<span
-										key={type}
-										className="badge badge-pill me-1"
-										style={{
-											backgroundColor: `#${TYPE_COLORS[type]}`,
-											color: 'white',
-										}}
-									>
-										{type
-											.toLowerCase()
-											.split(' ')
-											.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-											.join(' ')}
-									</span>
+									<Link key={type} to={buildPathName(`/type/${type}`)}>
+										<span
+											className="badge badge-pill me-1"
+											style={
+												type in TYPE_COLORS
+													? {
+															backgroundColor: `#${TYPE_COLORS[type]}`,
+															color: 'white',
+													  }
+													: null
+											}
+										>
+											{type
+												.split(' ')
+												.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+												.join(' ')}
+										</span>
+									</Link>
 								))}
 							</div>
 						</div>
@@ -232,13 +224,11 @@ export default function Pokemon() {
 								src={imageUrl}
 								alt={name}
 								className="card-img-top rounded mx-auto mt-2"
-								style={{ maxHeight: '256px', maxWidth: '256px' }}
 							/>
 						</div>
 						<div className="col-md-9 col-sm-7">
 							<h4 className="mx-auto">
 								{name
-									.toLowerCase()
 									.split(' ')
 									.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
 									.join(' ')}
@@ -311,7 +301,21 @@ export default function Pokemon() {
 							<div className="row">
 								<Profile title="Egg Groups" data={eggGroups} />
 								<Profile title="Hatch Steps" data={hatchSteps} />
-								<Profile title="Abilities" data={abilities} />
+								<ProfileTitle title="Abilities" />
+								<div className={`col-${profileDataWidth}`}>
+									{abilities
+										.map((ability) => (
+											<Link to={buildPathName(`/ability/${ability}`)}>
+												{ability
+													.split(' ')
+													.map(
+														(s) => s.charAt(0).toUpperCase() + s.substring(1)
+													)
+													.join(' ')}
+											</Link>
+										))
+										.reduce((prev, curr) => [prev, ', ', curr])}
+								</div>
 								<Profile title="EVs" data={evs} />
 							</div>
 						</div>

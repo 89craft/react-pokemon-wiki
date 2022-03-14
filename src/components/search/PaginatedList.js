@@ -16,6 +16,9 @@ export default function PaginatedList({ category, pageLimit }) {
 	const [prevPageUrl, setPrevPageUrl] = useState()
 	const [loading, setLoading] = useState(true)
 
+	const [page, setPage] = useState(1)
+	const [totalPages, setTotalPages] = useState(1)
+
 	useEffect(() => {
 		setLoading(true)
 		let cancel
@@ -23,6 +26,14 @@ export default function PaginatedList({ category, pageLimit }) {
 			cancelToken: new Axios.CancelToken((c) => (cancel = c)),
 		}).then((res) => {
 			setLoading(false)
+
+			const count = res.data.count
+			const pageParams = new URLSearchParams(currentPageUrl.split('?')[1])
+			const limit = pageParams.get('limit')
+			const offset = pageParams.get('offset')
+			setPage(Math.ceil(offset / limit) + 1)
+			setTotalPages(Math.ceil(count / limit) + 1)
+
 			setNextPageUrl(res.data.next)
 			setPrevPageUrl(res.data.previous)
 			setItems(res.data.results)
@@ -45,11 +56,13 @@ export default function PaginatedList({ category, pageLimit }) {
 			<Pagination
 				gotoNextPage={nextPageUrl ? gotoNextPage : null}
 				gotoPrevPage={prevPageUrl ? gotoPrevPage : null}
+				page={page}
+				totalPages={totalPages}
 			/>
 			{loading ? (
 				<p>Loading...</p>
 			) : (
-				<div className="row">
+				<>
 					{category === 'pokemon' ? (
 						<>
 							{items.map((item) => (
@@ -68,11 +81,13 @@ export default function PaginatedList({ category, pageLimit }) {
 							))}
 						</>
 					)}
-				</div>
+				</>
 			)}
 			<Pagination
 				gotoNextPage={nextPageUrl ? gotoNextPage : null}
 				gotoPrevPage={prevPageUrl ? gotoPrevPage : null}
+				page={page}
+				totalPages={totalPages}
 			/>
 		</>
 	)

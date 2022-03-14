@@ -28,7 +28,7 @@ export default function SearchList({
 			setPrevPageUrl(res.data.previous)
 			setItems(
 				res.data.results.filter((items) => {
-					return items.name.includes(search)
+					return items.name.includes(search.toLowerCase())
 				})
 			)
 		})
@@ -55,23 +55,33 @@ export default function SearchList({
 				<p>Loading...</p>
 			) : (
 				<div className="row">
-					{category === 'pokemon' ? (
+					{items.length > 0 ? (
 						<>
-							{items.map((item) => (
-								<PokemonCard key={item.name} name={item.name} url={item.url} />
-							))}
+							{category === 'pokemon' ? (
+								<>
+									{items.map((item) => (
+										<PokemonCard
+											key={item.name}
+											name={item.name}
+											url={item.url}
+										/>
+									))}
+								</>
+							) : (
+								<>
+									{items.map((item) => (
+										<ItemCard
+											key={item.name}
+											category={category}
+											name={item.name}
+											url={item.url}
+										/>
+									))}
+								</>
+							)}
 						</>
 					) : (
-						<>
-							{items.map((item) => (
-								<ItemCard
-									key={item.name}
-									category={category}
-									name={item.name}
-									url={item.url}
-								/>
-							))}
-						</>
+						<h5>No Matches</h5>
 					)}
 				</div>
 			)}

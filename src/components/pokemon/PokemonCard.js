@@ -90,7 +90,7 @@ export default function PokemonCard({ name = '', url = '' }) {
 	}
 
 	return (
-		<div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-8 mx-sm-0 mx-auto mb-4">
+		<div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-8 mx-sm-0 mx-auto my-3">
 			<StyledLink to={buildPathName(`/pokemon/${pokemonIndex}`)}>
 				<Card className="card">
 					<h5 className="card-header">
@@ -101,14 +101,14 @@ export default function PokemonCard({ name = '', url = '' }) {
 							.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
 							.join(' ')}
 					</h5>
-					{imageLoading ? (
+					{imageLoading && (
 						<img
 							src={spinner}
 							alt="loading"
 							style={{ width: '9em', height: '9em' }}
 							className="card-img-top rounded mx-auto d-block mt-2"
 						/>
-					) : null}
+					)}
 					<Sprite
 						src={imageUrl}
 						alt={name}
@@ -123,11 +123,11 @@ export default function PokemonCard({ name = '', url = '' }) {
 								: { display: 'block' }
 						}
 					/>
-					{toManyRequests ? (
+					{toManyRequests && (
 						<h6 className="mx-auto">
 							<span className="badge badge-danger mt-2">To Many Requests</span>
 						</h6>
-					) : null}
+					)}
 					{/* <div className="card-body mx-auto">
             <h6 className="card-title">
               {name

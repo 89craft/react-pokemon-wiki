@@ -1,61 +1,43 @@
 import React, { useState } from 'react'
-import SearchBar from '../search/SearchBar'
+import SearchInput from '../search/SearchInput'
+import CategorySelect from '../search/CategorySelect'
+import PageLimitSelect from '../search/PageLimitSelect'
 import PaginatedList from '../search/PaginatedList'
 import SearchList from '../search/SearchList'
 
 export default function Dashboard() {
 	const [category, setCategory] = useState('pokemon')
 	const [search, setSearch] = useState('')
-	const [pageLimit, setPageLimit] = useState(60)
-	const [listPageLimit, setListPageLimit] = useState(pageLimit)
-
-	function handlePageLimit(event) {
-		event.preventDefault()
-		setListPageLimit(event.target[0].value)
-	}
+	const [pageLimit, setPageLimit] = useState(48)
 
 	return (
-		<>
-			<SearchBar
-				category={category}
-				setCategory={setCategory}
-				search={search}
-				setSearch={setSearch}
-			/>
-			<form className="my-4 mx-sm-5 mx-3" onSubmit={handlePageLimit}>
-				<div className="input-group my-3">
-					<div className="input-group-prepend">
-						<span className="input-group-text">Page Limit:</span>
-					</div>
-					<input
-						type="number"
-						value={pageLimit}
-						step="12"
-						min="12"
-						className="form-control"
-						onChange={(event) => setPageLimit(event.target.value)}
-					/>
-					<input type="submit" value="Update" className="btn btn-success" />
+		<div className="pb-4">
+			<div className="row mt-2 mb-4">
+				<div className="col-lg-3 col-md-4 col-sm-6 my-2">
+					<PageLimitSelect pageLimit={pageLimit} setPageLimit={setPageLimit} />
 				</div>
-			</form>
-			<div className="row">
-				<div className="col">
-					{search ? (
-						<SearchList
-							key={`${category} ${listPageLimit} ${search}`}
-							category={category}
-							pageLimit={listPageLimit}
-							search={search}
-						/>
-					) : (
-						<PaginatedList
-							key={`${category} ${listPageLimit}`}
-							category={category}
-							pageLimit={listPageLimit}
-						/>
-					)}
+				<div className="col-lg-4 col-md-4 col-sm-6 my-2">
+					<CategorySelect category={category} setCategory={setCategory} />
+				</div>
+				<div className="col-lg-5 col-md-4 my-2">
+					<SearchInput search={search} setSearch={setSearch} />
 				</div>
 			</div>
-		</>
+			<div className="row">
+				{search ? (
+					<SearchList
+						key={`${category} ${search}`}
+						category={category}
+						search={search}
+					/>
+				) : (
+					<PaginatedList
+						key={`${category} ${pageLimit}`}
+						category={category}
+						pageLimit={pageLimit}
+					/>
+				)}
+			</div>
+		</div>
 	)
 }

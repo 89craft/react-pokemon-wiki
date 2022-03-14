@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { buildPathName, isProduction } from '../../helpers'
+import { buildPathName } from '../../helpers'
+import { TYPE_COLORS } from '../type/Type'
 
 const Card = styled.div`
 	opacity: 0.95;
@@ -37,18 +38,41 @@ export default function ItemCard({
 }) {
 	const itemIndex = url.split('/')[url.split('/').length - 2]
 	return (
-		<div className="col-xl-2 col-lg-3 col-md-4 col-6 mb-3">
+		<div className="col-xl-2 col-lg-3 col-md-4 col-6 my-3">
 			<StyledLink to={buildPathName(`/${category}/${itemIndex}`)}>
-				<Card className="card">
-					<h5 className="card-header">
-						{itemIndex}{' '}
-						{name
-							.toLowerCase()
-							.split(' ')
-							.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-							.join(' ')}
-					</h5>
-				</Card>
+				{category === 'type' ? (
+					<Card
+						className="card"
+						style={
+							name in TYPE_COLORS
+								? {
+										backgroundColor: `#${TYPE_COLORS[name]}`,
+										color: 'white',
+								  }
+								: null
+						}
+					>
+						<h5 className="card-header">
+							{itemIndex}{' '}
+							{name
+								.toLowerCase()
+								.split(' ')
+								.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+								.join(' ')}
+						</h5>
+					</Card>
+				) : (
+					<Card className="card">
+						<h5 className="card-header">
+							{itemIndex}{' '}
+							{name
+								.toLowerCase()
+								.split(' ')
+								.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+								.join(' ')}
+						</h5>
+					</Card>
+				)}
 			</StyledLink>
 		</div>
 	)

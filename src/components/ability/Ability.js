@@ -6,9 +6,11 @@ import NotFound from '../../NotFound'
 
 export default function Ability() {
 	let { index } = useParams()
+	let userLanguage = 'en'
 
 	const [notFound, setNotFound] = useState(false)
 
+	const [id, setId] = useState('')
 	const [name, setName] = useState('')
 	const [pokemon, setPokemon] = useState([])
 
@@ -17,13 +19,16 @@ export default function Ability() {
 
 		Axios.get(abilityUrl)
 			.then((abilityRes) => {
+				const id = abilityRes.data.id
 				const name = abilityRes.data.name
+
 				const pokemon = abilityRes.data.pokemon.map((pokemon) => {
 					const name = pokemon.pokemon.name
 					const url = pokemon.pokemon.url
 					return { name, url }
 				})
 
+				setId(id)
 				setName(name)
 				setPokemon(pokemon)
 			})
@@ -40,7 +45,7 @@ export default function Ability() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{index}{' '}
+								{id}{' '}
 								{/* name
                   .toLowerCase()
                   .split(' ')
