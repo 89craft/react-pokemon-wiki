@@ -6,9 +6,9 @@ categories.set('2', 'ability')
 categories.set('3', 'type')
 
 export default function SearchBar({
-	category,
+	category = 'pokemon',
 	setCategory,
-	search,
+	search = '',
 	setSearch,
 }) {
 	function getByValue(map, searchValue) {

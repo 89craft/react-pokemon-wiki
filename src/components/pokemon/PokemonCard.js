@@ -74,7 +74,7 @@ const StyledLink = styled(Link)`
   return { R, G, B }
 } */
 
-export default function PokemonCard({ name, url }) {
+export default function PokemonCard({ name = '', url = '' }) {
 	const [imageLoading, setImageLoading] = useState(true)
 	const [toManyRequests, setToManyRequests] = useState(false)
 
@@ -91,9 +91,7 @@ export default function PokemonCard({ name, url }) {
 
 	return (
 		<div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-8 mx-sm-0 mx-auto mb-4">
-			<StyledLink
-				to={buildPathName(`/pokemon/${pokemonIndex}`)}
-			>
+			<StyledLink to={buildPathName(`/pokemon/${pokemonIndex}`)}>
 				<Card className="card">
 					<h5 className="card-header">
 						{pokemonIndex}{' '}

@@ -10,7 +10,7 @@ export default function PaginatedList({ category, pageLimit }) {
 
 	const [items, setItems] = useState([])
 	const [currentPageUrl, setCurrentPageUrl] = useState(
-		`https://pokeapi.co/api/v2/${category}?limit=${pageLimit}`
+		`${process.env.REACT_APP_POKE_API}/${category}?limit=${pageLimit}`
 	)
 	const [nextPageUrl, setNextPageUrl] = useState()
 	const [prevPageUrl, setPrevPageUrl] = useState()

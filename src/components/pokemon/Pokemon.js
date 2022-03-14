@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import Axios from 'axios'
 import NotFound from '../../NotFound'
 
+// const REACT_APP_POKE_API = process.env.REACT_APP_POKE_API
+
 const TYPE_COLORS = {
 	bug: 'B1C12E',
 	dark: '4F3A2D',
@@ -55,8 +57,8 @@ export default function Pokemon() {
 	const [themeColor, setThemeColor] = useState('#EF5350')
 
 	useEffect(() => {
-		const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${index}/`
-		const pokemonSpeciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${index}/`
+		const pokemonUrl = `${process.env.REACT_APP_POKE_API}/pokemon/${index}/`
+		const pokemonSpeciesUrl = `${process.env.REACT_APP_POKE_API}/pokemon-species/${index}/`
 
 		Axios.get(pokemonUrl)
 			.then((pokemonRes) => {

@@ -21,22 +21,22 @@ export default function App() {
 						{isProduction() ? (
 							<>
 								<Route
-									path="/react-pokemon-wiki/pokemon/:index"
+									path={`/${process.env.REACT_APP_NAME}/pokemon/:index`}
 									caseSensitive={false}
 									element={<Pokemon />}
 								/>
 								<Route
-									path="/react-pokemon-wiki/ability/:index"
+									path={`/${process.env.REACT_APP_NAME}/ability/:index`}
 									caseSensitive={false}
 									element={<Ability />}
 								/>
 								<Route
-									path="/react-pokemon-wiki/type/:index"
+									path={`/${process.env.REACT_APP_NAME}/type/:index`}
 									caseSensitive={false}
 									element={<Type />}
 								/>
 								<Route
-									path="/react-pokemon-wiki/"
+									path={`/${process.env.REACT_APP_NAME}/`}
 									caseSensitive={false}
 									element={<Dashboard />}
 								/>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { buildPathName } from '../../helpers'
+import { homePathName } from '../../helpers'
 
 const Branding = styled.a`
 	-moz-user-select: none;
@@ -50,7 +50,7 @@ export default function NavBar() {
 			}
 		>
 			<Branding
-				href={buildPathName('/')}
+				href={homePathName()}
 				className="navbar-brand col-sm-3 col-md-2 mr-0 align-items-center"
 			>
 				<Logo src="./logo.svg" />

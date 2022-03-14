@@ -2,10 +2,11 @@
   "name": "react-pokemon-wiki",
   "homepage": "https://89craft.github.io/react-pokemon-wiki/",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "axios": "^0.26.0",
     "bootstrap": "^5.1.3",
+    "dotenv": "^16.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "^6.2.2",

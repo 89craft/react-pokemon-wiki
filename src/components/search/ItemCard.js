@@ -30,13 +30,15 @@ const StyledLink = styled(Link)`
 	}
 `
 
-export default function ItemCard({ category, name, url }) {
+export default function ItemCard({
+	category = 'pokemon',
+	name = '',
+	url = '',
+}) {
 	const itemIndex = url.split('/')[url.split('/').length - 2]
 	return (
 		<div className="col-xl-2 col-lg-3 col-md-4 col-6 mb-3">
-			<StyledLink
-				to={buildPathName(`/${category}/${itemIndex}`)}
-			>
+			<StyledLink to={buildPathName(`/${category}/${itemIndex}`)}>
 				<Card className="card">
 					<h5 className="card-header">
 						{itemIndex}{' '}

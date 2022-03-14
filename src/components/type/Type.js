@@ -13,7 +13,7 @@ export default function Type() {
 	const [pokemon, setPokemon] = useState([])
 
 	useEffect(() => {
-		const typeUrl = `https://pokeapi.co/api/v2/type/${index}/`
+		const typeUrl = `${process.env.REACT_APP_POKE_API}/type/${index}/`
 
 		Axios.get(typeUrl)
 			.then((typeRes) => {

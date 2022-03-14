@@ -9,15 +9,19 @@ export function buildPathName(path) {
 	if (isProduction()) {
 		/* while (newPath.startsWith('.')) newPath.substr(1, newPath.length)
 
-		if (!newPath.startsWith('/react-pokemon-wiki'))
-			newPath = `/react-pokemon-wiki${newPath}`
+		if (!newPath.startsWith('/${process.env.REACT_APP_NAME}'))
+			newPath = `/${process.env.REACT_APP_NAME}${newPath}`
 
 		if (!newPath.startsWith('..')) newPath = `..${newPath}` */
 
-		return `../react-pokemon-wiki${newPath}`
+		return `../${process.env.REACT_APP_NAME}${newPath}`
 	} else {
 		/* if (!newPath.startsWith('..')) newPath = `..${newPath}` */
 
-		return `..${newPath}`
+		return `../${newPath}`
 	}
+}
+export function homePathName() {
+	if (isProduction()) return `/${process.env.REACT_APP_NAME}/`
+	else return `/`
 }

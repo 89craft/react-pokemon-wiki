@@ -13,7 +13,7 @@ export default function Ability() {
 	const [pokemon, setPokemon] = useState([])
 
 	useEffect(() => {
-		const abilityUrl = `https://pokeapi.co/api/v2/ability/${index}/`
+		const abilityUrl = `${process.env.REACT_APP_POKE_API}/ability/${index}/`
 
 		Axios.get(abilityUrl)
 			.then((abilityRes) => {

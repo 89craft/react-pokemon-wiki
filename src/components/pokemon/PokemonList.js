@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import PokemonCard from './PokemonCard'
 
-export default function PokemonList({ pokemon }) {
-	const [hidden, setHidden] = useState(true)
+export default function PokemonList({ pokemon = [], hidden = true }) {
+	const [isHidden, setIsHidden] = useState(hidden)
 
 	return (
 		<div className="row">
-			{hidden ? (
+			{isHidden ? (
 				<input
 					type="submit"
 					value="View Pokemon"
 					className="btn btn-success mx-auto"
 					style={{ width: 'auto' }}
-					onClick={() => setHidden(false)}
+					onClick={() => setIsHidden(false)}
 				/>
 			) : (
 				<>

@@ -4,14 +4,14 @@ import ItemCard from './ItemCard'
 import Pagination from '../layout/Pagination'
 import PokemonCard from '../pokemon/PokemonCard'
 
-export default function SearchList({ category, pageLimit, search }) {
-	if (!category) category = 'pokemon'
-	if (!pageLimit) pageLimit = 9999
-	if (!search) search = ''
-
+export default function SearchList({
+	category = 'pokemon',
+	pageLimit = 9999,
+	search = '',
+}) {
 	const [items, setItems] = useState([])
 	const [currentPageUrl, setCurrentPageUrl] = useState(
-		`https://pokeapi.co/api/v2/${category}?limit=${pageLimit}`
+		`${process.env.REACT_APP_POKE_API}/${category}?limit=${pageLimit}`
 	)
 	const [nextPageUrl, setNextPageUrl] = useState()
 	const [prevPageUrl, setPrevPageUrl] = useState()
