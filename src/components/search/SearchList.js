@@ -17,6 +17,7 @@ export default function SearchList({
 	const [prevPageUrl, setPrevPageUrl] = useState()
 	const [loading, setLoading] = useState(true)
 
+	console.log("SearchList")
 	useEffect(() => {
 		setLoading(true)
 		let cancel

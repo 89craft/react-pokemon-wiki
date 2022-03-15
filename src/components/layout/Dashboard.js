@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import useCookie from 'react-use-cookie';
 import SearchInput from '../search/SearchInput'
 import CategorySelect from '../search/CategorySelect'
 import PageLimitSelect from '../search/PageLimitSelect'
@@ -6,9 +7,14 @@ import PaginatedList from '../search/PaginatedList'
 import SearchList from '../search/SearchList'
 
 export default function Dashboard() {
-	const [category, setCategory] = useState('pokemon')
+	// const [category, setCategory] = useState('pokemon')
 	const [search, setSearch] = useState('')
-	const [pageLimit, setPageLimit] = useState(48)
+	// const [pageLimit, setPageLimit] = useState(48)
+
+	const [category, setCategory] = useCookie('category')
+	if (!category) setCategory('pokemon')
+	const [pageLimit, setPageLimit] = useCookie('pageLimit')
+	if (!pageLimit) setPageLimit(48)
 
 	return (
 		<div className="pb-4">
@@ -24,17 +30,17 @@ export default function Dashboard() {
 				</div>
 			</div>
 			<div className="row">
-				{search ? (
-					<SearchList
-						key={`${category} ${search}`}
-						category={category}
-						search={search}
-					/>
-				) : (
+				{!search || search.length === 0 ? (
 					<PaginatedList
 						key={`${category} ${pageLimit}`}
 						category={category}
 						pageLimit={pageLimit}
+					/>
+				) : (
+					<SearchList
+						key={`${category} ${search}`}
+						category={category}
+						search={search}
 					/>
 				)}
 			</div>

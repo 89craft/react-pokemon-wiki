@@ -6,7 +6,7 @@ import PokemonCard from '../pokemon/PokemonCard'
 
 export default function PaginatedList({ category, pageLimit }) {
 	if (!category) category = 'pokemon'
-	if (!pageLimit) pageLimit = 9999
+	if (!pageLimit) pageLimit = 48
 
 	const [items, setItems] = useState([])
 	const [currentPageUrl, setCurrentPageUrl] = useState(
@@ -19,6 +19,7 @@ export default function PaginatedList({ category, pageLimit }) {
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(1)
 
+	console.log("PaginatedList")
 	useEffect(() => {
 		setLoading(true)
 		let cancel
