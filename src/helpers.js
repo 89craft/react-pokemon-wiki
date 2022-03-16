@@ -40,12 +40,23 @@ export function capName(text) {
 		.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
 		.join(' ')
 }
-// convert 'water-absorb' or 'water absorb' to 'Water Absorb'
+// convert 'water-absorb' to 'Water Absorb'
 export function cleanAndCapName(text) {
+	text = text ? text : ''
+	return text
+		.toLowerCase()
+		.split('-')
+		.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+		.join(' ')
+}
+// convert 'water-absorb' or 'water absorb' to 'Water Absorb'
+export function cleanOrCapName(text) {
 	text = text ? text : ''
 	const dashSplit = text.toLowerCase().split('-')
 	if (dashSplit.length > 1) {
-		return dashSplit.map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')
+		return dashSplit
+			.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+			.join(' ')
 	} else {
 		return text
 			.toLowerCase()
@@ -59,4 +70,8 @@ export function getUserLanguage() {
 	let userLanguage = getCookie('userLanguage')
 	if (userLanguage || userLanguage.length < 1) userLanguage = 'en'
 	return userLanguage
+}
+
+export function getUrlId(url) {
+	return url.split('/')[url.split('/').length - 2]
 }

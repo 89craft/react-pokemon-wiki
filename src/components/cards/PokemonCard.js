@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { buildPathName, capName } from '../../helpers'
+import { buildPathName, capName, getUrlId } from '../../helpers'
 import spinner from '../layout/spinner.gif'
 
 const Sprite = styled.img`
@@ -78,8 +78,8 @@ export default function PokemonCard({ name = '', url = '' }) {
 	const [imageLoading, setImageLoading] = useState(true)
 	const [toManyRequests, setToManyRequests] = useState(false)
 
-	const pokemonIndex = url.split('/')[url.split('/').length - 2]
-	const imageUrl = `https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${pokemonIndex}.png?raw=true`
+	const pokemonId = getUrlId(url)
+	const imageUrl = `https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${pokemonId}.png?raw=true`
 
 	function handleImageLoaded(element) {
 		setImageLoading(false)
@@ -91,10 +91,10 @@ export default function PokemonCard({ name = '', url = '' }) {
 
 	return (
 		<div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-8 mx-sm-0 mx-auto my-3">
-			<StyledLink to={buildPathName(`/pokemon/${pokemonIndex}`)}>
+			<StyledLink to={buildPathName(`/pokemon/${pokemonId}`)}>
 				<Card className="card">
 					<h5 className="card-header">
-						{pokemonIndex} {capName(name)}
+						{pokemonId} {capName(name)}
 					</h5>
 					{imageLoading && (
 						<img

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { buildPathName, cleanAndCapName } from '../../helpers'
+import { buildPathName, cleanAndCapName, getUrlId } from '../../helpers'
 import { TYPE_COLORS } from '../type/Type'
 
 const Card = styled.div`
@@ -36,10 +36,10 @@ export default function ItemCard({
 	name = '',
 	url = '',
 }) {
-	const itemIndex = url.split('/')[url.split('/').length - 2]
+	const itemId = getUrlId(url)
 	return (
 		<div className="col-xl-2 col-lg-3 col-md-4 col-6 my-3">
-			<StyledLink to={buildPathName(`/${category}/${itemIndex}`)}>
+			<StyledLink to={buildPathName(`/${category}/${itemId}`)}>
 				{category === 'type' ? (
 					name in TYPE_COLORS ? (
 						<Card
@@ -50,14 +50,14 @@ export default function ItemCard({
 							}}
 						>
 							<h5 className="card-header">
-								{itemIndex} {cleanAndCapName(name)}
+								{itemId} {cleanAndCapName(name)}
 							</h5>
 						</Card>
 					) : null
 				) : (
 					<Card className="card">
 						<h5 className="card-header">
-							{itemIndex} {cleanAndCapName(name)}
+							{itemId} {cleanAndCapName(name)}
 						</h5>
 					</Card>
 				)}

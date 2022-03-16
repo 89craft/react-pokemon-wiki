@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Axios from 'axios'
 import styled from 'styled-components'
-import { buildPathName, capName, getUserLanguage } from '../../helpers'
+import {
+	buildPathName,
+	capName,
+	getUrlId,
+	getUserLanguage,
+} from '../../helpers'
 import PokemonList from '../lists/SoftLockList'
 import NotFound from '../../NotFound'
 import { RiSpeedFill, RiPlayFill, RiCloseFill } from 'react-icons/ri'
@@ -63,6 +68,7 @@ export default function Type() {
 	const [id, setId] = useState('')
 	const [name, setName] = useState('')
 	const [pokemon, setPokemon] = useState([])
+	const [moves, setMoves] = useState([])
 	const [doubleFrom, setDoubleFrom] = useState([])
 	const [halfFrom, setHalfFrom] = useState([])
 	const [noneFrom, setNoneFrom] = useState([])
@@ -84,6 +90,8 @@ export default function Type() {
 					return { name, url }
 				})
 
+				const moves = typeRes.data.moves
+
 				const doubleFrom = typeRes.data.damage_relations.double_damage_from
 				const halfFrom = typeRes.data.damage_relations.half_damage_from
 				const noneFrom = typeRes.data.damage_relations.no_damage_from
@@ -94,6 +102,7 @@ export default function Type() {
 				setId(id)
 				setName(name)
 				setPokemon(pokemon)
+				setMoves(moves)
 				setDoubleFrom(doubleFrom)
 				setHalfFrom(halfFrom)
 				setNoneFrom(noneFrom)
@@ -108,7 +117,7 @@ export default function Type() {
 	}, [index])
 
 	return (
-		<div className="col">
+		<div className="col pb-4">
 			{notFound && <NotFound />}
 			<div className="card">
 				<div
@@ -160,7 +169,7 @@ export default function Type() {
 						<div className="col-md-3 d-flex flex-column justify-content-between align-items-center">
 							<h4 className="text-center">Damage Relations</h4>
 							<h2 style={{ margin: '1em' }}>
-								<TypeBadge type={name} />
+								<TypeBadge name={name} />
 							</h2>
 							<h4></h4>
 						</div>
@@ -213,7 +222,7 @@ function DamageFrom({ children, types }) {
 				{types.length > 0 ? (
 					<h4 style={{ marginBottom: '0' }}>
 						{types.map((type) => (
-							<TypeBadge key={type.name} type={type.name} />
+							<TypeBadge key={type.name} name={type.name} url={type.url} />
 						))}
 					</h4>
 				) : (
@@ -234,7 +243,7 @@ function DamageTo({ children, types }) {
 				{types.length > 0 ? (
 					<h4 style={{ marginBottom: '0' }}>
 						{types.map((type) => (
-							<TypeBadge key={type.name} type={type.name} />
+							<TypeBadge key={type.name} name={type.name} url={type.url} />
 						))}
 					</h4>
 				) : (
@@ -247,20 +256,20 @@ function DamageTo({ children, types }) {
 	)
 }
 
-function TypeBadge({ type }) {
+function TypeBadge({ name, url }) {
 	return (
 		<Link
-			key={type}
+			key={name}
 			className="badge"
-			to={buildPathName(`/type/${type}`)}
+			to={url ? buildPathName(`/type/${getUrlId(url)}`) : ''}
 		>
 			<Badge
 				style={{
-					backgroundColor: `#${TYPE_COLORS[type]}`,
+					backgroundColor: `#${TYPE_COLORS[name]}`,
 					color: 'white',
 				}}
 			>
-				{capName(type)}
+				{capName(name)}
 			</Badge>
 		</Link>
 	)

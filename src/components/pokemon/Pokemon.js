@@ -3,10 +3,10 @@ import { Link, useParams } from 'react-router-dom'
 import Axios from 'axios'
 import {
 	buildPathName,
-	cleanName,
 	capName,
 	cleanAndCapName,
 	getUserLanguage,
+	getUrlId,
 } from '../../helpers'
 import NotFound from '../../NotFound'
 import { TYPE_COLORS } from '../type/Type'
@@ -38,7 +38,7 @@ export default function Pokemon() {
 	const [weight, setWeight] = useState('')
 	const [eggGroups, setEggGroups] = useState('')
 	const [catchRate, setCatchRate] = useState('')
-	const [abilities, setAbilities] = useState(['none'])
+	const [abilities, setAbilities] = useState([])
 	const [genderRatioMale, setGenderRatioMale] = useState('')
 	const [genderRatioFemale, setGenderRatioFemale] = useState('')
 	const [evs, setEvs] = useState('')
@@ -89,14 +89,20 @@ export default function Pokemon() {
 				const weight =
 					Math.round((pokemonRes.data.weight * 0.220462 + 0.00001) * 100) / 100
 
-				const types = pokemonRes.data.types.map((type) =>
-					type.type.name.toLowerCase()
-				)
+				const types = pokemonRes.data.types.map((type) => {
+					// type.type.name.toLowerCase()
+					const name = type.type.name
+					const url = type.type.url
+					return { name, url }
+				})
 
 				const themeColor = `${TYPE_COLORS[types[types.length - 1]]}`
 
 				const abilities = pokemonRes.data.abilities.map((ability) => {
-					return cleanName(ability.ability.name)
+					// return ability.ability.name
+					const name = ability.ability.name
+					const url = ability.ability.url
+					return { name, url }
 				})
 
 				const evs = pokemonRes.data.stats
@@ -168,7 +174,7 @@ export default function Pokemon() {
 	}, [index])
 
 	return (
-		<div className="col">
+		<div className="col pb-4">
 			{notFound && <NotFound />}
 			<div className="card">
 				<div className="card-header">
@@ -182,19 +188,19 @@ export default function Pokemon() {
 							<h5 className="float-end" style={{ margin: '0' }}>
 								{types.map((type) => (
 									<Link
-										key={type}
+										key={type.name}
 										className="me-1"
 										style={{ textDecoration: 'none' }}
-										to={buildPathName(`/type/${type}`)}
+										to={buildPathName(`/type/${getUrlId(type.url)}`)}
 									>
 										<span
 											className="badge"
 											style={{
-												backgroundColor: `#${TYPE_COLORS[type]}`,
+												backgroundColor: `#${TYPE_COLORS[type.name]}`,
 												color: 'white',
 											}}
 										>
-											{capName(type)}
+											{capName(type.name)}
 										</span>
 									</Link>
 								))}
@@ -286,16 +292,16 @@ export default function Pokemon() {
 									<h6>
 										{abilities.map((ability) => (
 											<Link
-												key={ability}
+												key={ability.name}
 												className="me-1"
 												style={{ textDecoration: 'none' }}
-												to={buildPathName(`/ability/${ability}`)}
+												to={buildPathName(`/ability/${getUrlId(ability.url)}`)}
 											>
 												<span
 													className="badge text-nowrap"
 													style={{ backgroundColor: `#ef5350`, color: 'white' }}
 												>
-													{capName(ability)}
+													{cleanAndCapName(ability.name)}
 												</span>
 											</Link>
 										))}

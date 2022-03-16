@@ -48,7 +48,7 @@ export default function Ability() {
 	}, [index])
 
 	return (
-		<div className="col">
+		<div className="col pb-4">
 			{notFound && <NotFound />}
 			<div className="card">
 				<div className="card-header">
