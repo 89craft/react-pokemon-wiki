@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Axios from 'axios'
-import { capName } from '../../helpers'
-import PokemonList from '../pokemon/PokemonList'
+import styled from 'styled-components'
+import { buildPathName, capName, getUserLanguage } from '../../helpers'
+import PokemonList from '../lists/SoftLockList'
 import NotFound from '../../NotFound'
+import { RiSpeedFill, RiPlayFill, RiCloseFill } from 'react-icons/ri'
 
 export const TYPE_COLORS = {
 	bug: 'a8b820',
@@ -44,15 +46,29 @@ export const TYPE_COLORS = {
 	water: '3295F6', */
 }
 
+const Badge = styled.span`
+	display: inline-block;
+	padding: 0.35em 0.5em;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: 0.25rem;
+`
+
 export default function Type() {
 	let { index } = useParams()
-	let userLanguage = 'en'
+	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-
 	const [id, setId] = useState('')
 	const [name, setName] = useState('')
 	const [pokemon, setPokemon] = useState([])
+	const [doubleFrom, setDoubleFrom] = useState([])
+	const [halfFrom, setHalfFrom] = useState([])
+	const [noneFrom, setNoneFrom] = useState([])
+	const [doubleTo, setDoubleTo] = useState([])
+	const [halfTo, setHalfTo] = useState([])
+	const [noneTo, setNoneTo] = useState([])
 
 	useEffect(() => {
 		const typeUrl = `${process.env.REACT_APP_POKE_API}/type/${index}/`
@@ -68,14 +84,28 @@ export default function Type() {
 					return { name, url }
 				})
 
+				const doubleFrom = typeRes.data.damage_relations.double_damage_from
+				const halfFrom = typeRes.data.damage_relations.half_damage_from
+				const noneFrom = typeRes.data.damage_relations.no_damage_from
+				const doubleTo = typeRes.data.damage_relations.double_damage_to
+				const halfTo = typeRes.data.damage_relations.half_damage_to
+				const noneTo = typeRes.data.damage_relations.no_damage_to
+
 				setId(id)
 				setName(name)
 				setPokemon(pokemon)
+				setDoubleFrom(doubleFrom)
+				setHalfFrom(halfFrom)
+				setNoneFrom(noneFrom)
+				setDoubleTo(doubleTo)
+				setHalfTo(halfTo)
+				setNoneTo(noneTo)
 			})
 			.catch((err) => {
+				console.log(err)
 				setNotFound(true)
 			})
-	}, [])
+	}, [index])
 
 	return (
 		<div className="col">
@@ -97,16 +127,63 @@ export default function Type() {
 					</div>
 				</div>
 				<div className="card-body">
-					<div className="row align-items-center">
+					{/* <div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
 							<h4 className="mx-auto">{capName(name)}</h4>
 						</div>
-					</div>
+					</div> */}
 					{/* <div className="row mt-1">
             <div className="col">
               <p className="">{description}</p>
             </div>
           </div> */}
+					<div className="row">
+						<div className="col">
+							<div className="d-flex flex-column">
+								<h5 className="text-center">From</h5>
+								<DamageFrom types={doubleFrom}>
+									<h4 className="m-1">X2</h4>
+									{/* <RiSpeedFill style={{ width: '2em', height: '2em' }} /> */}
+								</DamageFrom>
+								<hr></hr>
+								<DamageFrom types={halfFrom}>
+									<h4 className="m-1">/2</h4>
+									{/* <RiPlayFill style={{ width: '2em', height: '2em' }} /> */}
+								</DamageFrom>
+								<hr></hr>
+								<DamageFrom types={noneFrom}>
+									<h4 className="m-1">X0</h4>
+									{/* <RiCloseFill style={{ width: '2em', height: '2em' }} /> */}
+								</DamageFrom>
+							</div>
+						</div>
+						<div className="col-md-3 d-flex flex-column justify-content-between align-items-center">
+							<h4 className="text-center">Damage Relations</h4>
+							<h2 style={{ margin: '1em' }}>
+								<TypeBadge type={name} />
+							</h2>
+							<h4></h4>
+						</div>
+						<div className="col">
+							<div className="d-flex flex-column">
+								<h5 className="text-center">To</h5>
+								<DamageTo types={doubleTo}>
+									<h4 className="m-1">X2</h4>
+									{/* <RiSpeedFill style={{ width: '2em', height: '2em' }} /> */}
+								</DamageTo>
+								<hr></hr>
+								<DamageTo types={halfTo}>
+									<h4 className="m-1">/2</h4>
+									{/* <RiPlayFill style={{ width: '2em', height: '2em' }} /> */}
+								</DamageTo>
+								<hr></hr>
+								<DamageTo types={noneTo}>
+									<h4 className="m-1">X0</h4>
+									{/* <RiCloseFill style={{ width: '2em', height: '2em' }} /> */}
+								</DamageTo>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div className="card-footer text-muted">
 					Data From{' '}
@@ -126,5 +203,80 @@ export default function Type() {
 				</div>
 			</div>
 		</div>
+	)
+}
+
+function DamageFrom({ children, types }) {
+	return (
+		<div className="d-flex justify-content-end align-items-center">
+			<div>
+				{types.length > 0 ? (
+					<h4 style={{ marginBottom: '0' }}>
+						{types.map((type) => (
+							<TypeBadge key={type.name} type={type.name} />
+						))}
+					</h4>
+				) : (
+					<h6 style={{ marginBottom: '0' }}>
+						<EmptyBadge />
+					</h6>
+				)}
+			</div>
+			<div>{children}</div>
+		</div>
+	)
+}
+function DamageTo({ children, types }) {
+	return (
+		<div className="d-flex justify-content-start align-items-center">
+			<div>{children}</div>
+			<div>
+				{types.length > 0 ? (
+					<h4 style={{ marginBottom: '0' }}>
+						{types.map((type) => (
+							<TypeBadge key={type.name} type={type.name} />
+						))}
+					</h4>
+				) : (
+					<h6 style={{ marginBottom: '0' }}>
+						<EmptyBadge />
+					</h6>
+				)}
+			</div>
+		</div>
+	)
+}
+
+function TypeBadge({ type }) {
+	return (
+		<Link
+			key={type}
+			className="badge"
+			to={buildPathName(`/type/${type}`)}
+		>
+			<Badge
+				style={{
+					backgroundColor: `#${TYPE_COLORS[type]}`,
+					color: 'white',
+				}}
+			>
+				{capName(type)}
+			</Badge>
+		</Link>
+	)
+}
+function EmptyBadge() {
+	return (
+		<Badge
+			className="badge"
+			style={{
+				backgroundColor: `#778`,
+				color: 'white',
+				marginLeft: '1em',
+				marginRight: '1em',
+			}}
+		>
+			None
+		</Badge>
 	)
 }

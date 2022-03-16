@@ -41,21 +41,19 @@ export default function ItemCard({
 		<div className="col-xl-2 col-lg-3 col-md-4 col-6 my-3">
 			<StyledLink to={buildPathName(`/${category}/${itemIndex}`)}>
 				{category === 'type' ? (
-					<Card
-						className="card"
-						style={
-							name in TYPE_COLORS
-								? {
-										backgroundColor: `#${TYPE_COLORS[name]}`,
-										color: 'white',
-								  }
-								: null
-						}
-					>
-						<h5 className="card-header">
-							{itemIndex} {cleanAndCapName(name)}
-						</h5>
-					</Card>
+					name in TYPE_COLORS ? (
+						<Card
+							className="card"
+							style={{
+								backgroundColor: `#${TYPE_COLORS[name]}`,
+								color: 'white',
+							}}
+						>
+							<h5 className="card-header">
+								{itemIndex} {cleanAndCapName(name)}
+							</h5>
+						</Card>
+					) : null
 				) : (
 					<Card className="card">
 						<h5 className="card-header">

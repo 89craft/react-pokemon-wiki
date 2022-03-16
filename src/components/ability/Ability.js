@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Axios from 'axios'
-import { cleanAndCapName } from '../../helpers'
-import PokemonList from '../pokemon/PokemonList'
+import { cleanAndCapName, getUserLanguage } from '../../helpers'
+import PokemonList from '../lists/SoftLockList'
 import NotFound from '../../NotFound'
 
 export default function Ability() {
 	let { index } = useParams()
-	let userLanguage = 'en'
+	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-
 	const [id, setId] = useState('')
 	const [name, setName] = useState('')
 	const [description, setDescription] = useState('')
@@ -46,7 +45,7 @@ export default function Ability() {
 			.catch((err) => {
 				setNotFound(true)
 			})
-	}, [])
+	}, [index])
 
 	return (
 		<div className="col">

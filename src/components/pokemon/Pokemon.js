@@ -6,6 +6,7 @@ import {
 	cleanName,
 	capName,
 	cleanAndCapName,
+	getUserLanguage,
 } from '../../helpers'
 import NotFound from '../../NotFound'
 import { TYPE_COLORS } from '../type/Type'
@@ -14,13 +15,12 @@ import { TYPE_COLORS } from '../type/Type'
 
 export default function Pokemon() {
 	let { index } = useParams()
-	let userLanguage = 'en'
+	const userLanguage = getUserLanguage()
 
 	//const profileTitleWidth = 5
 	const profileDataWidth = 7
 
 	const [notFound, setNotFound] = useState(false)
-
 	const [id, setId] = useState('')
 	const [name, setName] = useState('')
 	const [imageUrl, setImageUrl] = useState('')
@@ -114,19 +114,19 @@ export default function Pokemon() {
 				// Get Pokemon Description .... Is from a different end point uggh
 				Axios.get(pokemonSpeciesUrl).then((speciesRes) => {
 					let description = ''
-					speciesRes.data.flavor_text_entries.some(
-						(flavor) => {
-							if (flavor.language.name === userLanguage) {
-								description = flavor.flavor_text
-								return
-							}
+					speciesRes.data.flavor_text_entries.some((flavor) => {
+						if (flavor.language.name === userLanguage) {
+							description = flavor.flavor_text
+							return
 						}
-					)
+					})
 					const femaleRate = speciesRes.data['gender_rate']
 					const genderRatioFemale = 12.5 * femaleRate
 					const genderRatioMale = 12.5 * (8 - femaleRate)
 
-					const catchRate = Math.round((100 / 255) * speciesRes.data['capture_rate'])
+					const catchRate = Math.round(
+						(100 / 255) * speciesRes.data['capture_rate']
+					)
 
 					const eggGroups = speciesRes.data['egg_groups']
 						.map((group) => {
@@ -165,7 +165,7 @@ export default function Pokemon() {
 			.catch((err) => {
 				setNotFound(true)
 			})
-	}, [])
+	}, [index])
 
 	return (
 		<div className="col">
@@ -179,25 +179,26 @@ export default function Pokemon() {
 							</h5>
 						</div>
 						<div className="col-6">
-							<div className="float-end">
+							<h5 className="float-end" style={{ margin: '0' }}>
 								{types.map((type) => (
-									<Link key={type} to={buildPathName(`/type/${type}`)}>
+									<Link
+										key={type}
+										className="me-1"
+										style={{ textDecoration: 'none' }}
+										to={buildPathName(`/type/${type}`)}
+									>
 										<span
-											className="badge badge-pill me-1"
-											style={
-												type in TYPE_COLORS
-													? {
-															backgroundColor: `#${TYPE_COLORS[type]}`,
-															color: 'white',
-													  }
-													: null
-											}
+											className="badge"
+											style={{
+												backgroundColor: `#${TYPE_COLORS[type]}`,
+												color: 'white',
+											}}
 										>
 											{capName(type)}
 										</span>
 									</Link>
 								))}
-							</div>
+							</h5>
 						</div>
 					</div>
 				</div>
@@ -282,13 +283,23 @@ export default function Pokemon() {
 								<Profile title="Hatch Steps" data={hatchSteps} />
 								<ProfileTitle title="Abilities" />
 								<div className={`col-${profileDataWidth}`}>
-									{abilities
-										.map((ability) => (
-											<Link to={buildPathName(`/ability/${ability}`)}>
-												{capName(ability)}
+									<h6>
+										{abilities.map((ability) => (
+											<Link
+												key={ability}
+												className="me-1"
+												style={{ textDecoration: 'none' }}
+												to={buildPathName(`/ability/${ability}`)}
+											>
+												<span
+													className="badge text-nowrap"
+													style={{ backgroundColor: `#ef5350`, color: 'white' }}
+												>
+													{capName(ability)}
+												</span>
 											</Link>
-										))
-										.reduce((prev, curr) => [prev, ', ', curr])}
+										))}
+									</h6>
 								</div>
 								<Profile title="EVs" data={evs} />
 							</div>
@@ -310,6 +321,22 @@ export default function Pokemon() {
 		</div>
 	)
 }
+
+/* function TypeBadge({ type }) {
+	return (
+		<Link key={type} className="me-1" to={buildPathName(`/type/${type}`)}>
+			<span
+				className="badge"
+				style={{
+					backgroundColor: `#${TYPE_COLORS[type]}`,
+					color: 'white',
+				}}
+			>
+				{capName(type)}
+			</span>
+		</Link>
+	)
+} */
 
 function Stat({ title, width, color }) {
 	return (
@@ -355,7 +382,7 @@ function Profile({ title, data }) {
 function ProfileTitle({ title }) {
 	return (
 		<div className="col-5">
-			<h6 className="float-end text-end">{title}:</h6>
+			<h6 className="float-end text-end text-nowrap">{title}:</h6>
 		</div>
 	)
 }

@@ -1,3 +1,5 @@
+import { getCookie } from 'react-use-cookie'
+
 export function isProduction() {
 	// process.env.NODE_ENV !== 'production'
 	return process.env.NODE_ENV && process.env.NODE_ENV !== 'development'
@@ -51,4 +53,10 @@ export function cleanAndCapName(text) {
 			.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
 			.join(' ')
 	}
+}
+
+export function getUserLanguage() {
+	let userLanguage = getCookie('userLanguage')
+	if (userLanguage || userLanguage.length < 1) userLanguage = 'en'
+	return userLanguage
 }

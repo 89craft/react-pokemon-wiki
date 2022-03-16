@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import PokemonCard from './PokemonCard'
+import PokemonCard from '../cards/PokemonCard'
 
-export default function PokemonList({ pokemon = [], hidden = true }) {
+export default function SoftLockList({ pokemon = [], hidden = true }) {
 	const [isHidden, setIsHidden] = useState(hidden)
 
 	return (

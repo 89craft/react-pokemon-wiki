@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import useCookie from 'react-use-cookie';
-import SearchInput from '../search/SearchInput'
-import CategorySelect from '../search/CategorySelect'
-import PageLimitSelect from '../search/PageLimitSelect'
-import PaginatedList from '../search/PaginatedList'
-import SearchList from '../search/SearchList'
+import SearchInput from '../input/SearchInput'
+import CategorySelect from '../input/CategorySelect'
+import PageLimitSelect from '../input/PageLimitSelect'
+import PaginatedList from '../lists/PaginatedList'
+import SearchList from '../lists/SearchList'
 
 export default function Dashboard() {
 	// const [category, setCategory] = useState('pokemon')
