@@ -10,6 +10,7 @@ import {
 } from '../../helpers'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../../NotFound'
+import { TypeBadge } from '../type/Type'
 import { TYPE_COLORS } from '../type/Type'
 
 // const REACT_APP_POKE_API = process.env.REACT_APP_POKE_API
@@ -26,7 +27,7 @@ export default function Pokemon() {
 	const [pokemonInfo, setPokemonInfo] = useState({
 		id: '',
 		name: '',
-		imageUrl: '',
+		imageUrls: [],
 		types: [],
 		abilities: [],
 		moves: [],
@@ -60,7 +61,7 @@ export default function Pokemon() {
 			.then((pokemonRes) => {
 				const id = pokemonRes.data.id
 				const name = pokemonRes.data.name.toLowerCase()
-				const imageUrl = pokemonRes.data.sprites.front_default
+				const imageUrls = pokemonRes.data.sprites
 
 				let { hp, attack, defense, speed, specialAttack, specialDefense } = ''
 
@@ -179,7 +180,7 @@ export default function Pokemon() {
 				setPokemonInfo({
 					id,
 					name,
-					imageUrl,
+					imageUrls,
 					types,
 					abilities,
 					moves,
@@ -208,30 +209,15 @@ export default function Pokemon() {
 			<div className="card mb-5">
 				<div className="card-header">
 					<div className="row">
-						<div className="col-6">
+						<div className="col-4">
 							<h5>
 								{pokemonInfo.id} {/* capName(translatedName) */}
 							</h5>
 						</div>
-						<div className="col-6">
+						<div className="col-8">
 							<h5 className="float-end" style={{ margin: '0' }}>
 								{pokemonInfo.types.map((type) => (
-									<Link
-										key={type.name}
-										className="me-1"
-										style={{ textDecoration: 'none' }}
-										to={buildPathName(`/type/${getUrlId(type.url)}`)}
-									>
-										<span
-											className="badge"
-											style={{
-												backgroundColor: `#${TYPE_COLORS[type.name]}`,
-												color: 'white',
-											}}
-										>
-											{capName(type.name)}
-										</span>
-									</Link>
+									<TypeBadge key={type.name} name={type.name} url={type.url} />
 								))}
 							</h5>
 						</div>
@@ -239,19 +225,34 @@ export default function Pokemon() {
 				</div>
 				<div className="card-body">
 					<div className="row align-items-center">
-						<div className="col-md-3 col-sm-5">
-							<img
-								src={pokemonInfo.imageUrl}
-								alt={pokemonInfo.name}
-								className="card-img-top rounded mx-auto mt-2"
+						<div className="col-md-4 col-sm-5">
+							<PokemonImage
+								imageUrls={pokemonInfo.imageUrls}
+								color={pokemonInfo.themeColor}
 							/>
 						</div>
-						<div className="col-md-9 col-sm-7">
+						<div className="col-md-8 col-sm-7">
 							<h4 className="mx-auto">{capName(translatedName)}</h4>
-							<Stat title="HP" width={pokemonInfo.stats.hp} color={pokemonInfo.themeColor} />
-							<Stat title="Attack" width={pokemonInfo.stats.attack} color={pokemonInfo.themeColor} />
-							<Stat title="Defence" width={pokemonInfo.stats.defense} color={pokemonInfo.themeColor} />
-							<Stat title="Speed" width={pokemonInfo.stats.speed} color={pokemonInfo.themeColor} />
+							<Stat
+								title="HP"
+								width={pokemonInfo.stats.hp}
+								color={pokemonInfo.themeColor}
+							/>
+							<Stat
+								title="Attack"
+								width={pokemonInfo.stats.attack}
+								color={pokemonInfo.themeColor}
+							/>
+							<Stat
+								title="Defence"
+								width={pokemonInfo.stats.defense}
+								color={pokemonInfo.themeColor}
+							/>
+							<Stat
+								title="Speed"
+								width={pokemonInfo.stats.speed}
+								color={pokemonInfo.themeColor}
+							/>
 							<Stat
 								title="Sp Atk"
 								width={pokemonInfo.stats.specialAttack}
@@ -358,28 +359,16 @@ export default function Pokemon() {
 			</div>
 			<div className="row">
 				<div className="col mb-5">
-					<SoftLockList items={pokemonInfo.moves} title="Learnable Moves" category="move" />
+					<SoftLockList
+						items={pokemonInfo.moves}
+						title="Learnable Moves"
+						category="move"
+					/>
 				</div>
 			</div>
 		</div>
 	)
 }
-
-/* function TypeBadge({ type }) {
-	return (
-		<Link key={type} className="me-1" to={buildPathName(`/type/${type}`)}>
-			<span
-				className="badge"
-				style={{
-					backgroundColor: `#${TYPE_COLORS[type]}`,
-					color: 'white',
-				}}
-			>
-				{capName(type)}
-			</span>
-		</Link>
-	)
-} */
 
 function Stat({ title, width, color }) {
 	return (
@@ -434,5 +423,107 @@ function ProfileData({ data }) {
 		<div className="col-7">
 			<h6 className="float-start">{data}</h6>
 		</div>
+	)
+}
+
+function PokemonImage({ imageUrls, name = '', color }) {
+	const [isFront, setIsFront] = useState(true)
+	const [isFemale, setIsFemale] = useState(false)
+	const [isShiny, setIsShiny] = useState(false)
+
+	function pokemonImage(isFront, isFemale, isShiny) {
+		if (!imageUrls) return
+
+		if (isFront) {
+			if (isFemale) {
+				if (isShiny) {
+					return imageUrls.front_shiny_female
+				} else {
+					return imageUrls.front_female
+				}
+			} else {
+				if (isShiny) {
+					return imageUrls.front_shiny
+				} else {
+					return imageUrls.front_default
+				}
+			}
+		} else {
+			if (isFemale) {
+				if (isShiny) {
+					return imageUrls.back_shiny_female
+				} else {
+					return imageUrls.back_female
+				}
+			} else {
+				if (isShiny) {
+					return imageUrls.back_shiny
+				} else {
+					return imageUrls.back_default
+				}
+			}
+		}
+	}
+
+	return (
+		<>
+			<div className="row">
+				<img
+					src={pokemonImage(isFront, isFemale, isShiny)}
+					alt={name}
+					className="card-img-top rounded mx-auto mt-2"
+				/>
+			</div>
+			<div className="row">
+				<div className="col-4 px-1">
+					<button
+						type="button"
+						className="btn btn-danger btn-sm w-100"
+						style={{
+							backgroundColor: `#${color}`,
+							borderWidth: '0',
+						}}
+						disabled={!pokemonImage(!isFront, isFemale, isShiny)}
+						onClick={(event) => {
+							setIsFront(!isFront)
+						}}
+					>
+						{isFront ? 'Front' : 'Back'}
+					</button>
+				</div>
+				<div className="col-4 px-1">
+					<button
+						type="button"
+						className="btn btn-danger btn-sm w-100"
+						style={{
+							backgroundColor: `#${color}`,
+							borderWidth: '0',
+						}}
+						disabled={!pokemonImage(isFront, !isFemale, isShiny)}
+						onClick={(event) => {
+							setIsFemale(!isFemale)
+						}}
+					>
+						{isFemale ? 'Female' : 'Male'}
+					</button>
+				</div>
+				<div className="col-4 px-1">
+					<button
+						type="button"
+						className="btn btn-danger btn-sm w-100"
+						style={{
+							backgroundColor: `#${color}`,
+							borderWidth: '0',
+						}}
+						disabled={!pokemonImage(isFront, isFemale, !isShiny)}
+						onClick={(event) => {
+							setIsShiny(!isShiny)
+						}}
+					>
+						{isShiny ? 'Shiny' : 'Default'}
+					</button>
+				</div>
+			</div>
+		</>
 	)
 }

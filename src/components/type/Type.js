@@ -182,7 +182,10 @@ export default function Type() {
 						<div className="col-md-3 d-flex flex-column justify-content-between align-items-center order-md-3 order-1">
 							<h4 className="text-center">Damage Relations</h4>
 							<h2 style={{ margin: '1em' }}>
-								<TypeBadge name={typeInfo.name} translatedName={typeInfo.translatedName} />
+								<TypeBadge
+									name={typeInfo.name}
+									translatedName={typeInfo.translatedName}
+								/>
 							</h2>
 							<h4></h4>
 						</div>
@@ -221,7 +224,11 @@ export default function Type() {
 			</div>
 			<div className="row">
 				<div className="col mb-5">
-					<SoftLockList items={typeInfo.pokemon} title="Pokemon" category="pokemon" />
+					<SoftLockList
+						items={typeInfo.pokemon}
+						title="Pokemon"
+						category="pokemon"
+					/>
 				</div>
 			</div>
 			<div className="row">
@@ -274,11 +281,15 @@ function DamageTo({ children, types }) {
 	)
 }
 
-function TypeBadge({ name, url, translatedName = '' }) {
+export function TypeBadge({ name, url, translatedName = '' }) {
 	return (
 		<Link
 			key={name}
 			className="badge"
+			style={{
+				padding: '0',
+				margin: '0.3em 0.4em',
+			}}
 			to={url ? buildPathName(`/type/${getUrlId(url)}`) : ''}
 		>
 			<Badge
