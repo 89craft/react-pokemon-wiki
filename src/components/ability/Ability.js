@@ -10,10 +10,17 @@ export default function Ability() {
 	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-	const [id, setId] = useState('')
-	const [name, setName] = useState('')
-	const [description, setDescription] = useState('')
-	const [pokemon, setPokemon] = useState([])
+	// const [id, setId] = useState('')
+	// const [name, setName] = useState('')
+	// const [description, setDescription] = useState('')
+	// const [pokemon, setPokemon] = useState([])
+
+	const [abilityInfo, setAbilityInfo] = useState({
+		id: '',
+		name: '',
+		description: '',
+		pokemon: [],
+	})
 
 	useEffect(() => {
 		const abilityUrl = `${process.env.REACT_APP_POKE_API}/ability/${index}/`
@@ -37,10 +44,17 @@ export default function Ability() {
 					return { name, url }
 				})
 
-				setId(id)
-				setName(name)
-				setDescription(description)
-				setPokemon(pokemon)
+				// setId(id)
+				// setName(name)
+				// setDescription(description)
+				// setPokemon(pokemon)
+
+				setAbilityInfo({
+					id,
+					name,
+					description,
+					pokemon,
+				})
 			})
 			.catch((err) => {
 				setNotFound(true)
@@ -55,7 +69,7 @@ export default function Ability() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{id} {/* {cleanAndCapName(name)} */}
+								{abilityInfo.id} {/* {cleanAndCapName(abilityInfo.name)} */}
 							</h5>
 						</div>
 					</div>
@@ -63,12 +77,12 @@ export default function Ability() {
 				<div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{cleanAndCapName(name)}</h4>
+							<h4 className="mx-auto">{cleanAndCapName(abilityInfo.name)}</h4>
 						</div>
 					</div>
 					<div className="row mt-1">
 						<div className="col">
-							<p className="">{description}</p>
+							<p className="">{abilityInfo.description}</p>
 						</div>
 					</div>
 				</div>
@@ -86,7 +100,7 @@ export default function Ability() {
 			</div>
 			<div className="row">
 				<div className="col mb-5">
-					<SoftLockList items={pokemon} title="Pokemon" category="pokemon" />
+					<SoftLockList items={abilityInfo.pokemon} title="Pokemon" category="pokemon" />
 				</div>
 			</div>
 		</div>

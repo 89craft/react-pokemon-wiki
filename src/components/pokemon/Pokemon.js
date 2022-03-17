@@ -22,30 +22,60 @@ export default function Pokemon() {
 	const profileDataWidth = 7
 
 	const [notFound, setNotFound] = useState(false)
-	const [id, setId] = useState('')
-	const [name, setName] = useState('')
-	const [imageUrl, setImageUrl] = useState('')
-	const [types, setTypes] = useState([])
-	const [description, setDescription] = useState('')
-	const [stats, setStats] = useState({
-		hp: '',
-		attack: '',
-		defense: '',
-		speed: '',
-		specialAttack: '',
-		specialDefense: '',
+	// const [id, setId] = useState('')
+	// const [name, setName] = useState('')
+	// const [imageUrl, setImageUrl] = useState('')
+	// const [types, setTypes] = useState([])
+	// const [abilities, setAbilities] = useState([])
+	// const [moves, setMoves] = useState([])
+	// const [stats, setStats] = useState({
+	// 	hp: '',
+	// 	attack: '',
+	// 	defense: '',
+	// 	speed: '',
+	// 	specialAttack: '',
+	// 	specialDefense: '',
+	// })
+	// const [height, setHeight] = useState('')
+	// const [weight, setWeight] = useState('')
+	// const [evs, setEvs] = useState('')
+	// const [themeColor, setThemeColor] = useState('#EF5350')
+
+	// const [description, setDescription] = useState('')
+	// const [genderRatioMale, setGenderRatioMale] = useState('')
+	// const [genderRatioFemale, setGenderRatioFemale] = useState('')
+	// const [catchRate, setCatchRate] = useState('')
+	// const [eggGroups, setEggGroups] = useState('')
+	// const [hatchSteps, setHatchSteps] = useState('')
+
+	const [pokemonInfo, setPokemonInfo] = useState({
+		id: '',
+		name: '',
+		imageUrl: '',
+		types: [],
+		abilities: [],
+		moves: [],
+		stats: {
+			hp: '',
+			attack: '',
+			defense: '',
+			speed: '',
+			specialAttack: '',
+			specialDefense: '',
+		},
+		height: '',
+		weight: '',
+		evs: '',
+		themeColor: '',
 	})
-	const [height, setHeight] = useState('')
-	const [weight, setWeight] = useState('')
-	const [eggGroups, setEggGroups] = useState('')
-	const [catchRate, setCatchRate] = useState('')
-	const [abilities, setAbilities] = useState([])
-	const [genderRatioMale, setGenderRatioMale] = useState('')
-	const [genderRatioFemale, setGenderRatioFemale] = useState('')
-	const [evs, setEvs] = useState('')
-	const [hatchSteps, setHatchSteps] = useState('')
-	const [moves, setMoves] = useState([])
-	const [themeColor, setThemeColor] = useState('#EF5350')
+	const [speciesInfo, setSpeciesInfo] = useState({
+		description: '',
+		genderRatioMale: '',
+		genderRatioFemale: '',
+		catchRate: '',
+		eggGroups: '',
+		hatchSteps: '',
+	})
 
 	useEffect(() => {
 		const pokemonUrl = `${process.env.REACT_APP_POKE_API}/pokemon/${index}/`
@@ -151,32 +181,62 @@ export default function Pokemon() {
 
 					const hatchSteps = 255 * (speciesRes.data['hatch_counter'] + 1)
 
-					setDescription(description)
-					setGenderRatioFemale(genderRatioFemale)
-					setGenderRatioMale(genderRatioMale)
-					setCatchRate(catchRate)
-					setEggGroups(eggGroups)
-					setHatchSteps(hatchSteps)
+					// setDescription(description)
+					// setGenderRatioFemale(genderRatioFemale)
+					// setGenderRatioMale(genderRatioMale)
+					// setCatchRate(catchRate)
+					// setEggGroups(eggGroups)
+					// setHatchSteps(hatchSteps)
+
+					setSpeciesInfo({
+						description,
+						genderRatioFemale,
+						genderRatioMale,
+						catchRate,
+						eggGroups,
+						hatchSteps,
+					})
 				})
 
-				setId(id)
-				setName(name)
-				setImageUrl(imageUrl)
-				setTypes(types)
-				setStats({
-					hp,
-					attack,
-					defense,
-					speed,
-					specialAttack,
-					specialDefense,
+				// setId(id)
+				// setName(name)
+				// setImageUrl(imageUrl)
+				// setTypes(types)
+				// setAbilities(abilities)
+				// setMoves(moves)
+				// setStats({
+				// 	hp,
+				// 	attack,
+				// 	defense,
+				// 	speed,
+				// 	specialAttack,
+				// 	specialDefense,
+				// })
+				// setHeight(height)
+				// setWeight(weight)
+				// setEvs(evs)
+				// setThemeColor(themeColor)
+
+				setPokemonInfo({
+					id,
+					name,
+					imageUrl,
+					types,
+					abilities,
+					moves,
+					stats: {
+						hp,
+						attack,
+						defense,
+						speed,
+						specialAttack,
+						specialDefense,
+					},
+					height,
+					weight,
+					evs,
+					themeColor,
 				})
-				setThemeColor(themeColor)
-				setHeight(height)
-				setWeight(weight)
-				setAbilities(abilities)
-				setEvs(evs)
-				setMoves(moves)
 			})
 			.catch((err) => {
 				setNotFound(true)
@@ -191,12 +251,12 @@ export default function Pokemon() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{id} {/* capName(name) */}
+								{pokemonInfo.id} {/* capName(pokemonInfo.name) */}
 							</h5>
 						</div>
 						<div className="col-6">
 							<h5 className="float-end" style={{ margin: '0' }}>
-								{types.map((type) => (
+								{pokemonInfo.types.map((type) => (
 									<Link
 										key={type.name}
 										className="me-1"
@@ -222,32 +282,32 @@ export default function Pokemon() {
 					<div className="row align-items-center">
 						<div className="col-md-3 col-sm-5">
 							<img
-								src={imageUrl}
-								alt={name}
+								src={pokemonInfo.imageUrl}
+								alt={pokemonInfo.name}
 								className="card-img-top rounded mx-auto mt-2"
 							/>
 						</div>
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{capName(name)}</h4>
-							<Stat title="HP" width={stats.hp} color={themeColor} />
-							<Stat title="Attack" width={stats.attack} color={themeColor} />
-							<Stat title="Defence" width={stats.defense} color={themeColor} />
-							<Stat title="Speed" width={stats.speed} color={themeColor} />
+							<h4 className="mx-auto">{capName(pokemonInfo.name)}</h4>
+							<Stat title="HP" width={pokemonInfo.stats.hp} color={pokemonInfo.themeColor} />
+							<Stat title="Attack" width={pokemonInfo.stats.attack} color={pokemonInfo.themeColor} />
+							<Stat title="Defence" width={pokemonInfo.stats.defense} color={pokemonInfo.themeColor} />
+							<Stat title="Speed" width={pokemonInfo.stats.speed} color={pokemonInfo.themeColor} />
 							<Stat
 								title="Sp Atk"
-								width={stats.specialAttack}
-								color={themeColor}
+								width={pokemonInfo.stats.specialAttack}
+								color={pokemonInfo.themeColor}
 							/>
 							<Stat
 								title="Sp Def"
-								width={stats.specialDefense}
-								color={themeColor}
+								width={pokemonInfo.stats.specialDefense}
+								color={pokemonInfo.themeColor}
 							/>
 						</div>
 					</div>
 					<div className="row mt-1">
 						<div className="col">
-							<p className="">{description}</p>
+							<p className="">{speciesInfo.description}</p>
 						</div>
 					</div>
 				</div>
@@ -257,9 +317,12 @@ export default function Pokemon() {
 					<div className="row">
 						<div className="col-sm-6">
 							<div className="row">
-								<Profile title="Height" data={`${height} ft.`} />
-								<Profile title="Weight" data={`${weight} lbs`} />
-								<Profile title="Catch Rate" data={`${catchRate}%`} />
+								<Profile title="Height" data={`${pokemonInfo.height} ft.`} />
+								<Profile title="Weight" data={`${pokemonInfo.weight} lbs`} />
+								<Profile
+									title="Catch Rate"
+									data={`${speciesInfo.catchRate}%`}
+								/>
 								<ProfileTitle title="Gender Ratio" />
 								<div className={`col-${profileDataWidth}`}>
 									<div className="progress">
@@ -267,27 +330,27 @@ export default function Pokemon() {
 											className="progress-bar"
 											role="progressbar"
 											style={{
-												width: `${genderRatioFemale}%`,
+												width: `${speciesInfo.genderRatioFemale}%`,
 												backgroundColor: '#c2185b',
 											}}
 											aria-valuenow="15"
 											aria-valuemin="0"
 											aria-valuemax="100"
 										>
-											<small>{genderRatioFemale}</small>
+											<small>{speciesInfo.genderRatioFemale}</small>
 										</div>
 										<div
 											className="progress-bar"
 											role="progressbar"
 											style={{
-												width: `${genderRatioMale}%`,
+												width: `${speciesInfo.genderRatioMale}%`,
 												backgroundColor: '#1976d2',
 											}}
 											aria-valuenow="30"
 											aria-valuemin="0"
 											aria-valuemax="100"
 										>
-											<small>{genderRatioMale}</small>
+											<small>{speciesInfo.genderRatioMale}</small>
 										</div>
 									</div>
 								</div>
@@ -295,12 +358,12 @@ export default function Pokemon() {
 						</div>
 						<div className="col-sm-6">
 							<div className="row">
-								<Profile title="Egg Groups" data={eggGroups} />
-								<Profile title="Hatch Steps" data={hatchSteps} />
+								<Profile title="Egg Groups" data={speciesInfo.eggGroups} />
+								<Profile title="Hatch Steps" data={speciesInfo.hatchSteps} />
 								<ProfileTitle title="Abilities" />
 								<div className={`col-${profileDataWidth}`}>
 									<h6>
-										{abilities.map((ability) => (
+										{pokemonInfo.abilities.map((ability) => (
 											<Link
 												key={ability.name}
 												className="me-1"
@@ -317,7 +380,7 @@ export default function Pokemon() {
 										))}
 									</h6>
 								</div>
-								<Profile title="EVs" data={evs} />
+								<Profile title="EVs" data={pokemonInfo.evs} />
 							</div>
 						</div>
 					</div>
@@ -336,7 +399,7 @@ export default function Pokemon() {
 			</div>
 			<div className="row">
 				<div className="col mb-5">
-					<SoftLockList items={moves} title="Learnable Moves" category="move" />
+					<SoftLockList items={pokemonInfo.moves} title="Learnable Moves" category="move" />
 				</div>
 			</div>
 		</div>
@@ -371,7 +434,6 @@ function StatTitle({ title }) {
 	return <div className="col-md-3">{title}</div>
 }
 function StatBar({ width, color }) {
-	// console.log("StatBar color=" + color)
 	return (
 		<div className="col-md-9">
 			<div className="progress">

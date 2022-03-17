@@ -65,16 +65,29 @@ export default function Type() {
 	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-	const [id, setId] = useState('')
-	const [name, setName] = useState('')
-	const [pokemon, setPokemon] = useState([])
-	const [moves, setMoves] = useState([])
-	const [doubleFrom, setDoubleFrom] = useState([])
-	const [halfFrom, setHalfFrom] = useState([])
-	const [noneFrom, setNoneFrom] = useState([])
-	const [doubleTo, setDoubleTo] = useState([])
-	const [halfTo, setHalfTo] = useState([])
-	const [noneTo, setNoneTo] = useState([])
+	// const [id, setId] = useState('')
+	// const [name, setName] = useState('')
+	// const [pokemon, setPokemon] = useState([])
+	// const [moves, setMoves] = useState([])
+	// const [doubleFrom, setDoubleFrom] = useState([])
+	// const [halfFrom, setHalfFrom] = useState([])
+	// const [noneFrom, setNoneFrom] = useState([])
+	// const [doubleTo, setDoubleTo] = useState([])
+	// const [halfTo, setHalfTo] = useState([])
+	// const [noneTo, setNoneTo] = useState([])
+
+	const [typeInfo, setTypeInfo] = useState({
+		id: '',
+		name: '',
+		pokemon: [],
+		moves: [],
+		doubleFrom: [],
+		halfFrom: [],
+		noneFrom: [],
+		doubleTo: [],
+		halfTo: [],
+		noneTo: [],
+	})
 
 	useEffect(() => {
 		const typeUrl = `${process.env.REACT_APP_POKE_API}/type/${index}/`
@@ -99,19 +112,31 @@ export default function Type() {
 				const halfTo = typeRes.data.damage_relations.half_damage_to
 				const noneTo = typeRes.data.damage_relations.no_damage_to
 
-				setId(id)
-				setName(name)
-				setPokemon(pokemon)
-				setMoves(moves)
-				setDoubleFrom(doubleFrom)
-				setHalfFrom(halfFrom)
-				setNoneFrom(noneFrom)
-				setDoubleTo(doubleTo)
-				setHalfTo(halfTo)
-				setNoneTo(noneTo)
+				// setId(id)
+				// setName(name)
+				// setPokemon(pokemon)
+				// setMoves(moves)
+				// setDoubleFrom(doubleFrom)
+				// setHalfFrom(halfFrom)
+				// setNoneFrom(noneFrom)
+				// setDoubleTo(doubleTo)
+				// setHalfTo(halfTo)
+				// setNoneTo(noneTo)
+
+				setTypeInfo({
+					id,
+					name,
+					pokemon,
+					moves,
+					doubleFrom,
+					halfFrom,
+					noneFrom,
+					doubleTo,
+					halfTo,
+					noneTo,
+				})
 			})
 			.catch((err) => {
-				console.log(err)
 				setNotFound(true)
 			})
 	}, [index])
@@ -123,14 +148,14 @@ export default function Type() {
 				<div
 					className="card-header"
 					style={{
-						backgroundColor: `#${TYPE_COLORS[name]}`,
+						backgroundColor: `#${TYPE_COLORS[typeInfo.name]}`,
 						color: 'white',
 					}}
 				>
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{id} {/* capName(name) */}
+								{typeInfo.id} {/* capName(typeInfo.name) */}
 							</h5>
 						</div>
 					</div>
@@ -150,17 +175,17 @@ export default function Type() {
 						<div className="col order-2">
 							<div className="d-flex flex-column">
 								<h5 className="text-center">From</h5>
-								<DamageFrom types={doubleFrom}>
+								<DamageFrom types={typeInfo.doubleFrom}>
 									<h4 className="m-1">X2</h4>
 									{/* <RiSpeedFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageFrom>
 								<hr></hr>
-								<DamageFrom types={halfFrom}>
+								<DamageFrom types={typeInfo.halfFrom}>
 									<h4 className="m-1">/2</h4>
 									{/* <RiPlayFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageFrom>
 								<hr></hr>
-								<DamageFrom types={noneFrom}>
+								<DamageFrom types={typeInfo.noneFrom}>
 									<h4 className="m-1">X0</h4>
 									{/* <RiCloseFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageFrom>
@@ -169,24 +194,24 @@ export default function Type() {
 						<div className="col-md-3 d-flex flex-column justify-content-between align-items-center order-md-3 order-1">
 							<h4 className="text-center">Damage Relations</h4>
 							<h2 style={{ margin: '1em' }}>
-								<TypeBadge name={name} />
+								<TypeBadge name={typeInfo.name} />
 							</h2>
 							<h4></h4>
 						</div>
 						<div className="col order-4">
 							<div className="d-flex flex-column">
 								<h5 className="text-center">To</h5>
-								<DamageTo types={doubleTo}>
+								<DamageTo types={typeInfo.doubleTo}>
 									<h4 className="m-1">X2</h4>
 									{/* <RiSpeedFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageTo>
 								<hr></hr>
-								<DamageTo types={halfTo}>
+								<DamageTo types={typeInfo.halfTo}>
 									<h4 className="m-1">/2</h4>
 									{/* <RiPlayFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageTo>
 								<hr></hr>
-								<DamageTo types={noneTo}>
+								<DamageTo types={typeInfo.noneTo}>
 									<h4 className="m-1">X0</h4>
 									{/* <RiCloseFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageTo>
@@ -208,12 +233,12 @@ export default function Type() {
 			</div>
 			<div className="row">
 				<div className="col mb-5">
-					<SoftLockList items={pokemon} title="Pokemon" category="pokemon" />
+					<SoftLockList items={typeInfo.pokemon} title="Pokemon" category="pokemon" />
 				</div>
 			</div>
 			<div className="row">
 				<div className="col mb-5">
-					<SoftLockList items={moves} title="Moves" category="move" />
+					<SoftLockList items={typeInfo.moves} title="Moves" category="move" />
 				</div>
 			</div>
 		</div>

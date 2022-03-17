@@ -10,10 +10,17 @@ export default function Move() {
 	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-	const [id, setId] = useState('')
-	const [name, setName] = useState('')
-	const [description, setDescription] = useState('')
-	const [pokemon, setPokemon] = useState([])
+	// const [id, setId] = useState('')
+	// const [name, setName] = useState('')
+	// const [description, setDescription] = useState('')
+	// const [pokemon, setPokemon] = useState([])
+
+	const [moveInfo, setMoveInfo] = useState({
+		id: '',
+		name: '',
+		description: '',
+		pokemon: [],
+	})
 
 	useEffect(() => {
 		const moveUrl = `${process.env.REACT_APP_POKE_API}/move/${index}/`
@@ -33,10 +40,17 @@ export default function Move() {
 
 				const pokemon = moveRes.data.learned_by_pokemon
 
-				setId(id)
-				setName(name)
-				setDescription(description)
-				setPokemon(pokemon)
+				// setId(id)
+				// setName(name)
+				// setDescription(description)
+				// setPokemon(pokemon)
+
+				setMoveInfo({
+					id,
+					name,
+					description,
+					pokemon,
+				})
 			})
 			.catch((err) => {
 				setNotFound(true)
@@ -51,7 +65,7 @@ export default function Move() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{id} {/* {cleanAndCapName(name)} */}
+								{moveInfo.id} {/* {cleanAndCapName(moveInfo.name)} */}
 							</h5>
 						</div>
 					</div>
@@ -59,12 +73,12 @@ export default function Move() {
 				<div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{cleanAndCapName(name)}</h4>
+							<h4 className="mx-auto">{cleanAndCapName(moveInfo.name)}</h4>
 						</div>
 					</div>
 					<div className="row mt-1">
 						<div className="col">
-							<p className="">{description}</p>
+							<p className="">{moveInfo.description}</p>
 						</div>
 					</div>
 				</div>
@@ -82,7 +96,7 @@ export default function Move() {
 			</div>
 			<div className="row">
 				<div className="col mb-5">
-					<SoftLockList items={pokemon} title="Leaved By" category="pokemon" />
+					<SoftLockList items={moveInfo.pokemon} title="Leaved By" category="pokemon" />
 				</div>
 			</div>
 		</div>
