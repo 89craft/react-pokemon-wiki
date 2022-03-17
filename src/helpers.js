@@ -73,5 +73,6 @@ export function getUserLanguage() {
 }
 
 export function getUrlId(url) {
+	// Number.isInteger(value)
 	return url.split('/')[url.split('/').length - 2]
 }
