@@ -12,7 +12,7 @@ export default function Pagination({
 			{(gotoPrevPage || gotoNextPage) && (
 				<div
 					className="d-flex mx-auto align-items-center"
-					style={{ maxWidth: '75%', minWidth: '296px' }}
+					style={{ maxWidth: '75%', minWidth: 'min( 296px, 100% )' }}
 				>
 					<button
 						type="button"

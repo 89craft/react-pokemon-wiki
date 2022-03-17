@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PAGE_LIMITS = [/* 12,  */ 24, 48, 96, 192, 384 /* , 768, 1536 */]
+const PAGE_LIMITS = [6, 12, 24, 48, 96, 192/* , 384, 768, 1536 */]
 
 export default function PageLimitSelect({ pageLimit, setPageLimit }) {
 	return (

@@ -65,20 +65,10 @@ export default function Type() {
 	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-	// const [id, setId] = useState('')
-	// const [name, setName] = useState('')
-	// const [pokemon, setPokemon] = useState([])
-	// const [moves, setMoves] = useState([])
-	// const [doubleFrom, setDoubleFrom] = useState([])
-	// const [halfFrom, setHalfFrom] = useState([])
-	// const [noneFrom, setNoneFrom] = useState([])
-	// const [doubleTo, setDoubleTo] = useState([])
-	// const [halfTo, setHalfTo] = useState([])
-	// const [noneTo, setNoneTo] = useState([])
-
 	const [typeInfo, setTypeInfo] = useState({
 		id: '',
 		name: '',
+		translatedName: '',
 		pokemon: [],
 		moves: [],
 		doubleFrom: [],
@@ -95,7 +85,15 @@ export default function Type() {
 		Axios.get(typeUrl)
 			.then((typeRes) => {
 				const id = typeRes.data.id
+
 				const name = typeRes.data.name.toLowerCase()
+				let translatedName = name
+				typeRes.data.names.some((name) => {
+					if (name.language.name === userLanguage) {
+						translatedName = name.name
+						return
+					}
+				})
 
 				const pokemon = typeRes.data.pokemon.map((pokemon) => {
 					const name = pokemon.pokemon.name
@@ -112,20 +110,10 @@ export default function Type() {
 				const halfTo = typeRes.data.damage_relations.half_damage_to
 				const noneTo = typeRes.data.damage_relations.no_damage_to
 
-				// setId(id)
-				// setName(name)
-				// setPokemon(pokemon)
-				// setMoves(moves)
-				// setDoubleFrom(doubleFrom)
-				// setHalfFrom(halfFrom)
-				// setNoneFrom(noneFrom)
-				// setDoubleTo(doubleTo)
-				// setHalfTo(halfTo)
-				// setNoneTo(noneTo)
-
 				setTypeInfo({
 					id,
 					name,
+					translatedName,
 					pokemon,
 					moves,
 					doubleFrom,
@@ -155,7 +143,7 @@ export default function Type() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{typeInfo.id} {/* capName(typeInfo.name) */}
+								{typeInfo.id} {/* capName(typeInfo.translatedName) */}
 							</h5>
 						</div>
 					</div>
@@ -163,7 +151,7 @@ export default function Type() {
 				<div className="card-body">
 					{/* <div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{capName(name)}</h4>
+							<h4 className="mx-auto">{capName(translatedName)}</h4>
 						</div>
 					</div> */}
 					{/* <div className="row mt-1">
@@ -194,7 +182,7 @@ export default function Type() {
 						<div className="col-md-3 d-flex flex-column justify-content-between align-items-center order-md-3 order-1">
 							<h4 className="text-center">Damage Relations</h4>
 							<h2 style={{ margin: '1em' }}>
-								<TypeBadge name={typeInfo.name} />
+								<TypeBadge name={typeInfo.name} translatedName={typeInfo.translatedName} />
 							</h2>
 							<h4></h4>
 						</div>
@@ -286,7 +274,7 @@ function DamageTo({ children, types }) {
 	)
 }
 
-function TypeBadge({ name, url }) {
+function TypeBadge({ name, url, translatedName = '' }) {
 	return (
 		<Link
 			key={name}
@@ -299,7 +287,7 @@ function TypeBadge({ name, url }) {
 					color: 'white',
 				}}
 			>
-				{capName(name)}
+				{translatedName.length > 0 ? translatedName : capName(name)}
 			</Badge>
 		</Link>
 	)

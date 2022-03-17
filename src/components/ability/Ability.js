@@ -10,14 +10,10 @@ export default function Ability() {
 	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-	// const [id, setId] = useState('')
-	// const [name, setName] = useState('')
-	// const [description, setDescription] = useState('')
-	// const [pokemon, setPokemon] = useState([])
-
 	const [abilityInfo, setAbilityInfo] = useState({
 		id: '',
 		name: '',
+		translatedName: '',
 		description: '',
 		pokemon: [],
 	})
@@ -28,7 +24,15 @@ export default function Ability() {
 		Axios.get(abilityUrl)
 			.then((abilityRes) => {
 				const id = abilityRes.data.id
-				const name = abilityRes.data.name.toLowerCase()
+
+				let name = abilityRes.data.name.toLowerCase()
+				let translatedName = name
+				abilityRes.data.names.some((name) => {
+					if (name.language.name === userLanguage) {
+						translatedName = name.name
+						return
+					}
+				})
 
 				let description = ''
 				abilityRes.data.flavor_text_entries.some((flavor) => {
@@ -52,6 +56,7 @@ export default function Ability() {
 				setAbilityInfo({
 					id,
 					name,
+					translatedName,
 					description,
 					pokemon,
 				})
@@ -69,7 +74,7 @@ export default function Ability() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{abilityInfo.id} {/* {cleanAndCapName(abilityInfo.name)} */}
+								{abilityInfo.id} {/* {cleanAndCapName(abilityInfo.translatedName)} */}
 							</h5>
 						</div>
 					</div>
@@ -77,7 +82,7 @@ export default function Ability() {
 				<div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{cleanAndCapName(abilityInfo.name)}</h4>
+							<h4 className="mx-auto">{cleanAndCapName(abilityInfo.translatedName)}</h4>
 						</div>
 					</div>
 					<div className="row mt-1">

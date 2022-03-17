@@ -22,32 +22,7 @@ export default function Pokemon() {
 	const profileDataWidth = 7
 
 	const [notFound, setNotFound] = useState(false)
-	// const [id, setId] = useState('')
-	// const [name, setName] = useState('')
-	// const [imageUrl, setImageUrl] = useState('')
-	// const [types, setTypes] = useState([])
-	// const [abilities, setAbilities] = useState([])
-	// const [moves, setMoves] = useState([])
-	// const [stats, setStats] = useState({
-	// 	hp: '',
-	// 	attack: '',
-	// 	defense: '',
-	// 	speed: '',
-	// 	specialAttack: '',
-	// 	specialDefense: '',
-	// })
-	// const [height, setHeight] = useState('')
-	// const [weight, setWeight] = useState('')
-	// const [evs, setEvs] = useState('')
-	// const [themeColor, setThemeColor] = useState('#EF5350')
-
-	// const [description, setDescription] = useState('')
-	// const [genderRatioMale, setGenderRatioMale] = useState('')
-	// const [genderRatioFemale, setGenderRatioFemale] = useState('')
-	// const [catchRate, setCatchRate] = useState('')
-	// const [eggGroups, setEggGroups] = useState('')
-	// const [hatchSteps, setHatchSteps] = useState('')
-
+	const [translatedName, setTranslatedName] = useState('')
 	const [pokemonInfo, setPokemonInfo] = useState({
 		id: '',
 		name: '',
@@ -158,6 +133,14 @@ export default function Pokemon() {
 
 				// Get Pokemon Description .... Is from a different end point uggh
 				Axios.get(pokemonSpeciesUrl).then((speciesRes) => {
+					let translation = translatedName
+					speciesRes.data.names.some((name) => {
+						if (name.language.name === userLanguage) {
+							translation = name.name
+							return
+						}
+					})
+
 					let description = ''
 					speciesRes.data.flavor_text_entries.some((flavor) => {
 						if (flavor.language.name === userLanguage) {
@@ -181,13 +164,7 @@ export default function Pokemon() {
 
 					const hatchSteps = 255 * (speciesRes.data['hatch_counter'] + 1)
 
-					// setDescription(description)
-					// setGenderRatioFemale(genderRatioFemale)
-					// setGenderRatioMale(genderRatioMale)
-					// setCatchRate(catchRate)
-					// setEggGroups(eggGroups)
-					// setHatchSteps(hatchSteps)
-
+					setTranslatedName(translation)
 					setSpeciesInfo({
 						description,
 						genderRatioFemale,
@@ -198,25 +175,7 @@ export default function Pokemon() {
 					})
 				})
 
-				// setId(id)
-				// setName(name)
-				// setImageUrl(imageUrl)
-				// setTypes(types)
-				// setAbilities(abilities)
-				// setMoves(moves)
-				// setStats({
-				// 	hp,
-				// 	attack,
-				// 	defense,
-				// 	speed,
-				// 	specialAttack,
-				// 	specialDefense,
-				// })
-				// setHeight(height)
-				// setWeight(weight)
-				// setEvs(evs)
-				// setThemeColor(themeColor)
-
+				setTranslatedName(name)
 				setPokemonInfo({
 					id,
 					name,
@@ -251,7 +210,7 @@ export default function Pokemon() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{pokemonInfo.id} {/* capName(pokemonInfo.name) */}
+								{pokemonInfo.id} {/* capName(translatedName) */}
 							</h5>
 						</div>
 						<div className="col-6">
@@ -288,7 +247,7 @@ export default function Pokemon() {
 							/>
 						</div>
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{capName(pokemonInfo.name)}</h4>
+							<h4 className="mx-auto">{capName(translatedName)}</h4>
 							<Stat title="HP" width={pokemonInfo.stats.hp} color={pokemonInfo.themeColor} />
 							<Stat title="Attack" width={pokemonInfo.stats.attack} color={pokemonInfo.themeColor} />
 							<Stat title="Defence" width={pokemonInfo.stats.defense} color={pokemonInfo.themeColor} />

@@ -28,11 +28,13 @@ export function homePathName() {
 
 // convert 'water-absorb' to 'water absorb'
 export function cleanName(text) {
+	if (getUserLanguage() !== 'en') return text
 	text = text ? text : ''
 	return text.toLowerCase().split('-').join(' ')
 }
 // convert 'water absorb' to 'Water Absorb'
 export function capName(text) {
+	if (getUserLanguage() !== 'en') return text
 	text = text ? text : ''
 	return text
 		.toLowerCase()
@@ -42,6 +44,7 @@ export function capName(text) {
 }
 // convert 'water-absorb' to 'Water Absorb'
 export function cleanAndCapName(text) {
+	if (getUserLanguage() !== 'en') return text
 	text = text ? text : ''
 	return text
 		.toLowerCase()
@@ -51,6 +54,7 @@ export function cleanAndCapName(text) {
 }
 // convert 'water-absorb' or 'water absorb' to 'Water Absorb'
 export function cleanOrCapName(text) {
+	if (getUserLanguage() !== 'en') return text
 	text = text ? text : ''
 	const dashSplit = text.toLowerCase().split('-')
 	if (dashSplit.length > 1) {
@@ -68,7 +72,7 @@ export function cleanOrCapName(text) {
 
 export function getUserLanguage() {
 	let userLanguage = getCookie('userLanguage')
-	if (userLanguage || userLanguage.length < 1) userLanguage = 'en'
+	if (!userLanguage || userLanguage.length < 1) userLanguage = 'en'
 	return userLanguage
 }
 

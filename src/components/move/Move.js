@@ -10,14 +10,11 @@ export default function Move() {
 	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-	// const [id, setId] = useState('')
 	// const [name, setName] = useState('')
-	// const [description, setDescription] = useState('')
-	// const [pokemon, setPokemon] = useState([])
-
 	const [moveInfo, setMoveInfo] = useState({
 		id: '',
 		name: '',
+		translatedName: '',
 		description: '',
 		pokemon: [],
 	})
@@ -28,7 +25,15 @@ export default function Move() {
 		Axios.get(moveUrl)
 			.then((moveRes) => {
 				const id = moveRes.data.id
+
 				const name = moveRes.data.name.toLowerCase()
+				let translatedName = name
+				moveRes.data.names.some((name) => {
+					if (name.language.name === userLanguage) {
+						translatedName = name.name
+						return
+					}
+				})
 
 				let description = ''
 				moveRes.data.flavor_text_entries.some((flavor) => {
@@ -40,14 +45,11 @@ export default function Move() {
 
 				const pokemon = moveRes.data.learned_by_pokemon
 
-				// setId(id)
 				// setName(name)
-				// setDescription(description)
-				// setPokemon(pokemon)
-
 				setMoveInfo({
 					id,
 					name,
+					translatedName,
 					description,
 					pokemon,
 				})
@@ -65,7 +67,7 @@ export default function Move() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{moveInfo.id} {/* {cleanAndCapName(moveInfo.name)} */}
+								{moveInfo.id} {/* {cleanAndCapName(moveInfo.translatedName)} */}
 							</h5>
 						</div>
 					</div>
@@ -73,7 +75,7 @@ export default function Move() {
 				<div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{cleanAndCapName(moveInfo.name)}</h4>
+							<h4 className="mx-auto">{cleanAndCapName(moveInfo.translatedName)}</h4>
 						</div>
 					</div>
 					<div className="row mt-1">

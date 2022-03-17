@@ -14,7 +14,7 @@ export default function Dashboard() {
 	const [category, setCategory] = useCookie('category')
 	if (!category) setCategory('pokemon')
 	const [pageLimit, setPageLimit] = useCookie('pageLimit')
-	if (!pageLimit) setPageLimit(48)
+	if (!pageLimit) setPageLimit(24)
 
 	return (
 		<div className="pb-4">
