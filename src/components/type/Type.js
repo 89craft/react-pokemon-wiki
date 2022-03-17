@@ -8,7 +8,7 @@ import {
 	getUrlId,
 	getUserLanguage,
 } from '../../helpers'
-import PokemonList from '../lists/SoftLockList'
+import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../../NotFound'
 import { RiSpeedFill, RiPlayFill, RiCloseFill } from 'react-icons/ri'
 
@@ -119,7 +119,7 @@ export default function Type() {
 	return (
 		<div className="col pb-4">
 			{notFound && <NotFound />}
-			<div className="card">
+			<div className="card mb-5">
 				<div
 					className="card-header"
 					style={{
@@ -147,7 +147,7 @@ export default function Type() {
             </div>
           </div> */}
 					<div className="row">
-						<div className="col">
+						<div className="col order-2">
 							<div className="d-flex flex-column">
 								<h5 className="text-center">From</h5>
 								<DamageFrom types={doubleFrom}>
@@ -166,14 +166,14 @@ export default function Type() {
 								</DamageFrom>
 							</div>
 						</div>
-						<div className="col-md-3 d-flex flex-column justify-content-between align-items-center">
+						<div className="col-md-3 d-flex flex-column justify-content-between align-items-center order-md-3 order-1">
 							<h4 className="text-center">Damage Relations</h4>
 							<h2 style={{ margin: '1em' }}>
 								<TypeBadge name={name} />
 							</h2>
 							<h4></h4>
 						</div>
-						<div className="col">
+						<div className="col order-4">
 							<div className="d-flex flex-column">
 								<h5 className="text-center">To</h5>
 								<DamageTo types={doubleTo}>
@@ -207,8 +207,13 @@ export default function Type() {
 				</div>
 			</div>
 			<div className="row">
-				<div className="col py-5">
-					<PokemonList pokemon={pokemon} />
+				<div className="col mb-5">
+					<SoftLockList items={pokemon} title="Pokemon" category="pokemon" />
+				</div>
+			</div>
+			<div className="row">
+				<div className="col mb-5">
+					<SoftLockList items={moves} title="Moves" category="move" />
 				</div>
 			</div>
 		</div>

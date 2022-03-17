@@ -15,6 +15,7 @@ export default function CategorySelect({ category = 'pokemon', setCategory }) {
 					<option value="pokemon">Pokemon</option>
 					<option value="ability">Abilities</option>
 					<option value="type">Types</option>
+					<option value="move">Moves</option>
 				</select>
 			</div>
 		</form>

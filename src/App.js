@@ -5,6 +5,7 @@ import Dashboard from './components/layout/Dashboard'
 import Pokemon from './components/pokemon/Pokemon'
 import Ability from './components/ability/Ability'
 import Type from './components/type/Type'
+import Move from './components/move/Move'
 import NotFound from './NotFound'
 import backgroundImage from './pattern.png'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -36,6 +37,11 @@ export default function App() {
 									element={<Type />}
 								/>
 								<Route
+									path={`/${process.env.REACT_APP_NAME}/move/:index`}
+									caseSensitive={false}
+									element={<Move />}
+								/>
+								<Route
 									path={`/${process.env.REACT_APP_NAME}/`}
 									caseSensitive={false}
 									element={<Dashboard />}
@@ -58,6 +64,11 @@ export default function App() {
 									path="/type/:index"
 									caseSensitive={false}
 									element={<Type />}
+								/>
+								<Route
+									path="/move/:index"
+									caseSensitive={false}
+									element={<Move />}
 								/>
 								<Route path="/" caseSensitive={false} element={<Dashboard />} />
 								<Route element={<NotFound />} />

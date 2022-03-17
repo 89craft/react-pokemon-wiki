@@ -5,7 +5,7 @@ import { cleanAndCapName, getUserLanguage } from '../../helpers'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../../NotFound'
 
-export default function Ability() {
+export default function Move() {
 	let { index } = useParams()
 	const userLanguage = getUserLanguage()
 
@@ -16,26 +16,22 @@ export default function Ability() {
 	const [pokemon, setPokemon] = useState([])
 
 	useEffect(() => {
-		const abilityUrl = `${process.env.REACT_APP_POKE_API}/ability/${index}/`
+		const moveUrl = `${process.env.REACT_APP_POKE_API}/move/${index}/`
 
-		Axios.get(abilityUrl)
-			.then((abilityRes) => {
-				const id = abilityRes.data.id
-				const name = abilityRes.data.name.toLowerCase()
+		Axios.get(moveUrl)
+			.then((moveRes) => {
+				const id = moveRes.data.id
+				const name = moveRes.data.name.toLowerCase()
 
 				let description = ''
-				abilityRes.data.flavor_text_entries.some((flavor) => {
+				moveRes.data.flavor_text_entries.some((flavor) => {
 					if (flavor.language.name === userLanguage) {
 						description = flavor.flavor_text
 						return
 					}
 				})
 
-				const pokemon = abilityRes.data.pokemon.map((pokemon) => {
-					const name = pokemon.pokemon.name
-					const url = pokemon.pokemon.url
-					return { name, url }
-				})
+				const pokemon = moveRes.data.learned_by_pokemon
 
 				setId(id)
 				setName(name)
@@ -86,7 +82,7 @@ export default function Ability() {
 			</div>
 			<div className="row">
 				<div className="col mb-5">
-					<SoftLockList items={pokemon} title="Pokemon" category="pokemon" />
+					<SoftLockList items={pokemon} title="Leaved By" category="pokemon" />
 				</div>
 			</div>
 		</div>

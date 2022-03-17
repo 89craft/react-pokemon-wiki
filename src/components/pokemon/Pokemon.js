@@ -8,6 +8,7 @@ import {
 	getUserLanguage,
 	getUrlId,
 } from '../../helpers'
+import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../../NotFound'
 import { TYPE_COLORS } from '../type/Type'
 
@@ -43,6 +44,7 @@ export default function Pokemon() {
 	const [genderRatioFemale, setGenderRatioFemale] = useState('')
 	const [evs, setEvs] = useState('')
 	const [hatchSteps, setHatchSteps] = useState('')
+	const [moves, setMoves] = useState([])
 	const [themeColor, setThemeColor] = useState('#EF5350')
 
 	useEffect(() => {
@@ -96,12 +98,19 @@ export default function Pokemon() {
 					return { name, url }
 				})
 
-				const themeColor = `${TYPE_COLORS[types[types.length - 1]]}`
+				const themeColor = `${TYPE_COLORS[types[types.length - 1].name]}`
 
 				const abilities = pokemonRes.data.abilities.map((ability) => {
 					// return ability.ability.name
 					const name = ability.ability.name
 					const url = ability.ability.url
+					return { name, url }
+				})
+
+				const moves = pokemonRes.data.moves.map((move) => {
+					// return move.move.name
+					const name = move.move.name
+					const url = move.move.url
 					return { name, url }
 				})
 
@@ -167,6 +176,7 @@ export default function Pokemon() {
 				setWeight(weight)
 				setAbilities(abilities)
 				setEvs(evs)
+				setMoves(moves)
 			})
 			.catch((err) => {
 				setNotFound(true)
@@ -176,7 +186,7 @@ export default function Pokemon() {
 	return (
 		<div className="col pb-4">
 			{notFound && <NotFound />}
-			<div className="card">
+			<div className="card mb-5">
 				<div className="card-header">
 					<div className="row">
 						<div className="col-6">
@@ -324,6 +334,11 @@ export default function Pokemon() {
 					</a>
 				</div>
 			</div>
+			<div className="row">
+				<div className="col mb-5">
+					<SoftLockList items={moves} title="Learnable Moves" category="move" />
+				</div>
+			</div>
 		</div>
 	)
 }
@@ -356,6 +371,7 @@ function StatTitle({ title }) {
 	return <div className="col-md-3">{title}</div>
 }
 function StatBar({ width, color }) {
+	// console.log("StatBar color=" + color)
 	return (
 		<div className="col-md-9">
 			<div className="progress">

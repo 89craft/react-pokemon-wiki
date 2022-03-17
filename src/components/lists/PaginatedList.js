@@ -61,27 +61,19 @@ export default function PaginatedList({ category, pageLimit }) {
 			/>
 			{loading ? (
 				<p>Loading...</p>
+			) : category === 'pokemon' ? (
+				items.map((item) => (
+					<PokemonCard key={item.name} name={item.name} url={item.url} />
+				))
 			) : (
-				<>
-					{category === 'pokemon' ? (
-						<>
-							{items.map((item) => (
-								<PokemonCard key={item.name} name={item.name} url={item.url} />
-							))}
-						</>
-					) : (
-						<>
-							{items.map((item) => (
-								<ItemCard
-									key={item.name}
-									category={category}
-									name={item.name}
-									url={item.url}
-								/>
-							))}
-						</>
-					)}
-				</>
+				items.map((item) => (
+					<ItemCard
+						key={item.name}
+						category={category}
+						name={item.name}
+						url={item.url}
+					/>
+				))
 			)}
 			<Pagination
 				gotoNextPage={nextPageUrl ? gotoNextPage : null}
