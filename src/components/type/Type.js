@@ -9,7 +9,7 @@ import {
 	getUserLanguage,
 } from '../../helpers'
 import SoftLockList from '../lists/SoftLockList'
-import NotFound from '../../NotFound'
+import NotFound from '../layout/NotFound'
 // import { RiSpeedFill, RiPlayFill, RiCloseFill } from 'react-icons/ri'
 
 export const TYPE_COLORS = require('./typeColors.json')

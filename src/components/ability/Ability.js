@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import Axios from 'axios'
 import { cleanAndCapName, getUserLanguage } from '../../helpers'
 import SoftLockList from '../lists/SoftLockList'
-import NotFound from '../../NotFound'
+import NotFound from '../layout/NotFound'
 
 export default function Ability() {
 	let { index } = useParams()

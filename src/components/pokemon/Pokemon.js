@@ -9,7 +9,7 @@ import {
 	getUrlId,
 } from '../../helpers'
 import SoftLockList from '../lists/SoftLockList'
-import NotFound from '../../NotFound'
+import NotFound from '../layout/NotFound'
 import { TypeBadge } from '../type/Type'
 import { TYPE_COLORS } from '../type/Type'
 
