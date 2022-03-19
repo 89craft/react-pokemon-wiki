@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/react-pokemon-wiki/static/css/main.2508e523.chunk.css",
-    "main.js": "/react-pokemon-wiki/static/js/main.79fb5619.chunk.js",
-    "main.js.map": "/react-pokemon-wiki/static/js/main.79fb5619.chunk.js.map",
+    "main.js": "/react-pokemon-wiki/static/js/main.54c6a7e8.chunk.js",
+    "main.js.map": "/react-pokemon-wiki/static/js/main.54c6a7e8.chunk.js.map",
     "runtime~main.js": "/react-pokemon-wiki/static/js/runtime~main.6bd2b388.js",
     "runtime~main.js.map": "/react-pokemon-wiki/static/js/runtime~main.6bd2b388.js.map",
     "static/css/2.900186da.chunk.css": "/react-pokemon-wiki/static/css/2.900186da.chunk.css",
-    "static/js/2.9bde5b7b.chunk.js": "/react-pokemon-wiki/static/js/2.9bde5b7b.chunk.js",
-    "static/js/2.9bde5b7b.chunk.js.map": "/react-pokemon-wiki/static/js/2.9bde5b7b.chunk.js.map",
+    "static/js/2.f64db0aa.chunk.js": "/react-pokemon-wiki/static/js/2.f64db0aa.chunk.js",
+    "static/js/2.f64db0aa.chunk.js.map": "/react-pokemon-wiki/static/js/2.f64db0aa.chunk.js.map",
     "index.html": "/react-pokemon-wiki/index.html",
-    "precache-manifest.ed108ce6df979af4deda22f8b99432aa.js": "/react-pokemon-wiki/precache-manifest.ed108ce6df979af4deda22f8b99432aa.js",
+    "precache-manifest.7171e965ae58c2205cba21bf86f27f9c.js": "/react-pokemon-wiki/precache-manifest.7171e965ae58c2205cba21bf86f27f9c.js",
     "service-worker.js": "/react-pokemon-wiki/service-worker.js",
     "static/css/2.900186da.chunk.css.map": "/react-pokemon-wiki/static/css/2.900186da.chunk.css.map",
     "static/css/main.2508e523.chunk.css.map": "/react-pokemon-wiki/static/css/main.2508e523.chunk.css.map"
