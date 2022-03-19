@@ -7,19 +7,8 @@ export function isProduction() {
 
 export function buildPathName(path) {
 	path = path ? path : ''
-
-	if (isProduction()) {
-		/* while (path.startsWith('.')) path.substr(1, path.length)
-		if (!path.startsWith('/${process.env.REACT_APP_NAME}'))
-			path = `/${process.env.REACT_APP_NAME}${path}`
-		if (!path.startsWith('..')) path = `..${path}` */
-
-		return `../${process.env.REACT_APP_NAME}${path}`
-	} else {
-		/* if (!path.startsWith('..')) path = `..${path}` */
-
-		return `../${path}`
-	}
+	/* if (isProduction()) return `../${process.env.REACT_APP_NAME}${path}`
+	else */ return `../${path}`
 }
 export function homePathName() {
 	if (isProduction()) return `/${process.env.REACT_APP_NAME}/`
@@ -28,7 +17,6 @@ export function homePathName() {
 
 // convert 'water-absorb' to 'water absorb'
 export function cleanName(text) {
-	if (getUserLanguage() !== 'en') return text
 	text = text ? text : ''
 	return text.toLowerCase().split('-').join(' ')
 }
