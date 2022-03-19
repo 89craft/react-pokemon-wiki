@@ -10,46 +10,10 @@ import {
 } from '../../helpers'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../../NotFound'
-import { RiSpeedFill, RiPlayFill, RiCloseFill } from 'react-icons/ri'
+// import { RiSpeedFill, RiPlayFill, RiCloseFill } from 'react-icons/ri'
 
-export const TYPE_COLORS = {
-	bug: 'a8b820',
-	dark: '705848',
-	dragon: '7038f8',
-	electric: 'f8d030',
-	fairy: 'f0b6bc',
-	fighting: 'c03028',
-	fire: 'f08030',
-	flying: 'a890f0',
-	ghost: '705898',
-	grass: '78c850',
-	ground: 'e0c068',
-	ice: '98d8d8',
-	normal: 'a8a878',
-	poison: 'a040a0',
-	psychic: 'f85888',
-	rock: 'b8a038',
-	steel: 'b8b8d0',
-	water: '6890f0',
-	/* bug: 'B1C12E',
-	dark: '4F3A2D',
-	dragon: '755EDF',
-	electric: 'FCBC17',
-	fairy: 'F4B1F4',
-	fighting: '823551D',
-	fire: 'E73B0C',
-	flying: 'A3B3F7',
-	ghost: '6060B2',
-	grass: '74C236',
-	ground: 'D3B357',
-	ice: 'A3E7FD',
-	normal: 'C8C4BC',
-	poison: '934594',
-	psychic: 'ED4882',
-	rock: 'B9A156',
-	steel: 'B5B5C3',
-	water: '3295F6', */
-}
+export const TYPE_COLORS = require('./typeColors.json')
+export const TYPE_NAMES = require('./typeNames.json')
 
 const Badge = styled.span`
 	display: inline-block;
@@ -281,7 +245,22 @@ function DamageTo({ children, types }) {
 	)
 }
 
-export function TypeBadge({ name, url, translatedName = '' }) {
+export function TypeBadge({ name, url, userLanguage = 'en' }) {
+	function getTranslatedName() {
+		if (!name) return name
+		const set = TYPE_NAMES.find((entry) => {
+			if (entry.name === name) return entry
+		})
+		let translatedName = name
+		set.names.some((name) => {
+			if (name.language.name === getUserLanguage()) {
+				translatedName = name.name
+				return
+			}
+		})
+		return translatedName
+	}
+
 	return (
 		<Link
 			key={name}
@@ -298,7 +277,7 @@ export function TypeBadge({ name, url, translatedName = '' }) {
 					color: 'white',
 				}}
 			>
-				{translatedName.length > 0 ? translatedName : capName(name)}
+				{getTranslatedName()}
 			</Badge>
 		</Link>
 	)

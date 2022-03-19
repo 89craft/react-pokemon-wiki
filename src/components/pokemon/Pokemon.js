@@ -55,10 +55,11 @@ export default function Pokemon() {
 
 	useEffect(() => {
 		const pokemonUrl = `${process.env.REACT_APP_POKE_API}/pokemon/${index}/`
-		const pokemonSpeciesUrl = `${process.env.REACT_APP_POKE_API}/pokemon-species/${index}/`
 
 		Axios.get(pokemonUrl)
 			.then((pokemonRes) => {
+				const pokemonSpeciesUrl = `${process.env.REACT_APP_POKE_API}/pokemon-species/${getUrlId(pokemonRes.data.species.url)}/`
+
 				const id = pokemonRes.data.id
 				const name = pokemonRes.data.name.toLowerCase()
 				const imageUrls = pokemonRes.data.sprites
@@ -472,6 +473,7 @@ function PokemonImage({ imageUrls, name = '', color }) {
 					src={pokemonImage(isFront, isFemale, isShiny)}
 					alt={name}
 					className="card-img-top rounded mx-auto mt-2"
+					style={{ imageRendering: 'pixelated' }}
 				/>
 			</div>
 			<div className="row">

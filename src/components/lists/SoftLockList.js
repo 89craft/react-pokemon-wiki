@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { capName } from '../../helpers'
+import { capName, getUserLanguage } from '../../helpers'
 import PokemonCard from '../cards/PokemonCard'
+import TypeCard from '../cards/TypeCard'
 import ItemCard from '../cards/ItemCard'
 
 export default function SoftLockList({
@@ -10,12 +11,13 @@ export default function SoftLockList({
 	pageLimit = 48,
 	hidden = true,
 }) {
+	const userLanguage = getUserLanguage()
 
 	const [isHidden, setIsHidden] = useState(hidden)
 
 	return (
 		<div className="row">
-		<h5 className="text-center">{title}</h5>
+			<h5 className="text-center">{title}</h5>
 			{isHidden ? (
 				<input
 					type="submit"
@@ -27,6 +29,15 @@ export default function SoftLockList({
 			) : category === 'pokemon' ? (
 				items.map((item) => (
 					<PokemonCard key={item.name} name={item.name} url={item.url} />
+				))
+			) : category === 'type' ? (
+				items.map((item) => (
+					<TypeCard
+						key={item.name}
+						name={item.name}
+						url={item.url}
+						userLanguage={userLanguage}
+					/>
 				))
 			) : (
 				items.map((item) => (

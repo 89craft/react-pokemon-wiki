@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios'
-import ItemCard from '../cards/ItemCard'
+import { getUserLanguage } from '../../helpers'
 import Pagination from './Pagination'
 import PokemonCard from '../cards/PokemonCard'
+import TypeCard from '../cards/TypeCard'
+import ItemCard from '../cards/ItemCard'
 
 export default function SearchList({
 	category = 'pokemon',
 	pageLimit = 9999,
 	search = '',
 }) {
+	const userLanguage = getUserLanguage()
+
 	const [items, setItems] = useState([])
 	const [currentPageUrl, setCurrentPageUrl] = useState(
 		`${process.env.REACT_APP_POKE_API}/${category}?limit=${pageLimit}`
@@ -17,7 +21,6 @@ export default function SearchList({
 	const [prevPageUrl, setPrevPageUrl] = useState()
 	const [loading, setLoading] = useState(true)
 
-	console.log("SearchList")
 	useEffect(() => {
 		setLoading(true)
 		let cancel
@@ -58,28 +61,31 @@ export default function SearchList({
 				<div className="row">
 					{items.length > 0 ? (
 						<>
-							{category === 'pokemon' ? (
-								<>
-									{items.map((item) => (
+							{category === 'pokemon'
+								? items.map((item) => (
 										<PokemonCard
 											key={item.name}
 											name={item.name}
 											url={item.url}
 										/>
-									))}
-								</>
-							) : (
-								<>
-									{items.map((item) => (
+								  ))
+								: category === 'type'
+								? items.map((item) => (
+										<TypeCard
+											key={item.name}
+											name={item.name}
+											url={item.url}
+											userLanguage={userLanguage}
+										/>
+								  ))
+								: items.map((item) => (
 										<ItemCard
 											key={item.name}
 											category={category}
 											name={item.name}
 											url={item.url}
 										/>
-									))}
-								</>
-							)}
+								  ))}
 						</>
 					) : (
 						<h5>No Matches</h5>

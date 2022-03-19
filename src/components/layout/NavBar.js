@@ -77,7 +77,6 @@ export default function NavBar() {
 					value={userLanguage}
 					className="form-select"
 					onChange={(event) => {
-						console.log(`set language = ${event.target.value}`)
 						setUserLanguage(event.target.value)
 						window.location.reload(false)
 					}}

@@ -8,6 +8,7 @@ const Sprite = styled.img`
 	width: 9em;
 	height: 9em;
 	display: none;
+	image-rendering: pixelated;
 `
 
 const Card = styled.div`
@@ -74,19 +75,27 @@ const StyledLink = styled(Link)`
   return { R, G, B }
 } */
 
-export default function PokemonCard({ name = '', url = '' }) {
+export default function PokemonCard({ name, url }) {
 	const [imageLoading, setImageLoading] = useState(true)
-	const [toManyRequests, setToManyRequests] = useState(false)
+	const [imageError, setImageError] = useState(false)
 
 	const pokemonId = getUrlId(url)
 	const imageUrl = `https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${pokemonId}.png?raw=true`
 
-	function handleImageLoaded(element) {
+	function handleImageLoaded(event) {
 		setImageLoading(false)
 
 		/* const { R, G, B } = getAverageColor(element.target, 4)
     //document.body.style.background = `rgb(${R}, ${G}, ${B})`
     console.log(`rgb(${R}, ${G}, ${B})`) */
+	}
+
+	function handleImageError(event) {
+		console.log('error')
+		event.target.onerror = null
+		// event.target.style.display = 'none'
+		setImageError(true)
+		setImageLoading(false)
 	}
 
 	return (
@@ -100,27 +109,39 @@ export default function PokemonCard({ name = '', url = '' }) {
 						<img
 							src={spinner}
 							alt="loading"
-							style={{ width: '9em', height: '9em' }}
-							className="card-img-top rounded mx-auto d-block mt-2"
+							style={{
+								width: '9em',
+								height: '9em',
+								imageRendering: 'pixelated',
+							}}
+							className="card-img-top rounded mx-auto d-block my-2"
 						/>
 					)}
 					<Sprite
 						src={imageUrl}
 						alt={name}
 						onLoad={handleImageLoaded}
-						onError={() => setToManyRequests(true)}
-						className="card-img-top rounded mx-auto mt-2"
+						onError={handleImageError}
+						className="card-img-top rounded mx-auto my-2"
 						style={
-							toManyRequests
+							imageError
 								? { display: 'none' }
 								: imageLoading
 								? null
 								: { display: 'block' }
 						}
 					/>
-					{toManyRequests && (
+					{imageError && (
 						<h6 className="mx-auto">
-							<span className="badge badge-danger mt-2">To Many Requests</span>
+							<span
+								className="badge badge-danger mt-2"
+								style={{
+									backgroundColor: `#778`,
+									color: 'white',
+								}}
+							>
+								Image not Found
+							</span>
 						</h6>
 					)}
 					{/* <div className="card-body mx-auto">
