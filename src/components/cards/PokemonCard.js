@@ -91,7 +91,6 @@ export default function PokemonCard({ name, url }) {
 	}
 
 	function handleImageError(event) {
-		console.log('error')
 		event.target.onerror = null
 		// event.target.style.display = 'none'
 		setImageError(true)
