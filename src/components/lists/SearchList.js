@@ -5,6 +5,7 @@ import Pagination from './Pagination'
 import PokemonCard from '../cards/PokemonCard'
 import TypeCard from '../cards/TypeCard'
 import ItemCard from '../cards/ItemCard'
+import DefaultCard from '../cards/DefaultCard'
 
 export default function SearchList({
 	category = 'pokemon',
@@ -78,8 +79,12 @@ export default function SearchList({
 											userLanguage={userLanguage}
 										/>
 								  ))
+								: category === 'item'
+								? items.map((item) => (
+										<ItemCard key={item.name} name={item.name} url={item.url} />
+								  ))
 								: items.map((item) => (
-										<ItemCard
+										<DefaultCard
 											key={item.name}
 											category={category}
 											name={item.name}

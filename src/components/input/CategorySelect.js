@@ -19,6 +19,9 @@ export default function CategorySelect({ category = 'pokemon', setCategory }) {
 					<option value="egg-group">Egg Groups</option>
 					<option value="growth-rate">Growth Rate</option>
 					<option value="pokemon-color">Pokemon Color</option>
+					<option value="generation">Generation</option>
+					<option value="berry">Berry</option>
+					<option value="item">Item</option>
 				</select>
 			</div>
 		</form>

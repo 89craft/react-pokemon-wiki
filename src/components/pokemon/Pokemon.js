@@ -27,9 +27,6 @@ export default function Pokemon() {
 	let { index } = useParams()
 	const userLanguage = getUserLanguage()
 
-	//const profileTitleWidth = 5
-	const profileDataWidth = 7
-
 	const [notFound, setNotFound] = useState(false)
 	const [translatedName, setTranslatedName] = useState('')
 	const [pokemonInfo, setPokemonInfo] = useState({
@@ -436,17 +433,25 @@ export default function Pokemon() {
 						</div>
 						<div className="col-sm-6">
 							<div className="row">
-								<Profile title="Generation" data={capFirstLetter(cleanName(speciesInfo.generation.name))} />
-								<Profile title="Growth Rate" data={cleanAndCapName(speciesInfo.growthRate.name)} />
+								<Profile
+									title="Generation"
+									data={capFirstLetter(cleanName(speciesInfo.generation.name))}
+								/>
+								<Profile
+									title="Growth Rate"
+									data={cleanAndCapName(speciesInfo.growthRate.name)}
+								/>
 								<Profile title="Hatch Steps" data={speciesInfo.hatchSteps} />
 								<Profile title="Egg Groups">
 									<h6>
 										{speciesInfo.eggGroups.map((eggGroup) => (
 											<Link
 												key={eggGroup.name}
-												className="me-1"
+												className="mx-1"
 												style={{ textDecoration: 'none' }}
-												to={buildPathName(`/egg-group/${getUrlId(eggGroup.url)}`)}
+												to={buildPathName(
+													`/egg-group/${getUrlId(eggGroup.url)}`
+												)}
 											>
 												<span
 													className="badge text-nowrap"
@@ -463,7 +468,7 @@ export default function Pokemon() {
 										{pokemonInfo.abilities.map((ability) => (
 											<Link
 												key={ability.name}
-												className="me-1"
+												className="mx-1"
 												style={{ textDecoration: 'none' }}
 												to={buildPathName(`/ability/${getUrlId(ability.url)}`)}
 											>

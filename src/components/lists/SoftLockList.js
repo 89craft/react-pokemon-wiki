@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
-import { capName, cleanAndCapName, getUserLanguage } from '../../scripts/helpers'
+import {
+	capName,
+	cleanAndCapName,
+	getUserLanguage,
+} from '../../scripts/helpers'
 import { getCookie } from 'react-use-cookie'
 import PokemonCard from '../cards/PokemonCard'
 import TypeCard from '../cards/TypeCard'
 import ItemCard from '../cards/ItemCard'
+import DefaultCard from '../cards/DefaultCard'
 
 export default function SoftLockList({
 	items = [],
@@ -24,7 +29,14 @@ export default function SoftLockList({
 
 	return (
 		<div className="row">
-			<h5 className="text-center" onClick={() => {setIsHidden(true)}}>{title}</h5>
+			<h4
+				className="text-center"
+				onClick={() => {
+					setIsHidden(true)
+				}}
+			>
+				{title}
+			</h4>
 			{isHidden ? (
 				<input
 					type="submit"
@@ -43,7 +55,7 @@ export default function SoftLockList({
 							{curPageLimit < items.length && (
 								<input
 									type="submit"
-									value={`More ${capName(category)}`}
+									value={`More ${title}`}
 									className="btn btn-success mx-auto"
 									style={{ width: 'auto' }}
 									onClick={incrementPageLimit}
@@ -59,9 +71,13 @@ export default function SoftLockList({
 								userLanguage={userLanguage}
 							/>
 						))
+					) : category === 'item' ? (
+						items.map((item) => (
+							<ItemCard key={item.name} name={item.name} url={item.url} />
+						))
 					) : (
 						items.map((item) => (
-							<ItemCard
+							<DefaultCard
 								key={item.name}
 								category={category}
 								name={item.name}

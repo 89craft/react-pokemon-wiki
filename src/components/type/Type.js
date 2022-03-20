@@ -99,11 +99,7 @@ export default function Type() {
 						color: 'white',
 					}}
 				>
-					<div className="row">
-						<div className="col-6">
-							<h5>{typeInfo.translatedName}</h5>
-						</div>
-					</div>
+					<h5>{typeInfo.translatedName}</h5>
 				</div>
 				<div className="card-body">
 					{/* <div className="row mt-1">

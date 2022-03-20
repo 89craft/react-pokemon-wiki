@@ -56,11 +56,7 @@ export default function EggGroup() {
 			{notFound && <NotFound />}
 			<div className="card mb-5">
 				<div className="card-header">
-					<div className="row">
-						<div className="col-6">
-							<h5>{eggGroupInfo.translatedName}</h5>
-						</div>
-					</div>
+					<h5>{eggGroupInfo.translatedName}</h5>
 				</div>
 				<div className="card-body">
 					<div className="row align-items-center">

@@ -5,6 +5,7 @@ import Pagination from './Pagination'
 import PokemonCard from '../cards/PokemonCard'
 import TypeCard from '../cards/TypeCard'
 import ItemCard from '../cards/ItemCard'
+import DefaultCard from '../cards/DefaultCard'
 
 export default function PaginatedList({ category, pageLimit }) {
 	if (!category) category = 'pokemon'
@@ -70,11 +71,20 @@ export default function PaginatedList({ category, pageLimit }) {
 				))
 			) : category === 'type' ? (
 				items.map((item) => (
-					<TypeCard key={item.name} name={item.name} url={item.url} userLanguage={userLanguage} />
+					<TypeCard
+						key={item.name}
+						name={item.name}
+						url={item.url}
+						userLanguage={userLanguage}
+					/>
+				))
+			) : category === 'item' ? (
+				items.map((item) => (
+					<ItemCard key={item.name} name={item.name} url={item.url} />
 				))
 			) : (
 				items.map((item) => (
-					<ItemCard
+					<DefaultCard
 						key={item.name}
 						category={category}
 						name={item.name}

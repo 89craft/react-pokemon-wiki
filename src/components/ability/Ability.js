@@ -21,7 +21,7 @@ export default function Ability() {
 		translatedName: '',
 		description: '',
 		pokemon: [],
-		generation: {name: '', url: ''},
+		generation: { name: '', url: '' },
 		effect: '',
 		effectShort: '',
 		effectChanges: [],
@@ -122,11 +122,7 @@ export default function Ability() {
 			{notFound && <NotFound />}
 			<div className="card mb-5">
 				<div className="card-header">
-					<div className="row">
-						<div className="col-6">
-							<h5>{abilityInfo.translatedName}</h5>
-						</div>
-					</div>
+					<h5>{abilityInfo.translatedName}</h5>
 				</div>
 				<div className="card-body">
 					<div className="row align-items-center">
@@ -136,7 +132,9 @@ export default function Ability() {
 					</div>
 					<div className="row mt-1">
 						<div className="col">
-							<i>{`${capFirstLetter(cleanName(abilityInfo.generation.name))}`}</i>
+							<i>{`${capFirstLetter(
+								cleanName(abilityInfo.generation.name)
+							)}`}</i>
 							<p>{abilityInfo.description}</p>
 							<i>{`Effect: ${abilityInfo.effectShort}`}</i>
 							<p>{`${abilityInfo.effect}`}</p>

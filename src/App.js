@@ -9,6 +9,9 @@ import Move from './components/move/Move'
 import EggGroup from './components/egg-group/EggGroup'
 import GrowthRate from './components/growth-rate/GrowthRate'
 import PokemonColor from './components/pokemon-color/PokemonColor'
+import Generation from './components/generation/Generation'
+import Berry from './components/berry/Berry'
+import Item from './components/item/Item'
 import ScrollToTop from './components/layout/ScrollToTop'
 import NotFound from './components/layout/NotFound'
 import backgroundImage from './pattern.png'
@@ -56,6 +59,21 @@ export default function App() {
 							path="/pokemon-color/:index"
 							caseSensitive={false}
 							element={<PokemonColor />}
+						/>
+						<Route
+							path="/generation/:index"
+							caseSensitive={false}
+							element={<Generation />}
+						/>
+						<Route
+							path="/berry/:index"
+							caseSensitive={false}
+							element={<Berry />}
+						/>
+						<Route
+							path="/item/:index"
+							caseSensitive={false}
+							element={<Item />}
 						/>
 						<Route path="/" caseSensitive={false} element={<Dashboard />} />
 						<Route element={<NotFound />} />
