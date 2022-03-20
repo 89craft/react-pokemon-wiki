@@ -32,15 +32,18 @@ export default function Pokemon() {
 		abilities: [],
 		moves: [],
 		stats: {
-			hp: '',
-			attack: '',
-			defense: '',
-			speed: '',
-			specialAttack: '',
-			specialDefense: '',
+			hp: 0,
+			attack: 0,
+			defense: 0,
+			speed: 0,
+			specialAttack: 0,
+			specialDefense: 0,
 		},
-		height: '',
-		weight: '',
+		heightCentMeters: 0,
+		heightFeet: 0,
+		heightInches: 0,
+		weightKilos: 0,
+		weightPounds: 0,
 		evs: '',
 		themeColor: '',
 	})
@@ -58,7 +61,9 @@ export default function Pokemon() {
 
 		Axios.get(pokemonUrl)
 			.then((pokemonRes) => {
-				const pokemonSpeciesUrl = `${process.env.REACT_APP_POKE_API}/pokemon-species/${getUrlId(pokemonRes.data.species.url)}/`
+				const pokemonSpeciesUrl = `${
+					process.env.REACT_APP_POKE_API
+				}/pokemon-species/${getUrlId(pokemonRes.data.species.url)}/`
 
 				const id = pokemonRes.data.id
 				const name = pokemonRes.data.name.toLowerCase()
@@ -91,15 +96,14 @@ export default function Pokemon() {
 					}
 				})
 
-				// Convert Decimeters to Feet... The + 0.0001 * 100 ) / 100 is for rounding to two decimal places :)
-				const height =
-					Math.round((pokemonRes.data.height * 0.328084 + 0.00001) * 100) / 100
+				const heightCentMeters = pokemonRes.data.height * 10
+				const heightFeet = Math.floor(pokemonRes.data.height / 3.048)
+				const heightInches = Math.round(pokemonRes.data.height * 3.937)
 
-				const weight =
-					Math.round((pokemonRes.data.weight * 0.220462 + 0.00001) * 100) / 100
+				const weightKilos = (pokemonRes.data.weight / 10).toFixed(1)
+				const weightPounds = (pokemonRes.data.weight / 4.536).toFixed(1)
 
 				const types = pokemonRes.data.types.map((type) => {
-					// type.type.name.toLowerCase()
 					const name = type.type.name
 					const url = type.type.url
 					return { name, url }
@@ -108,14 +112,12 @@ export default function Pokemon() {
 				const themeColor = `${TYPE_COLORS[types[types.length - 1].name]}`
 
 				const abilities = pokemonRes.data.abilities.map((ability) => {
-					// return ability.ability.name
 					const name = ability.ability.name
 					const url = ability.ability.url
 					return { name, url }
 				})
 
 				const moves = pokemonRes.data.moves.map((move) => {
-					// return move.move.name
 					const name = move.move.name
 					const url = move.move.url
 					return { name, url }
@@ -193,8 +195,11 @@ export default function Pokemon() {
 						specialAttack,
 						specialDefense,
 					},
-					height,
-					weight,
+					heightCentMeters,
+					heightFeet,
+					heightInches,
+					weightKilos,
+					weightPounds,
 					evs,
 					themeColor,
 				})
@@ -211,12 +216,12 @@ export default function Pokemon() {
 				<div className="card-header">
 					<div className="row">
 						<div className="col-4">
-							<h5>
+							<h5 className="mb-0">
 								{pokemonInfo.id} {/* capName(translatedName) */}
 							</h5>
 						</div>
 						<div className="col-8">
-							<h5 className="float-end" style={{ margin: '0' }}>
+							<h5 className="float-end mb-0">
 								{pokemonInfo.types.map((type) => (
 									<TypeBadge key={type.name} name={type.name} url={type.url} />
 								))}
@@ -266,20 +271,28 @@ export default function Pokemon() {
 							/>
 						</div>
 					</div>
-					<div className="row mt-1">
+					<div className="row mt-3">
 						<div className="col">
 							<p className="">{speciesInfo.description}</p>
 						</div>
 					</div>
 				</div>
-				<hr />
+				<hr className="mt-0" />
 				<div className="card-body">
 					<h5 className="card-title text-center">Profile</h5>
 					<div className="row">
 						<div className="col-sm-6">
 							<div className="row">
-								<Profile title="Height" data={`${pokemonInfo.height} ft.`} />
-								<Profile title="Weight" data={`${pokemonInfo.weight} lbs`} />
+								<Profile
+									title="Height"
+									data={`${pokemonInfo.heightCentMeters} cm (${
+										pokemonInfo.heightFeet
+									}'${pokemonInfo.heightInches - pokemonInfo.heightFeet*12}")`}
+								/>
+								<Profile
+									title="Weight"
+									data={`${pokemonInfo.weightKilos} kg (${pokemonInfo.weightPounds} lb)`}
+								/>
 								<Profile
 									title="Catch Rate"
 									data={`${speciesInfo.catchRate}%`}
