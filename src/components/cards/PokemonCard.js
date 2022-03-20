@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { buildPathName, capName, getUrlId } from '../../helpers'
+import { buildPathName, capName, getUrlId } from '../../scripts/helpers'
 import spinner from '../layout/spinner.gif'
 
 const Sprite = styled.img`
@@ -12,7 +12,6 @@ const Sprite = styled.img`
 `
 
 const Card = styled.div`
-	opacity: 0.95;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 	&:hover {
@@ -102,7 +101,7 @@ export default function PokemonCard({ name, url }) {
 			<StyledLink to={buildPathName(`/pokemon/${pokemonId}`)}>
 				<Card className="card">
 					<h5 className="card-header">
-						{pokemonId} {capName(name)}
+						{`#${pokemonId} - ${capName(name)}`}
 					</h5>
 					{imageLoading && (
 						<img

@@ -7,10 +7,21 @@
 	min-height: 100vh;
 }
 
+body {
+	background-color: transparent !important;
+}
+
 .navbar {
 	background-color: #ef5350 !important;
 }
 
-body {
-	background-color: transparent !important;
+.progress, a .badge:hover, button .btn:hover {
+	background-image: linear-gradient(to top, rgba(200, 150, 180, 0.125), rgba(255, 255, 255, 0), rgba(100, 65, 80, 0.1));
+}
+.progress-bar, a .badge, button .btn {
+	background-image: linear-gradient(to bottom, rgba(200, 150, 180, 0.125), rgba(255, 255, 255, 0), rgba(100, 65, 80, 0.1));
+}
+
+button .btn:disabled {
+	background-image: none;
 }

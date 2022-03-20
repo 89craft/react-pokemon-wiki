@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { capName, getUserLanguage } from '../../helpers'
+import { capName, getUserLanguage } from '../../scripts/helpers'
 import { getCookie } from 'react-use-cookie'
 import PokemonCard from '../cards/PokemonCard'
 import TypeCard from '../cards/TypeCard'

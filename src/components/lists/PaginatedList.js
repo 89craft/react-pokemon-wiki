@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios'
-import { getUserLanguage } from '../../helpers'
+import { getUserLanguage } from '../../scripts/helpers'
 import Pagination from './Pagination'
 import PokemonCard from '../cards/PokemonCard'
 import TypeCard from '../cards/TypeCard'

@@ -1,15 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import {
-	buildPathName,
-	getUrlId,
-	getUserLanguage,
-} from '../../helpers'
+import { buildPathName, getUrlId, getUserLanguage } from '../../scripts/helpers'
 import { TYPE_COLORS, TYPE_NAMES } from '../type/Type'
 
 const Card = styled.div`
-	opacity: 0.95;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 	&:hover {
@@ -66,11 +61,10 @@ export default function TypeCard({ name, url, userLanguage = 'en' }) {
 					}}
 				>
 					<h5 className="card-header">
-						{itemId}{' '}
-						{getTranslatedName(
+						{`${getTranslatedName(
 							name,
 							userLanguage ? userLanguage : getUserLanguage()
-						)}
+						)}`}
 					</h5>
 				</Card>
 			</StyledLink>

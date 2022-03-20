@@ -7,11 +7,12 @@ import {
 	cleanAndCapName,
 	getUserLanguage,
 	getUrlId,
-} from '../../helpers'
+} from '../../scripts/helpers'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../layout/NotFound'
-import { TypeBadge } from '../type/Type'
-import { TYPE_COLORS } from '../type/Type'
+import { TypeBadge, TYPE_COLORS } from '../type/Type'
+import { blend } from '../../scripts/blend'
+import { RGBtoHSV, HSVtoRGB, parseHexString, createHexString } from '../../scripts/hsv'
 
 // const REACT_APP_POKE_API = process.env.REACT_APP_POKE_API
 
@@ -45,7 +46,8 @@ export default function Pokemon() {
 		weightKilos: 0,
 		weightPounds: 0,
 		evs: '',
-		themeColor: '',
+		priThemeColor: '',
+		secThemeColor: '',
 	})
 	const [speciesInfo, setSpeciesInfo] = useState({
 		description: '',
@@ -97,8 +99,12 @@ export default function Pokemon() {
 				})
 
 				const heightCentMeters = pokemonRes.data.height * 10
-				const heightFeet = Math.floor(pokemonRes.data.height / 3.048)
-				const heightInches = Math.round(pokemonRes.data.height * 3.937)
+				let heightFeet = Math.floor(pokemonRes.data.height / 3.048)
+				let heightInches = Math.round(pokemonRes.data.height * 3.937)
+				if (heightInches - heightFeet * 12 >= 12) {
+					heightFeet += 1
+					// heightInches -= 12
+				}
 
 				const weightKilos = (pokemonRes.data.weight / 10).toFixed(1)
 				const weightPounds = (pokemonRes.data.weight / 4.536).toFixed(1)
@@ -109,7 +115,10 @@ export default function Pokemon() {
 					return { name, url }
 				})
 
-				const themeColor = `${TYPE_COLORS[types[types.length - 1].name]}`
+				const priThemeColor = `${TYPE_COLORS[types[0].name]}`
+				const secThemeColor = `${TYPE_COLORS[types[types.length - 1].name]}`
+				// let temp = changeColor(priThemeColor, 0, 0)
+				// console.log(`%cpri 0 0 --- ${temp}`, `background: #${temp}; color: #fff`)
 
 				const abilities = pokemonRes.data.abilities.map((ability) => {
 					const name = ability.ability.name
@@ -136,48 +145,55 @@ export default function Pokemon() {
 					.join(', ')
 
 				// Get Pokemon Description .... Is from a different end point uggh
-				Axios.get(pokemonSpeciesUrl).then((speciesRes) => {
-					let translation = translatedName
-					speciesRes.data.names.some((name) => {
-						if (name.language.name === userLanguage) {
-							translation = name.name
-							return
-						}
-					})
-
-					let description = ''
-					speciesRes.data.flavor_text_entries.some((flavor) => {
-						if (flavor.language.name === userLanguage) {
-							description = flavor.flavor_text
-							return
-						}
-					})
-					const femaleRate = speciesRes.data['gender_rate']
-					const genderRatioFemale = 12.5 * femaleRate
-					const genderRatioMale = 12.5 * (8 - femaleRate)
-
-					const catchRate = Math.round(
-						(100 / 255) * speciesRes.data['capture_rate']
-					)
-
-					const eggGroups = speciesRes.data['egg_groups']
-						.map((group) => {
-							return cleanAndCapName(group.name)
+				Axios.get(pokemonSpeciesUrl)
+					.then((speciesRes) => {
+						let translation = translatedName
+						speciesRes.data.names.some((name) => {
+							if (name.language.name === userLanguage) {
+								translation = name.name
+								return
+							}
 						})
-						.join(', ')
 
-					const hatchSteps = 255 * (speciesRes.data['hatch_counter'] + 1)
+						let description = ''
+						speciesRes.data.flavor_text_entries.some((flavor) => {
+							if (flavor.language.name === userLanguage) {
+								description = flavor.flavor_text
+								return
+							}
+						})
 
-					setTranslatedName(translation)
-					setSpeciesInfo({
-						description,
-						genderRatioFemale,
-						genderRatioMale,
-						catchRate,
-						eggGroups,
-						hatchSteps,
+						const femaleRate = speciesRes.data['gender_rate']
+						const genderRatioFemale = femaleRate >= 0 ? 12.5 * femaleRate : 0
+						const genderRatioMale =
+							femaleRate >= 0 ? 12.5 * (8 - femaleRate) : 0
+
+						const catchRate = Math.round(
+							(100 / 255) * speciesRes.data['capture_rate']
+						)
+
+						const eggGroups = speciesRes.data['egg_groups']
+							.map((group) => {
+								return cleanAndCapName(group.name)
+							})
+							.join(', ')
+
+						const hatchSteps = 255 * (speciesRes.data['hatch_counter'] + 1)
+
+						setTranslatedName(translation)
+						setSpeciesInfo({
+							description,
+							genderRatioFemale,
+							genderRatioMale,
+							catchRate,
+							eggGroups,
+							hatchSteps,
+						})
 					})
-				})
+					.catch((err) => {
+						console.log(err)
+						setNotFound(true)
+					})
 
 				setTranslatedName(name)
 				setPokemonInfo({
@@ -201,29 +217,79 @@ export default function Pokemon() {
 					weightKilos,
 					weightPounds,
 					evs,
-					themeColor,
+					priThemeColor,
+					secThemeColor,
 				})
 			})
 			.catch((err) => {
+				console.log(err)
 				setNotFound(true)
 			})
 	}, [index])
+
+	function changeColor(color, deltaSat, deltaVal) {
+		if (!color) return color
+
+		console.log('------')
+		let hsv = RGBtoHSV(parseHexString(color))
+		// console.log(`rgb before ${color} ~ ${deltaSat} ~ ${deltaVal}`)
+		console.log(
+			`%chsv before ${hsv} ~ ${deltaSat} ~ ${deltaVal}`,
+			`background: #${color}; color: #fff`
+		)
+
+		if (deltaSat > 0) {
+			hsv[1] = hsv[1] + (1 - hsv[1]) * deltaSat
+		} else if (deltaSat < 0) {
+			hsv[1] = hsv[1] * (1 + deltaSat)
+		}
+		if (deltaVal > 0) {
+			hsv[2] = hsv[2] + (255 - hsv[2]) * deltaVal
+		} else if (deltaVal < 0) {
+			hsv[2] = hsv[2] * (1 + deltaVal)
+		}
+		hsv[1] = hsv[1].toFixed(1)
+		hsv[2] = Math.round(hsv[2])
+
+		const rgb = createHexString(HSVtoRGB(hsv))
+		console.log(`%chsv after ${hsv}`, `background: #${rgb}; color: #fff`)
+		// console.log(`rgb after ${rgb}`)
+		return rgb
+	}
 
 	return (
 		<div className="col pb-4">
 			{notFound && <NotFound />}
 			<div className="card mb-5">
-				<div className="card-header">
+				<div
+					className="card-header"
+					style={
+						pokemonInfo.secThemeColor.length > 0
+							? {
+									backgroundColor: `#${pokemonInfo.secThemeColor}`,
+									color: 'white',
+							  }
+							: {
+									backgroundColor: `#222222`,
+									color: 'white',
+							  }
+					}
+				>
 					<div className="row">
-						<div className="col-4">
+						<div className="col-6">
 							<h5 className="mb-0">
-								{pokemonInfo.id} {/* capName(translatedName) */}
+								{`#${pokemonInfo.id} - ${cleanAndCapName(translatedName)}`}
 							</h5>
 						</div>
-						<div className="col-8">
+						<div className="col-6">
 							<h5 className="float-end mb-0">
 								{pokemonInfo.types.map((type) => (
-									<TypeBadge key={type.name} name={type.name} url={type.url} />
+									<TypeBadge
+										key={type.name}
+										name={type.name}
+										url={type.url}
+										userLanguage={userLanguage}
+									/>
 								))}
 							</h5>
 						</div>
@@ -234,40 +300,40 @@ export default function Pokemon() {
 						<div className="col-md-4 col-sm-5">
 							<PokemonImage
 								imageUrls={pokemonInfo.imageUrls}
-								color={pokemonInfo.themeColor}
+								color={pokemonInfo.secThemeColor}
 							/>
 						</div>
 						<div className="col-md-8 col-sm-7">
-							<h4 className="mx-auto">{capName(translatedName)}</h4>
+							{/* <h4 className="mx-auto">{cleanAndCapName(translatedName)}</h4> */}
 							<Stat
 								title="HP"
-								width={pokemonInfo.stats.hp}
-								color={pokemonInfo.themeColor}
+								value={pokemonInfo.stats.hp}
+								color={pokemonInfo.priThemeColor}
 							/>
 							<Stat
 								title="Attack"
-								width={pokemonInfo.stats.attack}
-								color={pokemonInfo.themeColor}
+								value={pokemonInfo.stats.attack}
+								color={pokemonInfo.priThemeColor}
 							/>
 							<Stat
 								title="Defence"
-								width={pokemonInfo.stats.defense}
-								color={pokemonInfo.themeColor}
+								value={pokemonInfo.stats.defense}
+								color={pokemonInfo.priThemeColor}
 							/>
 							<Stat
 								title="Speed"
-								width={pokemonInfo.stats.speed}
-								color={pokemonInfo.themeColor}
+								value={pokemonInfo.stats.speed}
+								color={pokemonInfo.priThemeColor}
 							/>
 							<Stat
 								title="Sp Atk"
-								width={pokemonInfo.stats.specialAttack}
-								color={pokemonInfo.themeColor}
+								value={pokemonInfo.stats.specialAttack}
+								color={pokemonInfo.priThemeColor}
 							/>
 							<Stat
 								title="Sp Def"
-								width={pokemonInfo.stats.specialDefense}
-								color={pokemonInfo.themeColor}
+								value={pokemonInfo.stats.specialDefense}
+								color={pokemonInfo.priThemeColor}
 							/>
 						</div>
 					</div>
@@ -287,18 +353,32 @@ export default function Pokemon() {
 									title="Height"
 									data={`${pokemonInfo.heightCentMeters} cm (${
 										pokemonInfo.heightFeet
-									}'${pokemonInfo.heightInches - pokemonInfo.heightFeet*12}")`}
+									}'${
+										pokemonInfo.heightInches - pokemonInfo.heightFeet * 12
+									}")`}
 								/>
 								<Profile
 									title="Weight"
-									data={`${pokemonInfo.weightKilos} kg (${pokemonInfo.weightPounds} lb)`}
+									data={`${pokemonInfo.weightKilos} kg (${pokemonInfo.weightPounds} lbs)`}
 								/>
-								<Profile
-									title="Catch Rate"
-									data={`${speciesInfo.catchRate}%`}
-								/>
-								<ProfileTitle title="Gender Ratio" />
-								<div className={`col-${profileDataWidth}`}>
+								<Profile title="Catch Rate">
+									<div className="progress">
+										<div
+											className="progress-bar"
+											role="progressbar"
+											style={{
+												width: `${speciesInfo.catchRate}%`,
+												backgroundColor: '#ef5350',
+											}}
+											aria-valuenow="15"
+											aria-valuemin="0"
+											aria-valuemax="100"
+										>
+											<small>{`${speciesInfo.catchRate}%`}</small>
+										</div>
+									</div>
+								</Profile>
+								<Profile title="Gender Ratio">
 									<div className="progress">
 										<div
 											className="progress-bar"
@@ -306,12 +386,13 @@ export default function Pokemon() {
 											style={{
 												width: `${speciesInfo.genderRatioFemale}%`,
 												backgroundColor: '#c2185b',
+												// backgroundImage: 'linear-gradient(#ee1111, #c2185b)',
 											}}
 											aria-valuenow="15"
 											aria-valuemin="0"
 											aria-valuemax="100"
 										>
-											<small>{speciesInfo.genderRatioFemale}</small>
+											<small>{`${speciesInfo.genderRatioFemale}%`}</small>
 										</div>
 										<div
 											className="progress-bar"
@@ -319,15 +400,16 @@ export default function Pokemon() {
 											style={{
 												width: `${speciesInfo.genderRatioMale}%`,
 												backgroundColor: '#1976d2',
+												// backgroundImage: 'linear-gradient(#1111ee, #1976d2)',
 											}}
 											aria-valuenow="30"
 											aria-valuemin="0"
 											aria-valuemax="100"
 										>
-											<small>{speciesInfo.genderRatioMale}</small>
+											<small>{`${speciesInfo.genderRatioMale}%`}</small>
 										</div>
 									</div>
-								</div>
+								</Profile>
 							</div>
 						</div>
 						<div className="col-sm-6">
@@ -384,18 +466,18 @@ export default function Pokemon() {
 	)
 }
 
-function Stat({ title, width, color }) {
+function Stat({ title, value, color }) {
 	return (
 		<div className="row align-items-center">
 			<StatTitle title={title} />
-			<StatBar width={width} color={color} />
+			<StatBar value={value} color={color} />
 		</div>
 	)
 }
 function StatTitle({ title }) {
 	return <div className="col-md-3">{title}</div>
 }
-function StatBar({ width, color }) {
+function StatBar({ value, color }) {
 	return (
 		<div className="col-md-9">
 			<div className="progress">
@@ -403,25 +485,25 @@ function StatBar({ width, color }) {
 					className="progress-bar "
 					role="progressbar"
 					style={{
-						width: `${width}%`,
+						width: `${(value * 100) / 255}%`,
 						backgroundColor: `#${color}`,
 					}}
 					aria-valuenow="25"
 					aria-valuemin="0"
 					aria-valuemax="100"
 				>
-					<small>{width}</small>
+					<small>{value}</small>
 				</div>
 			</div>
 		</div>
 	)
 }
 
-function Profile({ title, data }) {
+function Profile({ children, title, data }) {
 	return (
 		<>
 			<ProfileTitle title={title} />
-			<ProfileData data={data} />
+			<ProfileData data={data}>{children}</ProfileData>
 		</>
 	)
 }
@@ -432,10 +514,10 @@ function ProfileTitle({ title }) {
 		</div>
 	)
 }
-function ProfileData({ data }) {
+function ProfileData({ children, data }) {
 	return (
 		<div className="col-7">
-			<h6 className="float-start">{data}</h6>
+			{children ? <>{children}</> : <h6 className="float-start">{data}</h6>}
 		</div>
 	)
 }

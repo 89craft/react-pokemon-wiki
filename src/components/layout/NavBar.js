@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Axios from 'axios'
 import useCookie from 'react-use-cookie'
 import styled from 'styled-components'
-import { homePathName, getUrlId } from '../../helpers'
+import { homePathName, getUrlId } from '../../scripts/helpers'
 
 const Branding = styled.a`
 	-moz-user-select: none;

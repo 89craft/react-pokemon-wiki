@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Axios from 'axios'
-import { cleanAndCapName, getUserLanguage } from '../../helpers'
+import { cleanAndCapName, getUserLanguage } from '../../scripts/helpers'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../layout/NotFound'
 
@@ -73,16 +73,14 @@ export default function Ability() {
 				<div className="card-header">
 					<div className="row">
 						<div className="col-6">
-							<h5>
-								{abilityInfo.id} {/* {cleanAndCapName(abilityInfo.translatedName)} */}
-							</h5>
+							<h5>{`${abilityInfo.translatedName}`}</h5>
 						</div>
 					</div>
 				</div>
 				<div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{cleanAndCapName(abilityInfo.translatedName)}</h4>
+							{/* <h4 className="mx-auto">{abilityInfo.translatedName}</h4> */}
 						</div>
 					</div>
 					<div className="row mt-1">
@@ -105,7 +103,11 @@ export default function Ability() {
 			</div>
 			<div className="row">
 				<div className="col mb-5">
-					<SoftLockList items={abilityInfo.pokemon} title="Pokemon" category="pokemon" />
+					<SoftLockList
+						items={abilityInfo.pokemon}
+						title="Pokemon"
+						category="pokemon"
+					/>
 				</div>
 			</div>
 		</div>

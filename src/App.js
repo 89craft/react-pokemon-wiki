@@ -11,7 +11,6 @@ import NotFound from './components/layout/NotFound'
 import backgroundImage from './pattern.png'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
-// import { isProduction } from './helpers'
 
 export default function App() {
 	return (

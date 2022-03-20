@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Axios from 'axios'
-import { cleanAndCapName, getUserLanguage } from '../../helpers'
+import { getUserLanguage } from '../../scripts/helpers'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../layout/NotFound'
 
@@ -67,7 +67,7 @@ export default function Move() {
 					<div className="row">
 						<div className="col-6">
 							<h5>
-								{moveInfo.id} {/* {cleanAndCapName(moveInfo.translatedName)} */}
+								{`${moveInfo.translatedName}`}
 							</h5>
 						</div>
 					</div>
@@ -75,7 +75,7 @@ export default function Move() {
 				<div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{cleanAndCapName(moveInfo.translatedName)}</h4>
+							{/* <h4 className="mx-auto">{moveInfo.translatedName}</h4> */}
 						</div>
 					</div>
 					<div className="row mt-1">

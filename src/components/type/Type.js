@@ -7,7 +7,7 @@ import {
 	capName,
 	getUrlId,
 	getUserLanguage,
-} from '../../helpers'
+} from '../../scripts/helpers'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../layout/NotFound'
 // import { RiSpeedFill, RiPlayFill, RiCloseFill } from 'react-icons/ri'
@@ -106,9 +106,7 @@ export default function Type() {
 				>
 					<div className="row">
 						<div className="col-6">
-							<h5>
-								{typeInfo.id} {/* capName(typeInfo.translatedName) */}
-							</h5>
+							<h5>{`${typeInfo.translatedName}`}</h5>
 						</div>
 					</div>
 				</div>
@@ -127,17 +125,26 @@ export default function Type() {
 						<div className="col order-2">
 							<div className="d-flex flex-column">
 								<h5 className="text-center">From</h5>
-								<DamageFrom types={typeInfo.doubleFrom}>
+								<DamageFrom
+									types={typeInfo.doubleFrom}
+									userLanguage={userLanguage}
+								>
 									<h4 className="m-1">X2</h4>
 									{/* <RiSpeedFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageFrom>
 								<hr></hr>
-								<DamageFrom types={typeInfo.halfFrom}>
+								<DamageFrom
+									types={typeInfo.halfFrom}
+									userLanguage={userLanguage}
+								>
 									<h4 className="m-1">/2</h4>
 									{/* <RiPlayFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageFrom>
 								<hr></hr>
-								<DamageFrom types={typeInfo.noneFrom}>
+								<DamageFrom
+									types={typeInfo.noneFrom}
+									userLanguage={userLanguage}
+								>
 									<h4 className="m-1">X0</h4>
 									{/* <RiCloseFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageFrom>
@@ -146,27 +153,24 @@ export default function Type() {
 						<div className="col-md-3 d-flex flex-column justify-content-between align-items-center order-md-3 order-1">
 							<h4 className="text-center">Damage Relations</h4>
 							<h2 style={{ margin: '1em' }}>
-								<TypeBadge
-									name={typeInfo.name}
-									translatedName={typeInfo.translatedName}
-								/>
+								<TypeBadge name={typeInfo.name} userLanguage={userLanguage} />
 							</h2>
 							<h4></h4>
 						</div>
 						<div className="col order-4">
 							<div className="d-flex flex-column">
 								<h5 className="text-center">To</h5>
-								<DamageTo types={typeInfo.doubleTo}>
+								<DamageTo types={typeInfo.doubleTo} userLanguage={userLanguage}>
 									<h4 className="m-1">X2</h4>
 									{/* <RiSpeedFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageTo>
 								<hr></hr>
-								<DamageTo types={typeInfo.halfTo}>
+								<DamageTo types={typeInfo.halfTo} userLanguage={userLanguage}>
 									<h4 className="m-1">/2</h4>
 									{/* <RiPlayFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageTo>
 								<hr></hr>
-								<DamageTo types={typeInfo.noneTo}>
+								<DamageTo types={typeInfo.noneTo} userLanguage={userLanguage}>
 									<h4 className="m-1">X0</h4>
 									{/* <RiCloseFill style={{ width: '2em', height: '2em' }} /> */}
 								</DamageTo>
@@ -204,14 +208,19 @@ export default function Type() {
 	)
 }
 
-function DamageFrom({ children, types }) {
+function DamageFrom({ children, types, userLanguage }) {
 	return (
 		<div className="d-flex justify-content-end align-items-center">
 			<div>
 				{types.length > 0 ? (
 					<h4 style={{ marginBottom: '0' }}>
 						{types.map((type) => (
-							<TypeBadge key={type.name} name={type.name} url={type.url} />
+							<TypeBadge
+								key={type.name}
+								name={type.name}
+								url={type.url}
+								userLanguage={userLanguage}
+							/>
 						))}
 					</h4>
 				) : (
@@ -224,7 +233,7 @@ function DamageFrom({ children, types }) {
 		</div>
 	)
 }
-function DamageTo({ children, types }) {
+function DamageTo({ children, types, userLanguage }) {
 	return (
 		<div className="d-flex justify-content-start align-items-center">
 			<div>{children}</div>
@@ -232,7 +241,12 @@ function DamageTo({ children, types }) {
 				{types.length > 0 ? (
 					<h4 style={{ marginBottom: '0' }}>
 						{types.map((type) => (
-							<TypeBadge key={type.name} name={type.name} url={type.url} />
+							<TypeBadge
+								key={type.name}
+								name={type.name}
+								url={type.url}
+								userLanguage={userLanguage}
+							/>
 						))}
 					</h4>
 				) : (
@@ -245,7 +259,7 @@ function DamageTo({ children, types }) {
 	)
 }
 
-export function TypeBadge({ name, url, userLanguage = 'en' }) {
+export function TypeBadge({ name, url, userLanguage }) {
 	function getTranslatedName() {
 		if (!name) return name
 		const set = TYPE_NAMES.find((entry) => {
@@ -253,7 +267,7 @@ export function TypeBadge({ name, url, userLanguage = 'en' }) {
 		})
 		let translatedName = name
 		set.names.some((name) => {
-			if (name.language.name === getUserLanguage()) {
+			if (name.language.name === userLanguage) {
 				translatedName = name.name
 				return
 			}
@@ -275,6 +289,7 @@ export function TypeBadge({ name, url, userLanguage = 'en' }) {
 				style={{
 					backgroundColor: `#${TYPE_COLORS[name]}`,
 					color: 'white',
+					border: '1px solid #ffffff',
 				}}
 			>
 				{getTranslatedName()}

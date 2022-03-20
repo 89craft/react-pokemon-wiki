@@ -22,39 +22,45 @@ export function cleanName(text) {
 }
 // convert 'water absorb' to 'Water Absorb'
 export function capName(text) {
-	if (getUserLanguage() !== 'en') return text
-	text = text ? text : ''
-	return text
+	let newText = text ? text : ''
+	newText = newText
 		.toLowerCase()
 		.split(' ')
 		.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
 		.join(' ')
+	return newText.length > 0 ? newText : text
 }
 // convert 'water-absorb' to 'Water Absorb'
 export function cleanAndCapName(text) {
-	if (getUserLanguage() !== 'en') return text
-	text = text ? text : ''
-	return text
+	let newText = text ? text : ''
+	newText = newText
 		.toLowerCase()
 		.split('-')
 		.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
 		.join(' ')
+	let fallbackText = cleanName(text)
+	return newText.length > 0
+		? newText
+		: fallbackText.length > 0
+		? fallbackText
+		: text
 }
 // convert 'water-absorb' or 'water absorb' to 'Water Absorb'
 export function cleanOrCapName(text) {
-	if (getUserLanguage() !== 'en') return text
-	text = text ? text : ''
-	const dashSplit = text.toLowerCase().split('-')
+	let newText = text ? text : ''
+	let dashSplit = newText.toLowerCase().split('-')
 	if (dashSplit.length > 1) {
-		return dashSplit
+		newText = dashSplit
 			.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
 			.join(' ')
+		return newText.length > 0 ? newText : text
 	} else {
-		return text
+		newText = newText
 			.toLowerCase()
 			.split(' ')
 			.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
 			.join(' ')
+		return newText.length > 0 ? newText : text
 	}
 }
 
