@@ -40,7 +40,7 @@ export default function DefaultCard({
 			<StyledLink to={buildPathName(`/${category}/${itemId}`)}>
 				<Card className="card">
 					<h5 className="card-header">
-						{`${cleanAndCapName(name)}`}
+						{`${cleanAndCapName(name)}${category === 'berry' ? " Berry" : ""}`}
 					</h5>
 				</Card>
 			</StyledLink>

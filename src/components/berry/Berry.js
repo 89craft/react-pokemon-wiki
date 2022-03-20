@@ -110,7 +110,7 @@ export default function Berry() {
 			{notFound && <NotFound />}
 			<div className="card mb-5">
 				<div className="card-header">
-					<h5>{capName(berryInfo.name)}</h5>
+					<h5>{`${capName(berryInfo.name)} Berry`}</h5>
 				</div>
 				<div className="card-body">
 					<div className="row align-items-center">
@@ -266,7 +266,6 @@ function ProfileTitle({ title }) {
 	)
 }
 function ProfileData({ children, data }) {
-	console.log(data)
 	return (
 		<div className="col-7">
 			{children ? <>{children}</> : <h6 className="float-start">{data}</h6>}

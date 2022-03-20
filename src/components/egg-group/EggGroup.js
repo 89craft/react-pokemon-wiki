@@ -58,18 +58,13 @@ export default function EggGroup() {
 				<div className="card-header">
 					<h5>{eggGroupInfo.translatedName}</h5>
 				</div>
-				<div className="card-body">
+				{/* <div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
 							<h4 className="mx-auto">{eggGroupInfo.translatedName}</h4>
 						</div>
 					</div>
-					{/* <div className="row mt-1">
-						<div className="col">
-							<p>{eggGroupInfo.description}</p>
-						</div>
-					</div> */}
-				</div>
+				</div> */}
 				<div className="card-footer text-muted">
 					Data From{' '}
 					<a

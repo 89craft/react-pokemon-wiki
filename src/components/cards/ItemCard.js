@@ -37,7 +37,7 @@ const StyledLink = styled(Link)`
 	}
 `
 
-export default function PokemonCard({ name, url }) {
+export default function Itemcard({ name, url }) {
 	const [imageLoading, setImageLoading] = useState(true)
 	const [imageError, setImageError] = useState(false)
 

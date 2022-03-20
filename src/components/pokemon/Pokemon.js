@@ -366,8 +366,18 @@ export default function Pokemon() {
 					<div className="row">
 						<div className="col-sm-6">
 							<div className="row">
-								<Profile title="Color" data={capName(speciesInfo.color.name)} />
-								<Profile title="Shape" data={capName(speciesInfo.shape.name)} />
+								<Profile title="Color">
+									<LinkBadges
+										category="pokemon-color"
+										items={speciesInfo.color}
+									/>
+								</Profile>
+								<Profile title="Shape">
+									<LinkBadges
+										category="pokemon-shape"
+										items={speciesInfo.shape}
+									/>
+								</Profile>
 								<Profile
 									title="Height"
 									data={`${pokemonInfo.heightCentMeters} cm (${
@@ -433,54 +443,30 @@ export default function Pokemon() {
 						</div>
 						<div className="col-sm-6">
 							<div className="row">
-								<Profile
-									title="Generation"
-									data={capFirstLetter(cleanName(speciesInfo.generation.name))}
-								/>
-								<Profile
-									title="Growth Rate"
-									data={cleanAndCapName(speciesInfo.growthRate.name)}
-								/>
+								<Profile title="Generation">
+									<LinkBadges
+										category="generation"
+										items={speciesInfo.generation}
+									/>
+								</Profile>
+								<Profile title="Growth Rate">
+									<LinkBadges
+										category="growth-rate"
+										items={speciesInfo.growthRate}
+									/>
+								</Profile>
 								<Profile title="Hatch Steps" data={speciesInfo.hatchSteps} />
 								<Profile title="Egg Groups">
-									<h6>
-										{speciesInfo.eggGroups.map((eggGroup) => (
-											<Link
-												key={eggGroup.name}
-												className="mx-1"
-												style={{ textDecoration: 'none' }}
-												to={buildPathName(
-													`/egg-group/${getUrlId(eggGroup.url)}`
-												)}
-											>
-												<span
-													className="badge text-nowrap"
-													style={{ backgroundColor: `#ef5350`, color: 'white' }}
-												>
-													{cleanAndCapName(eggGroup.name)}
-												</span>
-											</Link>
-										))}
-									</h6>
+									<LinkBadges
+										category="egg-group"
+										items={speciesInfo.eggGroups}
+									/>
 								</Profile>
 								<Profile title="Abilities">
-									<h6>
-										{pokemonInfo.abilities.map((ability) => (
-											<Link
-												key={ability.name}
-												className="mx-1"
-												style={{ textDecoration: 'none' }}
-												to={buildPathName(`/ability/${getUrlId(ability.url)}`)}
-											>
-												<span
-													className="badge text-nowrap"
-													style={{ backgroundColor: `#ef5350`, color: 'white' }}
-												>
-													{cleanAndCapName(ability.name)}
-												</span>
-											</Link>
-										))}
-									</h6>
+									<LinkBadges
+										category="ability"
+										items={pokemonInfo.abilities}
+									/>
 								</Profile>
 								<Profile title="EVs" data={pokemonInfo.evs} />
 							</div>
@@ -565,6 +551,37 @@ function ProfileData({ children, data }) {
 		<div className="col-7">
 			{children ? <>{children}</> : <h6 className="float-start">{data}</h6>}
 		</div>
+	)
+}
+
+function LinkBadges({ category, items }) {
+	if (
+		typeof items === 'object' &&
+		!Array.isArray(items) &&
+		items !== null
+	) {
+		const arr = []
+		arr.push(items)
+		items = arr
+	}
+	return (
+		<h6>
+			{items ? items.map((item) => (
+				<Link
+					key={item.name}
+					className="mx-1"
+					style={{ textDecoration: 'none' }}
+					to={buildPathName(`/${category}/${getUrlId(item.url)}`)}
+				>
+					<span
+						className="badge text-nowrap"
+						style={{ backgroundColor: `#ef5350`, color: 'white' }}
+					>
+						{cleanAndCapName(item.name)}
+					</span>
+				</Link>
+			)) : null}
+		</h6>
 	)
 }
 

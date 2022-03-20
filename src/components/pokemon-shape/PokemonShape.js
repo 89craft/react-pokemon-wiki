@@ -5,12 +5,12 @@ import { cleanAndCapName, getUserLanguage, capFirstLetter } from '../../scripts/
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../layout/NotFound'
 
-export default function PokemonColor() {
+export default function PokemonShape() {
 	let { index } = useParams()
 	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-	const [pokemonColorInfo, setpokemonColorInfo] = useState({
+	const [pokemonShapeInfo, setpokemonShapeInfo] = useState({
 		id: '',
 		name: '',
 		translatedName: '',
@@ -18,28 +18,28 @@ export default function PokemonColor() {
 	})
 
 	useEffect(() => {
-		const pokemonColorUrl = `${process.env.REACT_APP_POKE_API}/pokemon-color/${index}/`
+		const pokemonShapeUrl = `${process.env.REACT_APP_POKE_API}/pokemon-shape/${index}/`
 
-		Axios.get(pokemonColorUrl)
-			.then((pokemonColorRes) => {
-				const id = pokemonColorRes.data.id
+		Axios.get(pokemonShapeUrl)
+			.then((pokemonShapeRes) => {
+				const id = pokemonShapeRes.data.id
 
-				let name = pokemonColorRes.data.name.toLowerCase()
+				let name = pokemonShapeRes.data.name.toLowerCase()
 				let translatedName = name
-				pokemonColorRes.data.names.some((name) => {
+				pokemonShapeRes.data.names.some((name) => {
 					if (name.language.name === userLanguage) {
 						translatedName = name.name
 						return
 					}
 				})
 
-				const species = pokemonColorRes.data.pokemon_species.map((singleSpecies) => {
+				const species = pokemonShapeRes.data.pokemon_species.map((singleSpecies) => {
 					const name = singleSpecies.name
 					const url = singleSpecies.url
 					return { name, url }
 				})
 
-				setpokemonColorInfo({
+				setpokemonShapeInfo({
 					id,
 					name,
 					translatedName,
@@ -56,12 +56,12 @@ export default function PokemonColor() {
 			{notFound && <NotFound />}
 			<div className="card mb-5">
 				<div className="card-header">
-					<h5>{pokemonColorInfo.translatedName}</h5>
+					<h5>{pokemonShapeInfo.translatedName}</h5>
 				</div>
 				{/* <div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{pokemonColorInfo.translatedName}</h4>
+							<h4 className="mx-auto">{pokemonShapeInfo.translatedName}</h4>
 						</div>
 					</div>
 				</div> */}
@@ -80,7 +80,7 @@ export default function PokemonColor() {
 			<div className="row">
 				<div className="col mb-5">
 					<SoftLockList
-						items={pokemonColorInfo.species}
+						items={pokemonShapeInfo.species}
 						title="Pokemon"
 						category="pokemon"
 					/>
