@@ -5,53 +5,45 @@ import { getUserLanguage } from '../../scripts/helpers'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../layout/NotFound'
 
-export default function Move() {
+export default function EggGroup() {
 	let { index } = useParams()
 	const userLanguage = getUserLanguage()
 
 	const [notFound, setNotFound] = useState(false)
-	// const [name, setName] = useState('')
-	const [moveInfo, setMoveInfo] = useState({
+	const [eggGroupInfo, seteggGroupInfo] = useState({
 		id: '',
 		name: '',
 		translatedName: '',
-		description: '',
-		pokemon: [],
+		species: [],
 	})
 
 	useEffect(() => {
-		const moveUrl = `${process.env.REACT_APP_POKE_API}/move/${index}/`
+		const eggGroupUrl = `${process.env.REACT_APP_POKE_API}/egg-group/${index}/`
 
-		Axios.get(moveUrl)
-			.then((moveRes) => {
-				const id = moveRes.data.id
+		Axios.get(eggGroupUrl)
+			.then((eggGroupRes) => {
+				const id = eggGroupRes.data.id
 
-				const name = moveRes.data.name.toLowerCase()
+				let name = eggGroupRes.data.name.toLowerCase()
 				let translatedName = name
-				moveRes.data.names.some((name) => {
+				eggGroupRes.data.names.some((name) => {
 					if (name.language.name === userLanguage) {
 						translatedName = name.name
 						return
 					}
 				})
 
-				let description = ''
-				moveRes.data.flavor_text_entries.some((flavor) => {
-					if (flavor.language.name === userLanguage) {
-						description = flavor.flavor_text
-						return
-					}
+				const species = eggGroupRes.data.pokemon_species.map((singleSpecies) => {
+					const name = singleSpecies.name
+					const url = singleSpecies.url
+					return { name, url }
 				})
 
-				const pokemon = moveRes.data.learned_by_pokemon
-
-				// setName(name)
-				setMoveInfo({
+				seteggGroupInfo({
 					id,
 					name,
 					translatedName,
-					description,
-					pokemon,
+					species,
 				})
 			})
 			.catch((err) => {
@@ -66,21 +58,21 @@ export default function Move() {
 				<div className="card-header">
 					<div className="row">
 						<div className="col-6">
-							<h5>{moveInfo.translatedName}</h5>
+							<h5>{eggGroupInfo.translatedName}</h5>
 						</div>
 					</div>
 				</div>
 				<div className="card-body">
 					<div className="row align-items-center">
 						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{moveInfo.translatedName}</h4>
+							<h4 className="mx-auto">{eggGroupInfo.translatedName}</h4>
 						</div>
 					</div>
-					<div className="row mt-1">
+					{/* <div className="row mt-1">
 						<div className="col">
-							<p>{moveInfo.description}</p>
+							<p>{eggGroupInfo.description}</p>
 						</div>
-					</div>
+					</div> */}
 				</div>
 				<div className="card-footer text-muted">
 					Data From{' '}
@@ -97,8 +89,8 @@ export default function Move() {
 			<div className="row">
 				<div className="col mb-5">
 					<SoftLockList
-						items={moveInfo.pokemon}
-						title="Leaved By"
+						items={eggGroupInfo.species}
+						title="Pokemon"
 						category="pokemon"
 					/>
 				</div>

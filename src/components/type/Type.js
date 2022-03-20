@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Axios from 'axios'
 import styled from 'styled-components'
-import {
-	buildPathName,
-	capName,
-	getUrlId,
-	getUserLanguage,
-} from '../../scripts/helpers'
+import { buildPathName, getUrlId, getUserLanguage } from '../../scripts/helpers'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../layout/NotFound'
 // import { RiSpeedFill, RiPlayFill, RiCloseFill } from 'react-icons/ri'
@@ -106,19 +101,14 @@ export default function Type() {
 				>
 					<div className="row">
 						<div className="col-6">
-							<h5>{`${typeInfo.translatedName}`}</h5>
+							<h5>{typeInfo.translatedName}</h5>
 						</div>
 					</div>
 				</div>
 				<div className="card-body">
-					{/* <div className="row align-items-center">
-						<div className="col-md-9 col-sm-7">
-							<h4 className="mx-auto">{capName(translatedName)}</h4>
-						</div>
-					</div> */}
 					{/* <div className="row mt-1">
             <div className="col">
-              <p className="">{description}</p>
+              <p>{description}</p>
             </div>
           </div> */}
 					<div className="row">

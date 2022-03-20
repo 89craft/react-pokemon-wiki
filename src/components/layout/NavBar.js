@@ -4,6 +4,8 @@ import useCookie from 'react-use-cookie'
 import styled from 'styled-components'
 import { homePathName, getUrlId } from '../../scripts/helpers'
 
+const languages = ['en', 'de', 'ja-Hrkt', 'ko', 'fr', 'es']
+
 const Branding = styled.a`
 	-moz-user-select: none;
 	-website-user-select: none;
@@ -22,7 +24,6 @@ export default function NavBar() {
 	const [hoverNavBar, setHoverNavBar] = useState(false)
 	const [userLanguage, setUserLanguage] = useCookie('userLanguage', 'en')
 	// const [languages, setLanguages] = useState([])
-	const languages = ['en', 'ja-Hrkt', 'ko', 'fr', 'de', 'es']
 	const [optionLoaded, setOptionLoaded] = useState('')
 
 	// Similar to componentDidMount and componentDidUpdate

@@ -63,6 +63,12 @@ export function cleanOrCapName(text) {
 		return newText.length > 0 ? newText : text
 	}
 }
+// convert 'water absorb' to 'Water absorb'
+export function capFirstLetter(text) {
+	let newText = text ? text : ''
+	newText = newText.charAt(0).toUpperCase() + newText.slice(1)
+	return newText.length > 0 ? newText : text
+}
 
 export function getUserLanguage() {
 	let userLanguage = getCookie('userLanguage')

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { capName, getUserLanguage } from '../../scripts/helpers'
+import { capName, cleanAndCapName, getUserLanguage } from '../../scripts/helpers'
 import { getCookie } from 'react-use-cookie'
 import PokemonCard from '../cards/PokemonCard'
 import TypeCard from '../cards/TypeCard'
@@ -28,7 +28,7 @@ export default function SoftLockList({
 			{isHidden ? (
 				<input
 					type="submit"
-					value={`View ${capName(category)}`}
+					value={`View ${cleanAndCapName(category)}`}
 					className="btn btn-success mx-auto"
 					style={{ width: 'auto' }}
 					onClick={() => setIsHidden(false)}

@@ -3,8 +3,10 @@ import { Link, useParams } from 'react-router-dom'
 import Axios from 'axios'
 import {
 	buildPathName,
+	cleanName,
 	capName,
 	cleanAndCapName,
+	capFirstLetter,
 	getUserLanguage,
 	getUrlId,
 } from '../../scripts/helpers'
@@ -12,7 +14,12 @@ import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../layout/NotFound'
 import { TypeBadge, TYPE_COLORS } from '../type/Type'
 import { blend } from '../../scripts/blend'
-import { RGBtoHSV, HSVtoRGB, parseHexString, createHexString } from '../../scripts/hsv'
+import {
+	RGBtoHSV,
+	HSVtoRGB,
+	parseHexString,
+	createHexString,
+} from '../../scripts/hsv'
 
 // const REACT_APP_POKE_API = process.env.REACT_APP_POKE_API
 
@@ -54,8 +61,12 @@ export default function Pokemon() {
 		genderRatioMale: '',
 		genderRatioFemale: '',
 		catchRate: '',
-		eggGroups: '',
+		eggGroups: [],
 		hatchSteps: '',
+		color: '',
+		shape: '',
+		growthRate: '',
+		generation: '',
 	})
 
 	useEffect(() => {
@@ -72,7 +83,6 @@ export default function Pokemon() {
 				const imageUrls = pokemonRes.data.sprites
 
 				let { hp, attack, defense, speed, specialAttack, specialDefense } = ''
-
 				pokemonRes.data.stats.map((stat) => {
 					switch (stat.stat.name) {
 						case 'hp':
@@ -172,13 +182,18 @@ export default function Pokemon() {
 							(100 / 255) * speciesRes.data['capture_rate']
 						)
 
-						const eggGroups = speciesRes.data['egg_groups']
-							.map((group) => {
-								return cleanAndCapName(group.name)
-							})
-							.join(', ')
+						const eggGroups = speciesRes.data.egg_groups.map((eggGroup) => {
+							const name = eggGroup.name
+							const url = eggGroup.url
+							return { name, url }
+						})
 
 						const hatchSteps = 255 * (speciesRes.data['hatch_counter'] + 1)
+
+						const color = speciesRes.data.color
+						const shape = speciesRes.data.shape
+						const growthRate = speciesRes.data.growth_rate
+						const generation = speciesRes.data.generation
 
 						setTranslatedName(translation)
 						setSpeciesInfo({
@@ -188,11 +203,15 @@ export default function Pokemon() {
 							catchRate,
 							eggGroups,
 							hatchSteps,
+							color,
+							shape,
+							growthRate,
+							generation,
 						})
 					})
 					.catch((err) => {
 						console.log(err)
-						setNotFound(true)
+						// setNotFound(true)
 					})
 
 				setTranslatedName(name)
@@ -278,7 +297,7 @@ export default function Pokemon() {
 					<div className="row">
 						<div className="col-6">
 							<h5 className="mb-0">
-								{`#${pokemonInfo.id} - ${cleanAndCapName(translatedName)}`}
+								{`#${pokemonInfo.id} - ${translatedName}`}
 							</h5>
 						</div>
 						<div className="col-6">
@@ -304,7 +323,7 @@ export default function Pokemon() {
 							/>
 						</div>
 						<div className="col-md-8 col-sm-7">
-							{/* <h4 className="mx-auto">{cleanAndCapName(translatedName)}</h4> */}
+							<h4 className="mx-auto">{translatedName}</h4>
 							<Stat
 								title="HP"
 								value={pokemonInfo.stats.hp}
@@ -335,20 +354,23 @@ export default function Pokemon() {
 								value={pokemonInfo.stats.specialDefense}
 								color={pokemonInfo.priThemeColor}
 							/>
+							<p className="mt-3">{speciesInfo.description}</p>
 						</div>
 					</div>
-					<div className="row mt-3">
+					{/* <div className="row mt-3">
 						<div className="col">
-							<p className="">{speciesInfo.description}</p>
+							<p>{speciesInfo.description}</p>
 						</div>
-					</div>
+					</div> */}
 				</div>
 				<hr className="mt-0" />
 				<div className="card-body">
-					<h5 className="card-title text-center">Profile</h5>
+					{/* <h5 className="card-title text-center">Profile</h5> */}
 					<div className="row">
 						<div className="col-sm-6">
 							<div className="row">
+								<Profile title="Color" data={capName(speciesInfo.color.name)} />
+								<Profile title="Shape" data={capName(speciesInfo.shape.name)} />
 								<Profile
 									title="Height"
 									data={`${pokemonInfo.heightCentMeters} cm (${
@@ -414,10 +436,29 @@ export default function Pokemon() {
 						</div>
 						<div className="col-sm-6">
 							<div className="row">
-								<Profile title="Egg Groups" data={speciesInfo.eggGroups} />
+								<Profile title="Generation" data={capFirstLetter(cleanName(speciesInfo.generation.name))} />
+								<Profile title="Growth Rate" data={cleanAndCapName(speciesInfo.growthRate.name)} />
 								<Profile title="Hatch Steps" data={speciesInfo.hatchSteps} />
-								<ProfileTitle title="Abilities" />
-								<div className={`col-${profileDataWidth}`}>
+								<Profile title="Egg Groups">
+									<h6>
+										{speciesInfo.eggGroups.map((eggGroup) => (
+											<Link
+												key={eggGroup.name}
+												className="me-1"
+												style={{ textDecoration: 'none' }}
+												to={buildPathName(`/egg-group/${getUrlId(eggGroup.url)}`)}
+											>
+												<span
+													className="badge text-nowrap"
+													style={{ backgroundColor: `#ef5350`, color: 'white' }}
+												>
+													{cleanAndCapName(eggGroup.name)}
+												</span>
+											</Link>
+										))}
+									</h6>
+								</Profile>
+								<Profile title="Abilities">
 									<h6>
 										{pokemonInfo.abilities.map((ability) => (
 											<Link
@@ -435,7 +476,7 @@ export default function Pokemon() {
 											</Link>
 										))}
 									</h6>
-								</div>
+								</Profile>
 								<Profile title="EVs" data={pokemonInfo.evs} />
 							</div>
 						</div>
