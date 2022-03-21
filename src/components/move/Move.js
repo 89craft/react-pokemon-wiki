@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Axios from 'axios'
-import { getUserLanguage } from '../../scripts/helpers'
+import {
+	getUserLanguage,
+	getUrlId,
+	buildPathName,
+	cleanAndCapName,
+} from '../../scripts/helpers'
+import { TypeBadge, TYPE_COLORS } from '../type/Type'
 import SoftLockList from '../lists/SoftLockList'
 import NotFound from '../layout/NotFound'
+// import { LinkBadges } from '../LinkBadge'
 
 export default function Move() {
 	let { index } = useParams()
@@ -17,6 +24,19 @@ export default function Move() {
 		translatedName: '',
 		description: '',
 		pokemon: [],
+		accuracy: '',
+		power: '',
+		pp: '',
+		damageClass: {},
+		generation: {},
+		target: {},
+		type: {},
+		contestType: {},
+		contestComboBefore: [],
+		contestComboAfter: [],
+		effect: '',
+		effectShort: '',
+		themeColor: '',
 	})
 
 	useEffect(() => {
@@ -44,6 +64,16 @@ export default function Move() {
 				})
 
 				const pokemon = moveRes.data.learned_by_pokemon
+				const accuracy = moveRes.data.accuracy
+				const power = moveRes.data.power
+				const pp = moveRes.data.pp
+				const damageClass = moveRes.data.damage_class
+				const generation = moveRes.data.generation
+				const target = moveRes.data.target
+				const type = moveRes.data.type
+				const contestType = moveRes.data.contest_type
+
+				const themeColor = `${TYPE_COLORS[type.name]}`
 
 				// setName(name)
 				setMoveInfo({
@@ -52,6 +82,15 @@ export default function Move() {
 					translatedName,
 					description,
 					pokemon,
+					accuracy,
+					power,
+					pp,
+					damageClass,
+					generation,
+					target,
+					type,
+					contestType,
+					themeColor,
 				})
 			})
 			.catch((err) => {
@@ -63,7 +102,20 @@ export default function Move() {
 		<div className="col pb-4">
 			{notFound && <NotFound />}
 			<div className="card mb-5">
-				<div className="card-header">
+				<div
+					className="card-header"
+					style={
+						moveInfo.themeColor.length > 0
+							? {
+									backgroundColor: `#${moveInfo.themeColor}`,
+									color: 'white',
+							  }
+							: {
+									backgroundColor: `#222222`,
+									color: 'white',
+							  }
+					}
+				>
 					<h5>{moveInfo.translatedName}</h5>
 				</div>
 				<div className="card-body">
@@ -75,6 +127,53 @@ export default function Move() {
 					<div className="row mt-1">
 						<div className="col">
 							<p>{moveInfo.description}</p>
+						</div>
+					</div>
+				</div>
+				<hr className="mt-0" />
+				<div className="card-body">
+					{/* <h5 className="card-title text-center">Profile</h5> */}
+					<div className="row">
+						<div className="col-sm-6">
+							<div className="row">
+								<Profile title="Accuracy" data={moveInfo.accuracy} />
+								<Profile title="PP" data={moveInfo.pp} />
+								<Profile title="Damage Class">
+									<LinkBadges
+										category="move-damage-class"
+										items={moveInfo.damageClass}
+									/>
+								</Profile>
+								<Profile title="Target">
+									<LinkBadges category="move-target" items={moveInfo.target} />
+								</Profile>
+							</div>
+						</div>
+						<div className="col-sm-6">
+							<div className="row">
+								<Profile title="Power" data={moveInfo.accuracy} />
+								<Profile title="Generation">
+									<LinkBadges
+										category="generation"
+										items={moveInfo.generation}
+									/>
+								</Profile>
+								<Profile title="Type">
+									<h6>
+										<TypeBadge
+											name={moveInfo.type.name}
+											url={moveInfo.type.url}
+											userLanguage={userLanguage}
+										/>
+									</h6>
+								</Profile>
+								<Profile title="Contest Type">
+									<LinkBadges
+										category="contest-type"
+										items={moveInfo.contestType}
+									/>
+								</Profile>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -94,11 +193,63 @@ export default function Move() {
 				<div className="col mb-5">
 					<SoftLockList
 						items={moveInfo.pokemon}
-						title="Leaved By"
+						title="Learned By"
 						category="pokemon"
 					/>
 				</div>
 			</div>
 		</div>
+	)
+}
+
+function Profile({ children, title, data }) {
+	return (
+		<>
+			<ProfileTitle title={title} />
+			<ProfileData data={data}>{children}</ProfileData>
+		</>
+	)
+}
+function ProfileTitle({ title }) {
+	return (
+		<div className="col-5">
+			<h6 className="float-end text-end text-nowrap">{title}:</h6>
+		</div>
+	)
+}
+function ProfileData({ children, data }) {
+	return (
+		<div className="col-7">
+			{children ? <>{children}</> : <h6 className="float-start">{data}</h6>}
+		</div>
+	)
+}
+
+function LinkBadges({ category, items }) {
+	if (typeof items === 'object' && !Array.isArray(items) && items !== null) {
+		const arr = []
+		arr.push(items)
+		items = arr
+	}
+	return (
+		<h6>
+			{items[0].url
+				? items.map((item) => (
+						<Link
+							key={item.name}
+							className="mx-1"
+							style={{ textDecoration: 'none' }}
+							to={buildPathName(`/${category}/${getUrlId(item.url)}`)}
+						>
+							<span
+								className="badge text-nowrap"
+								style={{ backgroundColor: `#ef5350`, color: 'white' }}
+							>
+								{cleanAndCapName(item.name)}
+							</span>
+						</Link>
+				  ))
+				: null}
+		</h6>
 	)
 }

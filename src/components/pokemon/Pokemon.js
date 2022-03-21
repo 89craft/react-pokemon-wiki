@@ -3,10 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import Axios from 'axios'
 import {
 	buildPathName,
-	cleanName,
-	capName,
 	cleanAndCapName,
-	capFirstLetter,
 	getUserLanguage,
 	getUrlId,
 } from '../../scripts/helpers'
@@ -555,32 +552,30 @@ function ProfileData({ children, data }) {
 }
 
 function LinkBadges({ category, items }) {
-	if (
-		typeof items === 'object' &&
-		!Array.isArray(items) &&
-		items !== null
-	) {
+	if (typeof items === 'object' && !Array.isArray(items) && items !== null) {
 		const arr = []
 		arr.push(items)
 		items = arr
 	}
 	return (
 		<h6>
-			{items ? items.map((item) => (
-				<Link
-					key={item.name}
-					className="mx-1"
-					style={{ textDecoration: 'none' }}
-					to={buildPathName(`/${category}/${getUrlId(item.url)}`)}
-				>
-					<span
-						className="badge text-nowrap"
-						style={{ backgroundColor: `#ef5350`, color: 'white' }}
-					>
-						{cleanAndCapName(item.name)}
-					</span>
-				</Link>
-			)) : null}
+			{items[0].url
+				? items.map((item) => (
+						<Link
+							key={item.name}
+							className="mx-1"
+							style={{ textDecoration: 'none' }}
+							to={buildPathName(`/${category}/${getUrlId(item.url)}`)}
+						>
+							<span
+								className="badge text-nowrap"
+								style={{ backgroundColor: `#ef5350`, color: 'white' }}
+							>
+								{cleanAndCapName(item.name)}
+							</span>
+						</Link>
+				  ))
+				: null}
 		</h6>
 	)
 }
