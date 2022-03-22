@@ -19,7 +19,7 @@ export default function Generation() {
 		id: '',
 		name: '',
 		translatedName: '',
-		abilities: [],
+		// abilities: [],
 		moves: [],
 		species: [],
 		types: [],
@@ -42,7 +42,7 @@ export default function Generation() {
 					}
 				})
 
-				const abilities = generationRes.data.abilities
+				// const abilities = generationRes.data.abilities
 
 				const moves = generationRes.data.moves
 
@@ -63,7 +63,7 @@ export default function Generation() {
 					id,
 					name,
 					translatedName,
-					abilities,
+					// abilities,
 					moves,
 					species,
 					types,
@@ -132,27 +132,27 @@ export default function Generation() {
 			<div className="row">
 				<div className="col mb-5">
 					<SoftLockList
+						items={generationInfo.species}
+						title="Pokemon"
+						category="pokemon"
+					/>
+				</div>
+			</div>
+			{/* <div className="row">
+				<div className="col mb-5">
+					<SoftLockList
 						items={generationInfo.abilities}
 						title="Abilities"
 						category="ability"
 					/>
 				</div>
-			</div>
+			</div> */}
 			<div className="row">
 				<div className="col mb-5">
 					<SoftLockList
 						items={generationInfo.moves}
 						title="Moves"
 						category="move"
-					/>
-				</div>
-			</div>
-			<div className="row">
-				<div className="col mb-5">
-					<SoftLockList
-						items={generationInfo.species}
-						title="Pokemon"
-						category="pokemon"
 					/>
 				</div>
 			</div>

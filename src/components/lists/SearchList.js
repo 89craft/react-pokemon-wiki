@@ -11,10 +11,11 @@ export default function SearchList({
 	category = 'pokemon',
 	pageLimit = 9999,
 	search = '',
+	filteredItems = [],
 }) {
 	const userLanguage = getUserLanguage()
 
-	const [items, setItems] = useState([])
+	const [items, setItems] = useState(filteredItems)
 	const [currentPageUrl, setCurrentPageUrl] = useState(
 		`${process.env.REACT_APP_POKE_API}/${category}?limit=${pageLimit}`
 	)
@@ -23,6 +24,14 @@ export default function SearchList({
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
+		if (filteredItems.length > 0) {
+			filteredItems.filter((items) => {
+				return items.name.includes(search.toLowerCase())
+			})
+			setLoading(false)
+			return
+		}
+
 		setLoading(true)
 		let cancel
 		Axios.get(currentPageUrl, {

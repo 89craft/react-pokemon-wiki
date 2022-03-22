@@ -559,7 +559,7 @@ function LinkBadges({ category, items }) {
 	}
 	return (
 		<h6>
-			{items[0].url
+			{items
 				? items.map((item) => (
 						<Link
 							key={item.name}
