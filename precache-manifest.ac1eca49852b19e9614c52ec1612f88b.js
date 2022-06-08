@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2635c97765fa500eea3b7e908fb77970",
+    "revision": "2f614f6e47078de52e2eb1d918986c36",
     "url": "/react-pokemon-wiki/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-pokemon-wiki/static/css/2.900186da.chunk.css"
   },
   {
-    "revision": "ca04d2bd0daf3453e57e",
+    "revision": "2671941720116fdea175",
     "url": "/react-pokemon-wiki/static/css/main.20952805.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-pokemon-wiki/static/js/2.2f0ec268.chunk.js"
   },
   {
-    "revision": "ca04d2bd0daf3453e57e",
-    "url": "/react-pokemon-wiki/static/js/main.4f7be499.chunk.js"
+    "revision": "2671941720116fdea175",
+    "url": "/react-pokemon-wiki/static/js/main.0c850bd6.chunk.js"
   },
   {
     "revision": "dfeacf6e178a3447e050",
